@@ -21,6 +21,7 @@ import java.io.*;
 /**
  * @author Filip Spånberg
  * Changes made by Adam Joulak
+ * @author paulmoustakas
  * 
  * DatabaseReader hanterar förfrågningar till TheTVDB
  */
