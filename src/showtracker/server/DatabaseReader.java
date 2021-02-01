@@ -79,18 +79,20 @@ class DatabaseReader {
         String[] strArrSearchTerms = strSearchTerms.split(" ");
         StringBuilder stbSearchTerms = new StringBuilder(strArrSearchTerms[0]);
         for (int i = 1; i < strArrSearchTerms.length; i++)
-            stbSearchTerms.append("%20").append(strArrSearchTerms[i]);
+            stbSearchTerms.append("+").append(strArrSearchTerms[i]);
 
-        HttpGet httpGet = createGet("https://api.thetvdb.com/search/series?name=" + stbSearchTerms);
+        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&t=" + stbSearchTerms);
+        System.out.print(httpGet.toString());
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
+        System.out.print(jsoResponse);
         String strError = (String) jsoResponse.get("Error");
         if (strError == null) {
             JSONArray jsaResponse = (JSONArray) jsoResponse.get("data");
 
             String[][] shows = new String[jsaResponse.size()][2];
             for (int i = 0; i < jsaResponse.size(); i++) {
-                shows[i][0] = (String) ((JSONObject) jsaResponse.get(i)).get("seriesName");
-                shows[i][1] = Long.toString((Long) ((JSONObject) jsaResponse.get(i)).get("id"));
+                shows[i][0] = (String) ((JSONObject) jsaResponse.get(i)).get("Title");
+                shows[i][1] = Long.toString((Long) ((JSONObject) jsaResponse.get(i)).get("imdbID"));
             }
             return shows;
         } else {
@@ -105,7 +107,7 @@ class DatabaseReader {
      * @return
      */
     JSONObject searchTheTVDBShow(String id) {
-        HttpGet httpGet = createGet("https://api.thetvdb.com/series/" + id);
+        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id);
         JSONObject jsoResponse = (JSONObject) getJSONFromRequest(httpGet).get("data");
 
         return jsoResponse;
@@ -118,7 +120,7 @@ class DatabaseReader {
      * @return A JSON array with the episodes
      */
     private JSONArray getEpisodesOfShow(String id, int page) {
-        HttpGet request = createGet("https://api.thetvdb.com/series/" + id + "/episodes?page=" + page);
+        HttpGet request = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id + "/episodes?page=" + page);
         JSONObject joResponse = getJSONFromRequest(request);
         String strError = (String) joResponse.get("Error");
         if (strError == null) {

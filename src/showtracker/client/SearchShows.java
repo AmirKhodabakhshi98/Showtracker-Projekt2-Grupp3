@@ -74,12 +74,12 @@ class SearchShows extends JPanel {
 		String[][] arrStrSearchResults = clientController.searchShows(strSearchRequest);
 		if (arrStrSearchResults != null) {
 			pnlSearchResult.setLayout(new GridLayout(arrStrSearchResults.length, 2));
-			System.out.println("SHOW HITTAT");
+			System.out.println("Show found");
 			updateSearchResults(arrStrSearchResults);
 		} else {
 			pnlSearchResult.setLayout(new BorderLayout());
 
-			System.out.println("SHOW EJ HITTAT");
+			System.out.println("Show not found");
 			strSearchRequest = "<html>" + "Your Search '" + strSearchRequest + "' was not found <br>" + "tips:<br>"
 					+ "- Make sure all word are spelled correctly<br>" + "- Try different keywords<br>"
 					+ "- or click the button below to create your own tracker =)" + "</html>";
@@ -178,7 +178,7 @@ class SearchShows extends JPanel {
 	}
 
 	/**
-	 * Darws a panel where a user can set number of episodes per season in a show
+	 * Draws a panel where a user can set number of episodes per season in a show
 	 * @param strInput The name of the show
 	 */
 	private void createMyOwnShowPanel(String strInput) {
