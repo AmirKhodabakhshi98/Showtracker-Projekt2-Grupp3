@@ -113,6 +113,7 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setLayout(new GridBagLayout());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
+		String str = "";
 		for (String[] arrStr : arrStrSearchResults) {
 			JPanel pnlMain = new JPanel();
 
@@ -126,12 +127,26 @@ class SearchShows extends JPanel {
 
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
 			pnlMain.add(btnAdd, BorderLayout.WEST);
-			pnlMain.add(new JLabel(" " + arrStr[0]), BorderLayout.CENTER);
+			pnlMain.add(new JLabel(" " + arrStr[0] + "     " + arrStr[1]), BorderLayout.CENTER);
+
 
 			gbc.gridx = 0;
 			gbc.weightx = 1;
+
 			pnlSearchResult.add(pnlMain, gbc);
 		}
+/*
+		for (int i=0; i<arrStrSearchResults.length; i++){
+			for (int j=0; j<arrStrSearchResults[i].length; j++){
+
+
+			str+= arrStrSearchResults[i][j];
+			}
+		}
+
+ */
+		JLabel lblTest = new JLabel(str);
+		pnlSearchResult.add(lblTest);
 
 		JPanel panel = new JPanel();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
