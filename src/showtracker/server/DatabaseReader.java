@@ -16,7 +16,9 @@ import showtracker.Episode;
 import showtracker.Helper;
 import showtracker.Show;
 
+import javax.xml.crypto.Data;
 import java.io.*;
+import java.util.Timer;
 
 /**
  * @author Filip Spånberg
@@ -52,6 +54,7 @@ class DatabaseReader {
         return strToken;
     }
 
+
     /**
      * Sets the token
      * @param strToken
@@ -75,30 +78,62 @@ class DatabaseReader {
      * @param strSearchTerms String with search terms
      * @return A String array with name and ID from the shows found
      */
+
+
+    private String apicode = "a203d499";
+
     String[][] searchTheTVDBShows(String strSearchTerms) {
         String[] strArrSearchTerms = strSearchTerms.split(" ");
         StringBuilder stbSearchTerms = new StringBuilder(strArrSearchTerms[0]);
         for (int i = 1; i < strArrSearchTerms.length; i++)
             stbSearchTerms.append("+").append(strArrSearchTerms[i]);
 
-        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&t=" + stbSearchTerms);
-        System.out.print(httpGet.toString());
-        JSONObject jsoResponse = getJSONFromRequest(httpGet);
-        System.out.print(jsoResponse);
-        String strError = (String) jsoResponse.get("Error");
-        if (strError == null) {
-            JSONArray jsaResponse = (JSONArray) jsoResponse.get("data");
+        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=" + apicode + "&t=" + stbSearchTerms);
 
-            String[][] shows = new String[jsaResponse.size()][2];
-            for (int i = 0; i < jsaResponse.size(); i++) {
-                shows[i][0] = (String) ((JSONObject) jsaResponse.get(i)).get("Title");
-                shows[i][1] = Long.toString((Long) ((JSONObject) jsaResponse.get(i)).get("imdbID"));
+
+        JSONObject jsoResponse = getJSONFromRequest(httpGet);
+
+
+        String[][] test = new String[2][2];
+
+        test[0][0] = "Title";
+        test[0][1] = "Year";
+
+
+        test[1][0] = (String) jsoResponse.get("Title");
+        test[1][1] = (String) jsoResponse.get("Year");
+
+        System.out.println(test[0][0]);
+        for (int i = 0; i< test.length; i++){
+
+            for (int j= 0; j<test[i].length; j++){
+                System.out.println(test[i][j]);
             }
-            return shows;
-        } else {
-            System.out.println(strError);
-            return null;
         }
+
+        return test;
+
+
+
+    }
+
+    private void test(){
+
+
+        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&t=Friends");
+        JSONObject jsoResponse = getJSONFromRequest(httpGet);
+    //    System.out.println(jsoResponse);
+        System.out.println(jsoResponse.get("Title"));
+        System.out.println(jsoResponse.get("Year"));
+
+    }
+
+    public static void main(String[] args) {
+        String [][] arr;
+        DatabaseReader dbr = new DatabaseReader();
+        //dbr.test();
+        dbr.searchTheTVDBShows("Friends");
+
     }
 
     /**
