@@ -101,11 +101,11 @@ class DatabaseReader {
         String[][] test = new String[2][2];
 
         test[0][0] = "Title";
-        test[0][1] = "Year";
+        test[0][1] = "imdbID";
 
 
         test[1][0] = (String) jsoResponse.get("Title");
-        test[1][1] = (String) jsoResponse.get("Year");
+        test[1][1] = (String) jsoResponse.get("imdbID");
 
         System.out.println(test[0][0]);
         for (int i = 0; i< test.length; i++){
