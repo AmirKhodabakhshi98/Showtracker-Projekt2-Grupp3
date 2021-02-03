@@ -255,7 +255,7 @@ class SearchShows extends JPanel {
 			Show show = new Show(txfShowName.getText());
 			for (int s = 0; s < arrTxfSeasons.length; s++)
 				for (int e = 0; e < arrIntEpisodes[s]; e++)
-					show.addEpisode(new Episode(show, e + 1, s + 1));
+	//				show.addEpisode(new Episode(show, e + 1, s + 1));
 
 			show.sortEpisodes();
 			clientController.getUser().addShow(show);
