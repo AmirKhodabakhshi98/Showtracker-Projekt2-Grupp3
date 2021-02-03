@@ -202,7 +202,7 @@ public class ClientController {
         return (String) connection.packEnvelope(arrStrUpdatePassword, "updatePassword");
     }
 
-    /**
+    /** 
      * Updates a show with new available episodes
      *
      * @param show The show to update
