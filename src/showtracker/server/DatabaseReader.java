@@ -19,6 +19,7 @@ import showtracker.Show;
 import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -161,21 +162,22 @@ class DatabaseReader {
     /**
      * Gets the episodes of a show
      * @param id The show's ID
-     * @param page The page (Searches are limited to 100 episodes per page)
+     * @param season The season of the show
      * @return A JSON array with the episodes
      */
-    private JSONArray getEpisodesOfShow(String id, int page) {
+    private JSONArray getEpisodesOfSeason(String id, int season) {
 
 
 
         System.out.println("episode of show");
-
         // HttpGet request = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id + "&page=" + page); tog bort för testning, hårdkodat till friends
-        HttpGet request  = createGet("http://www.omdbapi.com/?apikey=a203d499&i=tt0108778&page=1");
+        //HttpGet request  = createGet("http://www.omdbapi.com/?apikey=a203d499&i=tt0108778&page=1");
+        HttpGet request  = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id +"&season=" + season);
         JSONObject joResponse = getJSONFromRequest(request);
         String strError = (String) joResponse.get("Error");
         if (strError == null) {
-            JSONArray jsaResponse = (JSONArray) joResponse.get("Ratings");
+            JSONArray jsaResponse = (JSONArray) joResponse.get("Episodes");
+            System.out.print("getEpisodesOfSeason " + jsaResponse);
             return jsaResponse;
         } else {
             System.out.println(strError);
@@ -200,29 +202,28 @@ class DatabaseReader {
 
         show.setDescription((String) jsoShow.get("Plot"));
 
-        show.setTvdbId(String.valueOf( jsoShow.get("imdbID")));
+        show.setTvdbId(String.valueOf( jsoShow.get("imdbID"))); // planned to be removed
 
         show.setImdbId((String) jsoShow.get("imdbId"));
 
 
-        int intPage = 1;
+        int seasons = Integer.parseInt( String.valueOf(jsoShow.get("totalSeasons")));
+        System.out.println(seasons);
+        JSONArray jsaEpisodes;
+        for (int i =1; i < seasons + 1; i++) {
+            jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
+            System.out.println(jsaEpisodes.get(i));
 
-        JSONArray jsaEpisodes = getEpisodesOfShow(arShow[1], intPage);
 
+            for (Object obj : jsaEpisodes) {
+                JSONObject jso = (JSONObject) obj;
 
-
-
-    //    do {
-            System.out.println(jsaEpisodes);
-         //   for (Object obj : jsaEpisodes) {
-            //    JSONObject jso = (JSONObject) obj;
-
-                int intSeason =  Integer.parseInt( String.valueOf(jsoShow.get("totalSeasons")));
-                int intEpisode = Integer.parseInt( String.valueOf( jsoShow.get("totalSeasons")));
-                String strName = (String) jsoShow.get("Title");
-                String strTvdbId = (String.valueOf( jsoShow.get("imdbID")));
-                String strImdbId = (String.valueOf( jsoShow.get("imdbID")));
-                String strDescription = ((String) jsoShow.get("Plot"));
+                int intSeason = Integer.parseInt(String.valueOf(i));
+                int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
+                String strName = (String) jso.get("Title");
+                String strTvdbId = (String.valueOf(jso.get("imdbID")));
+                String strImdbId = (String.valueOf(jso.get("imdbID")));
+                String strDescription = ((String) jso.get("Plot"));
 
 
                 Episode episode = new Episode(show, intEpisode, intSeason);
@@ -231,6 +232,16 @@ class DatabaseReader {
                 episode.setName(strName);
                 episode.setDescription(strDescription);
                 show.addEpisode(episode);
+            }
+        }
+
+
+
+
+
+    //    do {
+
+
      //       }
       //      intPage++;
       //      jsaEpisodes = getEpisodesOfShow(arShow[1], intPage);
@@ -243,6 +254,7 @@ class DatabaseReader {
 
         return show;
     }
+
 
     /**
      * Creates a get with standard settings
