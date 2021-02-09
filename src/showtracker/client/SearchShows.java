@@ -34,6 +34,7 @@ class SearchShows extends JPanel {
 	private JPanel pnlMyShow = new JPanel();
 
 	private JScrollPane spnSearchResult = new JScrollPane();
+	private Font fontLabels = new Font("Monospaced", Font.BOLD, 14);
 
 	/**
 	 * Constructor that takes a ClientController instance
@@ -45,14 +46,15 @@ class SearchShows extends JPanel {
 		JPanel pnlSearchBar = new JPanel();
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
-		pnlSearchBar.setBackground(Color.BLUE);
+		pnlSearchBar.setBackground(Color.BLUE);  //TEST COLOR TO SEE THE OBJECT
 		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
-		txfSearchBar.setPreferredSize(new Dimension(200,40));
+		txfSearchBar.setPreferredSize(new Dimension(200,60));
 		JButton btnSearchBar = new JButton("search");
-		btnSearchBar.setFont(new Font("Monospaced", Font.BOLD, 14));
+		btnSearchBar.setFont(fontLabels);
 		
 		JButton btnCreateShow = new JButton("Create Show");
+		btnCreateShow.setFont(fontLabels);
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
 		btnSearchBar.addActionListener(e -> drawSearchResultPanel(txfSearchBar.getText()));
 		txfSearchBar.addKeyListener(new EnterListener());
@@ -65,7 +67,6 @@ class SearchShows extends JPanel {
 	 * Method for refreshing the view
 	 */
 	void draw() {
-		txfSearchBar.setFont(new Font("Monospaced", Font.ITALIC, 14));
 		pnlSearchResult.removeAll();
 		TextPrompt textPrompt = new TextPrompt("Enter show", txfSearchBar);
 		textPrompt.changeAlpha(0.5f);
@@ -122,25 +123,28 @@ class SearchShows extends JPanel {
 
 		String str = "";
 		for (String[] arrStr : arrStrSearchResults) {
-			JPanel pnlMain = new JPanel();
+			JPanel pnlMainCard = new JPanel();
 
-			pnlMain.setPreferredSize(new Dimension(300, 30));
-			pnlMain.setLayout(new BorderLayout());
+			pnlMainCard.setPreferredSize(new Dimension(800, 80));
+			pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
+			pnlMainCard.setLayout(new BorderLayout());
 
 			JButton btnAdd = new JButton("Add");
+			btnAdd.setFont(fontLabels);
+			btnAdd.setPreferredSize(new Dimension(100, 200));
 
 			btnAdd.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE),
 					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
-			pnlMain.add(btnAdd, BorderLayout.WEST);
-			pnlMain.add(new JLabel(" " + arrStr[0] + "     " + arrStr[1]), BorderLayout.CENTER);
+			pnlMainCard.add(btnAdd, BorderLayout.EAST);
+			pnlMainCard.add(new JLabel(arrStr[0] + "\t" + arrStr[1]), BorderLayout.CENTER);
 
 
 			gbc.gridx = 0;
 			gbc.weightx = 1;
 
-			pnlSearchResult.add(pnlMain, gbc);
+			pnlSearchResult.add(pnlMainCard, gbc);
 		}
 /*
 		for (int i=0; i<arrStrSearchResults.length; i++){
