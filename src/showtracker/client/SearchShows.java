@@ -18,6 +18,11 @@ import showtracker.Show;
  * 
  * Represents the search panel
  *
+ * Changes made by Paul Moustakas
+ * - GUI fixes.
+ * @date 2021-02-09
+ * @version 1.0.1
+ *
  */
 class SearchShows extends JPanel {
 
@@ -40,11 +45,12 @@ class SearchShows extends JPanel {
 		JPanel pnlSearchBar = new JPanel();
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
-		pnlSearchBar.setBackground(Color.GREEN);
-		pnlSearchBar.setSize(350, 100);
+		pnlSearchBar.setBackground(Color.BLUE);
+		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
-		txfSearchBar.setPreferredSize(new Dimension(200,20));
+		txfSearchBar.setPreferredSize(new Dimension(200,40));
 		JButton btnSearchBar = new JButton("search");
+		btnSearchBar.setFont(new Font("Monospaced", Font.BOLD, 14));
 		
 		JButton btnCreateShow = new JButton("Create Show");
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
@@ -59,6 +65,7 @@ class SearchShows extends JPanel {
 	 * Method for refreshing the view
 	 */
 	void draw() {
+		txfSearchBar.setFont(new Font("Monospaced", Font.ITALIC, 14));
 		pnlSearchResult.removeAll();
 		TextPrompt textPrompt = new TextPrompt("Enter show", txfSearchBar);
 		textPrompt.changeAlpha(0.5f);

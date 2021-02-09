@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -28,6 +29,7 @@ class ShowList extends JPanel {
     private JPanel pnlShowList = new JPanel();
     private JScrollPane scrollPane = new JScrollPane();
 
+
     /**
      * Constructor that takes a ClientController instance
      * @param clientController
@@ -51,6 +53,9 @@ class ShowList extends JPanel {
     /**
      * Refereshes the view with a selected amount of shows, from the search list
      * @param shows The shows to show
+     *
+     * @author Paul Moustakas, Andreas Von Uthmann:  Updated GUI components, size, max, min, fonts etc. Removed HTLM and replaced with pure Java for Labels.
+     *
      */
     private void draw(ArrayList<Show> shows) {
         shows.sort(new Helper.NameComparator());
@@ -66,23 +71,26 @@ class ShowList extends JPanel {
                 JButton btnRemove = new JButton("Remove");
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
-                pnlMiddle.add(new JLabel("<html><body><p style=\"width: 200px; text-align: center;\">" + show.getName() + "</p></body></html>"));
+                JLabel label = new JLabel("Card Label");
+                label.setFont(new Font("Monospaced", Font.BOLD, 18));
+                label.setText(show.getName());
+                pnlMiddle.add(label);
+
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
-                pnlSouth.setPreferredSize(new Dimension(960,400));
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnUpdate);
                 pnlSouth.add(btnRemove);
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setBorder(new LineBorder(Color.DARK_GRAY));
+                pnlMain.setPreferredSize(new Dimension(800, 80));
+                Border cardBorder = BorderFactory.createRaisedBevelBorder();
+                pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.SOUTH);
 
                 btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
-
                 btnUpdate.addActionListener(e -> clientController.getUser().updateShow(clientController.updateShow(show)));
-
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeShow(show);
                     draw();
