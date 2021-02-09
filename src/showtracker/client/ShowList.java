@@ -1,10 +1,6 @@
 package showtracker.client;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -22,6 +18,9 @@ import showtracker.Show;
  * 
  * A panel for user show list
  *
+ * updated 2021-02-09
+ * @author Paul Moustakas & Andreas Von Uthmann
+ * @version 1.0.1
  */
 
 class ShowList extends JPanel {
@@ -45,7 +44,7 @@ class ShowList extends JPanel {
     /**
      * Refereshing the view with a user's every show
      */
-    void draw() {
+    public void draw() {
         draw(clientController.getUser().getShows());
     }
 
@@ -70,6 +69,7 @@ class ShowList extends JPanel {
                 pnlMiddle.add(new JLabel("<html><body><p style=\"width: 200px; text-align: center;\">" + show.getName() + "</p></body></html>"));
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
+                pnlSouth.setPreferredSize(new Dimension(960,400));
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnUpdate);
                 pnlSouth.add(btnRemove);

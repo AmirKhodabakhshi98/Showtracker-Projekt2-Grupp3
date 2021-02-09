@@ -50,11 +50,11 @@ public class Login extends JPanel {
         btnLogIn.addActionListener(e -> checkUserLogin());
         btnSignUp.addActionListener(e -> signUp());
 
-        lbLogo.setBounds(75, 25, 150, 150);
-        txfUsername.setBounds(60, 200, 200, 30);
-        pwfPassword.setBounds(60, 240, 200, 30);
-        btnLogIn.setBounds(100, 290, 120, 30);
-        btnSignUp.setBounds(60, 340, 200, 30);
+        lbLogo.setBounds(425, 25, 150, 150);
+        txfUsername.setBounds(400, 200, 200, 30);
+        pwfPassword.setBounds(400, 240, 200, 30);
+        btnLogIn.setBounds(440, 290, 120, 30);
+        btnSignUp.setBounds(400, 340, 200, 30);
 
         add(lbLogo);
         add(txfUsername);

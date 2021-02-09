@@ -1,14 +1,14 @@
-package showtracker.client;
+package showtracker.client.View;
 
 import showtracker.Episode;
 import showtracker.Helper;
 import showtracker.Show;
-
+import showtracker.client.ClientController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
+
 
 /**
  * @author Filip Spånberg
@@ -20,17 +20,17 @@ public class Home extends JPanel {
     private ClientController clientController;
     private JScrollPane scrollPane = new JScrollPane();
 
-    Home(ClientController clientController) {
+    public Home(ClientController clientController) {
         this.clientController = clientController;
         add(scrollPane);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(335, 400));
+        scrollPane.setPreferredSize(new Dimension(960, 400));
     }
 
     /**
      * Refereshing the view
      */
-    void draw() {
+    public void draw() {
         scrollPane.getViewport().removeAll();
         Box box = Box.createVerticalBox();
         clientController.getUser().getShows().sort(new Helper.LastWatchedComparator());
@@ -52,7 +52,7 @@ public class Home extends JPanel {
                         currentEpisode.getName() != null && !currentEpisode.getName().equals("") ? ":<br>" + currentEpisode.getName() : ""));
                 panel.add(label, BorderLayout.CENTER);
                 JLabel lblWidth = new JLabel();
-                lblWidth.setPreferredSize(new Dimension(300, 1));
+                lblWidth.setPreferredSize(new Dimension(300, 1)); //Table size
                 panel.add(lblWidth, BorderLayout.SOUTH);
                 panel.setMaximumSize(new Dimension(300, 100));
                 box.add(panel);

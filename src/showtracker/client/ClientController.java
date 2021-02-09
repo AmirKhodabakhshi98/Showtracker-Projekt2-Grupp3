@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import showtracker.Show;
 import showtracker.User;
+import showtracker.client.View.Home;
 
 /**
  * @author Talal Attar
@@ -79,7 +80,7 @@ public class ClientController {
      */
     private void startApplication() {
         frame.add(pnlCenter, BorderLayout.CENTER);
-        frame.setSize(new Dimension(350, 500));
+        frame.setSize(new Dimension(1000, 700));
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -208,7 +209,7 @@ public class ClientController {
      * @param show The show to update
      * @return The updated Show object
      */
-    Show updateShow(Show show) {
+    public Show updateShow(Show show) {
         return (Show) connection.packEnvelope(show, "updateShow");
     }
 
@@ -249,7 +250,7 @@ public class ClientController {
      *
      * @return The current User
      */
-    User getUser() {
+    public User getUser() {
         return user;
     }
 
