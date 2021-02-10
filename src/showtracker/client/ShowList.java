@@ -71,6 +71,10 @@ class ShowList extends JPanel {
                 JButton btnUpdate = new JButton("Update");
                 JButton btnRemove = new JButton("Remove");
 
+                btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                btnUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
                 label.setFont(new Font("Monospaced", Font.BOLD, 18));

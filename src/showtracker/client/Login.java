@@ -42,7 +42,7 @@ public class Login extends JPanel {
         this.clientController = clientController;
         setLayout(null);
 
-        ImageIcon imi = new ImageIcon("images/logo.png");
+        ImageIcon imi = new ImageIcon("images/Showtrack.png");
         Image image = imi.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         JLabel lbLogo = new JLabel(new ImageIcon(image));
 
