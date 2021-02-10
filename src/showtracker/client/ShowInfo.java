@@ -39,9 +39,10 @@ class ShowInfo extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(pnlMain);
 		scrollPane.setLayout(new ScrollPaneLayout());
-		scrollPane.setBackground(Color.CYAN);
+		scrollPane.setBackground(Color.decode("#6A86AA"));
 
 		pnlMain.setLayout(new BoxLayout(pnlMain, BoxLayout.PAGE_AXIS));
+		pnlMain.setBackground(Color.decode("#6A86AA"));
 		pnlMain.add(Box.createHorizontalGlue());
 		
 		ImageIcon imiInfo = new ImageIcon("images/info.png");
@@ -61,6 +62,7 @@ class ShowInfo extends JPanel {
 		pnlHeader.setBounds(0, 0, 500, 50);
 		pnlHeader.setLayout(new BorderLayout());
 		pnlHeader.setPreferredSize(new Dimension(500, 50));
+		pnlHeader.setBackground(Color.decode("#6A86AA"));
 		pnlHeader.add(new JLabel(show.getName()));
 		pnlHeader.add(btnInfo, BorderLayout.EAST);
 		pnlHeader.setBorder(new LineBorder(Color.black));

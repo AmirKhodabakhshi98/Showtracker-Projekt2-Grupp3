@@ -26,6 +26,7 @@ public class Home extends JPanel {
         add(scrollPane);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(960, 400));
+        scrollPane.setBackground(Color.decode("#6A86AA"));
     }
 
     /**
@@ -38,6 +39,7 @@ public class Home extends JPanel {
         scrollPane.getViewport().removeAll();
         Box box = Box.createVerticalBox();
         clientController.getUser().getShows().sort(new Helper.LastWatchedComparator());
+        scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));
 
         int episodeCounter = 0;
         for (Show show : clientController.getUser().getShows()) {
@@ -51,10 +53,11 @@ public class Home extends JPanel {
                 panel.setBorder(BorderFactory.createBevelBorder(1));
 
                 JButton button = new JButton("I've seen it!");
-                button.setFont(new Font("Monospaced", Font.PLAIN, 14));
+                button.setFont(new Font("Monospaced", Font.PLAIN, 12));
                 button.addActionListener(new EpisodeListener(currentEpisode));
+                button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                JLabel label = new JLabel(String.format("<html><div style=\"width:150px;\">%s<br>Season %s, episode %s%s</div></html>",
+                JLabel label = new JLabel(String.format("<html><div style=\"width:145px;\">%s<br>Season %s, episode %s%s</div></html>",
                         show.getName(),
                         Helper.df.format(currentEpisode.getSeasonNumber()),
                         Helper.df.format(currentEpisode.getEpisodeNumber()),
@@ -64,6 +67,7 @@ public class Home extends JPanel {
                 panel.add(button, BorderLayout.EAST);
                 panel.add(label, BorderLayout.CENTER);
                 panel.setMaximumSize(new Dimension(960, 80));
+                panel.setBackground(Color.decode("#6A86AA"));
                 box.add(panel);
             }
         }
@@ -73,6 +77,7 @@ public class Home extends JPanel {
         scrollPane.setViewportView(box);
         scrollPane.revalidate();
         scrollPane.repaint();
+        scrollPane.setBackground(Color.decode("#6A86AA"));
     }
 
 

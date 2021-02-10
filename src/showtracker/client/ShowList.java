@@ -36,8 +36,8 @@ class ShowList extends JPanel {
      */
     ShowList(ClientController clientController) {
         this.clientController = clientController;
+        setBackground(Color.decode("#6A86AA"));
         pnlShowList.setBackground(Color.decode("#6A86AA"));
-        scrollPane.setBackground(Color.decode("#6A86AA"));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
@@ -63,6 +63,7 @@ class ShowList extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         pnlShowList.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        pnlShowList.setBackground(Color.decode("#6A86AA"));
 
         pnlShowList.removeAll();
         if (shows.size() > 0) {
@@ -80,12 +81,13 @@ class ShowList extends JPanel {
                 label.setFont(new Font("Monospaced", Font.BOLD, 18));
                 label.setText(show.getName());
                 pnlMiddle.add(label);
-
+                pnlMiddle.setBackground(Color.decode("#6A86AA"));
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnUpdate);
                 pnlSouth.add(btnRemove);
+                pnlSouth.setBackground(Color.decode("#6A86AA"));
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 80));
@@ -93,6 +95,7 @@ class ShowList extends JPanel {
                 pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.SOUTH);
+                pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
                 btnUpdate.addActionListener(e -> clientController.getUser().updateShow(clientController.updateShow(show)));
@@ -154,6 +157,7 @@ class ShowList extends JPanel {
                     searchShows.add(show);
             }
             pnlShowList.removeAll();
+            pnlShowList.setBackground(Color.decode("#6A86AA"));
             draw(searchShows);
         }
     }
