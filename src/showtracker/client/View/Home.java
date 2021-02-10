@@ -21,6 +21,7 @@ public class Home extends JPanel {
     private JScrollPane scrollPane = new JScrollPane();
 
     public Home(ClientController clientController) {
+        setBackground(Color.decode("#6A86AA"));
         this.clientController = clientController;
         add(scrollPane);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

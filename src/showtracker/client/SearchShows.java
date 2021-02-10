@@ -42,11 +42,12 @@ class SearchShows extends JPanel {
 	 */
 	SearchShows(ClientController clientController) {
 		this.clientController = clientController;
+//		pnlSearchResult.setBackground(Color.decode("#6A86AA"));  //Färgen på logan, testar lite bara. Kan tas bort.
 		setLayout(new BorderLayout());
 		JPanel pnlSearchBar = new JPanel();
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
-		pnlSearchBar.setBackground(Color.BLUE);  //TEST COLOR TO SEE THE OBJECT
+		pnlSearchBar.setBackground(Color.decode("#6A86AA"));
 		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
 		txfSearchBar.setPreferredSize(new Dimension(200,60));
