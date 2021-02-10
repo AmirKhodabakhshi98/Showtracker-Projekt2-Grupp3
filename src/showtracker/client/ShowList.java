@@ -1,13 +1,10 @@
 package showtracker.client;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -22,6 +19,9 @@ import showtracker.Show;
  * 
  * A panel for user show list
  *
+ * updated 2021-02-09
+ * @author Paul Moustakas & Andreas Von Uthmann
+ * @version 1.0.1
  */
 
 class ShowList extends JPanel {
@@ -29,13 +29,15 @@ class ShowList extends JPanel {
     private JPanel pnlShowList = new JPanel();
     private JScrollPane scrollPane = new JScrollPane();
 
+
     /**
      * Constructor that takes a ClientController instance
      * @param clientController
      */
     ShowList(ClientController clientController) {
         this.clientController = clientController;
-
+        pnlShowList.setBackground(Color.decode("#6A86AA"));
+        scrollPane.setBackground(Color.decode("#6A86AA"));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
@@ -45,13 +47,16 @@ class ShowList extends JPanel {
     /**
      * Refereshing the view with a user's every show
      */
-    void draw() {
+    public void draw() {
         draw(clientController.getUser().getShows());
     }
 
     /**
      * Refereshes the view with a selected amount of shows, from the search list
      * @param shows The shows to show
+     *
+     * @author Paul Moustakas, Andreas Von Uthmann:  Updated GUI components, size, max, min, fonts etc. Removed HTLM and replaced with pure Java for Labels.
+     *
      */
     private void draw(ArrayList<Show> shows) {
         shows.sort(new Helper.NameComparator());
@@ -67,7 +72,11 @@ class ShowList extends JPanel {
                 JButton btnRemove = new JButton("Remove");
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
-                pnlMiddle.add(new JLabel("<html><body><p style=\"width: 200px; text-align: center;\">" + show.getName() + "</p></body></html>"));
+                JLabel label = new JLabel("Card Label");
+                label.setFont(new Font("Monospaced", Font.BOLD, 18));
+                label.setText(show.getName());
+                pnlMiddle.add(label);
+
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
@@ -75,14 +84,14 @@ class ShowList extends JPanel {
                 pnlSouth.add(btnRemove);
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setBorder(new LineBorder(Color.DARK_GRAY));
+                pnlMain.setPreferredSize(new Dimension(800, 80));
+                Border cardBorder = BorderFactory.createRaisedBevelBorder();
+                pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.SOUTH);
 
                 btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
-
                 btnUpdate.addActionListener(e -> clientController.getUser().updateShow(clientController.updateShow(show)));
-
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeShow(show);
                     draw();

@@ -18,6 +18,11 @@ import showtracker.Show;
  * 
  * Represents the search panel
  *
+ * Changes made by Paul Moustakas
+ * - GUI fixes.
+ * @date 2021-02-09
+ * @version 1.0.1
+ *
  */
 class SearchShows extends JPanel {
 
@@ -29,6 +34,7 @@ class SearchShows extends JPanel {
 	private JPanel pnlMyShow = new JPanel();
 
 	private JScrollPane spnSearchResult = new JScrollPane();
+	private Font fontLabels = new Font("Monospaced", Font.BOLD, 14);
 
 	/**
 	 * Constructor that takes a ClientController instance
@@ -36,17 +42,20 @@ class SearchShows extends JPanel {
 	 */
 	SearchShows(ClientController clientController) {
 		this.clientController = clientController;
+//		pnlSearchResult.setBackground(Color.decode("#6A86AA"));  //Färgen på logan, testar lite bara. Kan tas bort.
 		setLayout(new BorderLayout());
 		JPanel pnlSearchBar = new JPanel();
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
-		pnlSearchBar.setBackground(Color.GREEN);
-		pnlSearchBar.setSize(350, 100);
+		pnlSearchBar.setBackground(Color.decode("#6A86AA"));
+		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
-		txfSearchBar.setPreferredSize(new Dimension(200,20));
+		txfSearchBar.setPreferredSize(new Dimension(200,60));
 		JButton btnSearchBar = new JButton("search");
+		btnSearchBar.setFont(fontLabels);
 		
 		JButton btnCreateShow = new JButton("Create Show");
+		btnCreateShow.setFont(fontLabels);
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
 		btnSearchBar.addActionListener(e -> drawSearchResultPanel(txfSearchBar.getText()));
 		txfSearchBar.addKeyListener(new EnterListener());
@@ -115,25 +124,28 @@ class SearchShows extends JPanel {
 
 		String str = "";
 		for (String[] arrStr : arrStrSearchResults) {
-			JPanel pnlMain = new JPanel();
+			JPanel pnlMainCard = new JPanel();
 
-			pnlMain.setPreferredSize(new Dimension(300, 30));
-			pnlMain.setLayout(new BorderLayout());
+			pnlMainCard.setPreferredSize(new Dimension(800, 80));
+			pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
+			pnlMainCard.setLayout(new BorderLayout());
 
 			JButton btnAdd = new JButton("Add");
+			btnAdd.setFont(fontLabels);
+			btnAdd.setPreferredSize(new Dimension(100, 200));
 
 			btnAdd.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE),
 					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
-			pnlMain.add(btnAdd, BorderLayout.WEST);
-			pnlMain.add(new JLabel(" " + arrStr[0] + "     " + arrStr[1]), BorderLayout.CENTER);
+			pnlMainCard.add(btnAdd, BorderLayout.EAST);
+			pnlMainCard.add(new JLabel(arrStr[0] + "\t" + arrStr[1]), BorderLayout.CENTER);
 
 
 			gbc.gridx = 0;
 			gbc.weightx = 1;
 
-			pnlSearchResult.add(pnlMain, gbc);
+			pnlSearchResult.add(pnlMainCard, gbc);
 		}
 /*
 		for (int i=0; i<arrStrSearchResults.length; i++){

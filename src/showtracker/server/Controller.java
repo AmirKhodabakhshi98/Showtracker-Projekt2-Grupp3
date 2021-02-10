@@ -49,7 +49,7 @@ public class Controller {
 		switch (envInput.getType()) {
 			case "searchShows":
 				String strSearchTerms = (String) envInput.getContent();
-				String[][] strArrResponse = dbr.searchTheTVDBShows(strSearchTerms);
+				String[][] strArrResponse = dbr.searchOMDBdbShows(strSearchTerms);
 				returnEnvelope = new Envelope(strArrResponse, "shows");
 				break;
 			case "getShow":
