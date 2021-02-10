@@ -80,7 +80,7 @@ public class ClientController {
      */
     private void startApplication() {
         frame.add(pnlCenter, BorderLayout.CENTER);
-        frame.setSize(new Dimension(1000, 700));
+        frame.setSize(new Dimension(1000, 600));
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -108,17 +108,21 @@ public class ClientController {
         switch (strPanel) {
             case "Home":
                 pnlHome.draw();
+                pnlHome.setBackground(Color.getColor("6C709D"));
                 break;
             case "ShowList":
                 pnlShowList.draw();
+                pnlShowList.setBackground(Color.getColor("6C709D"));
                 break;
             case "Profile":
                 pnlProfile.draw();
+                pnlProfile.setBackground(Color.getColor("6C709D"));
                 break;
             case "Logout":
                 setButtonsEnabled(false);
                 pnlLogin.draw();
                 pnlLogin.revalidate();
+                pnlLogin.setBackground(Color.getColor("6C709D"));
                 pnlSearchShows.draw();
                 if (user != null)
                     new Thread(() -> updateUser(user)).run();

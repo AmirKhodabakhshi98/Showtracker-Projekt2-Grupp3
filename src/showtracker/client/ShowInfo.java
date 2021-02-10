@@ -50,6 +50,7 @@ class ShowInfo extends JPanel {
 
 		JButton btnInfo = new JButton(imiInfo);
 		btnInfo.setPreferredSize(new Dimension(30, 50));
+		btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null,
 			"<html><body><p style=\"width: 200px;\">" +
@@ -86,11 +87,13 @@ class ShowInfo extends JPanel {
 			button.setMinimumSize(new Dimension(100, 30));
 			button.setMaximumSize(new Dimension(100, 30));
 			button.addActionListener(listener);
+			button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			panel.add(button);
 			if (listener.getOpen())
 				for (Episode episode : show.getEpisodes())
 					if (episode.getSeasonNumber() == listener.getSeason()) {
 						JButton infoButton = new JButton("Info - Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
+						infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						infoButton.addActionListener(e -> {
 								JOptionPane.showMessageDialog(null,
 										"<html><body><p style=\"width: 200px;\">" +

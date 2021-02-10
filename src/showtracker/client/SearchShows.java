@@ -50,11 +50,13 @@ class SearchShows extends JPanel {
 		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
 		txfSearchBar.setPreferredSize(new Dimension(200,60));
-		JButton btnSearchBar = new JButton("search");
+		JButton btnSearchBar = new JButton("Search");
 		btnSearchBar.setFont(fontLabels);
+		btnSearchBar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JButton btnCreateShow = new JButton("Create Show");
 		btnCreateShow.setFont(fontLabels);
+		btnCreateShow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
 		btnSearchBar.addActionListener(e -> drawSearchResultPanel(txfSearchBar.getText()));
 		txfSearchBar.addKeyListener(new EnterListener());
@@ -84,9 +86,9 @@ class SearchShows extends JPanel {
 			pnlSearchResult.setLayout(new GridLayout(arrStrSearchResults.length, 2));
 			System.out.println("Show found");
 			updateSearchResults(arrStrSearchResults);
+
 		} else {
 			pnlSearchResult.setLayout(new BorderLayout());
-
 			System.out.println("Show not found");
 			strSearchRequest = "<html>" + "Your Search '" + strSearchRequest + "' was not found <br>" + "tips:<br>"
 					+ "- Make sure all word are spelled correctly<br>" + "- Try different keywords<br>"
@@ -105,6 +107,7 @@ class SearchShows extends JPanel {
 			btnCreateOwnShow.addActionListener(e -> drawNoSearchResultPanel());
 			pnlSearchResult.add(label, BorderLayout.CENTER);
 			pnlSearchResult.add(btnCreateOwnShow, BorderLayout.SOUTH);
+
 		}
 
 		spnSearchResult.setViewportView(pnlSearchResult);
@@ -137,6 +140,7 @@ class SearchShows extends JPanel {
 					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
+			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			pnlMainCard.add(btnAdd, BorderLayout.EAST);
 			pnlMainCard.add(new JLabel(arrStr[0] + "\t" + arrStr[1]), BorderLayout.CENTER);
 
