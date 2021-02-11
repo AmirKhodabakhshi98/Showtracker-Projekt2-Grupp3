@@ -65,7 +65,7 @@ class ShowInfo extends JPanel {
 		pnlHeader.setBackground(Color.decode("#6A86AA"));
 		pnlHeader.add(new JLabel(show.getName()));
 		pnlHeader.add(btnInfo, BorderLayout.EAST);
-		pnlHeader.setBorder(new LineBorder(Color.black));
+		pnlHeader.setBorder(new LineBorder(Color.DARK_GRAY));
 
 		setLayout(new BorderLayout());
 		add(pnlHeader, BorderLayout.NORTH);
@@ -81,6 +81,7 @@ class ShowInfo extends JPanel {
 			JPanel panel = new JPanel();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			panel.add(Box.createHorizontalGlue());
+			panel.setBackground(Color.decode("#6A86AA"));
 			JButton button;
 			if (listener.getSeason() == 0)
 				button = new JButton("Specials");

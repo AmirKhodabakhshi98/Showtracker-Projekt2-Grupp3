@@ -20,7 +20,7 @@ import showtracker.Show;
  * A panel for user show list
  *
  * updated 2021-02-09
- * @author Paul Moustakas & Andreas Von Uthmann
+ * @author Paul Moustakas & Andreas von Uthmann
  * @version 1.0.1
  */
 
@@ -36,7 +36,6 @@ class ShowList extends JPanel {
      */
     ShowList(ClientController clientController) {
         this.clientController = clientController;
-        setBackground(Color.decode("#6A86AA"));
         pnlShowList.setBackground(Color.decode("#6A86AA"));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
@@ -130,6 +129,11 @@ class ShowList extends JPanel {
 
         MyDocumentListener() {
             javax.swing.text.Document doc = this.getDocument();
+            this.setPreferredSize(new Dimension(700,30));
+            TextPrompt tp7 = new TextPrompt("Search Yor List", this);
+            tp7.setForeground( Color.GRAY );
+            tp7.changeAlpha(0.5f);
+            tp7.changeStyle(Font.BOLD + Font.CENTER_BASELINE);
             doc.addDocumentListener(this);
             setBackground(Color.WHITE);
             setBorder(new LineBorder(Color.BLACK));

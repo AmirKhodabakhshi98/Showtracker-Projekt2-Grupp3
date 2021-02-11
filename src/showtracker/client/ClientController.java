@@ -41,11 +41,11 @@ public class ClientController {
         pnlLogin = new Login(this);
 
         pnlCenter.setLayout(new CardLayout());
-        pnlCenter.setBackground(Color.decode("#6A86AA"));
+        pnlCenter.setBackground(Color.decode("#4E4E4E"));
 
         pnlBottom = new JPanel();
-        pnlBottom.setLayout(new GridLayout(2, 5, 1, 1));
-        pnlBottom.setBackground(Color.decode("#6A86AA"));
+        pnlBottom.setLayout(new GridLayout(1, 5, 1, 1));
+        pnlBottom.setBackground(Color.decode("#4E4E4E"));
 
 
         generateNavigationButton("profile", "Profile", pnlProfile);
@@ -54,14 +54,10 @@ public class ClientController {
         generateNavigationButton("search", "SearchShows", pnlSearchShows);
         generateNavigationButton("exit", "Logout", pnlLogin);
 
+
         setButtonsEnabled(false);
 
         frame.add(pnlBottom, BorderLayout.SOUTH);
-        pnlBottom.add(new JLabel("Profile"));
-        pnlBottom.add(new JLabel("Show Info"));
-        pnlBottom.add(new JLabel("Show List"));
-        pnlBottom.add(new JLabel("Search"));
-        pnlBottom.add(new JLabel("Log Out"));
 
         setPanel("Logout", null);
     }
