@@ -73,7 +73,10 @@ public class Home extends JPanel {
         }
 
         if (episodeCounter == 0)
-            box.add(new JLabel("<html><p style=\"width:200px; align:center;\">\nNo new episodes to display. Either search for new shows, or go to your list and set some episodes to \"not watched\".</p></html>"));
+            box.add(new JLabel("<html><p style=\"width:200px; align:end;\">\nNo new episodes to display. Either search for new shows, or go to your list and set some episodes to \"not watched\".</p></html>"));
+            ImageIcon imi = new ImageIcon("images/Showtrack.png");
+
+
         scrollPane.setViewportView(box);
         scrollPane.revalidate();
         scrollPane.repaint();

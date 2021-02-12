@@ -114,7 +114,14 @@ class ShowList extends JPanel {
             pnlShowList.add(new JPanel(), gbc);
 
         } else {
-            pnlShowList.add(new JLabel("   Kunde inte hitta show med angivet namn !!"));
+            pnlShowList.add(new JLabel("   Ingen serie eller film tillagd ännu !!"));
+            pnlShowList.add(new JLabel("          "));
+            ImageIcon imi = new ImageIcon("images/Showtrack.png");
+            Image image = imi.getImage().getScaledInstance(150, 150, Image.SCALE_AREA_AVERAGING);
+            JLabel lbLogo = new JLabel(new ImageIcon(image));
+            pnlShowList.add(lbLogo);
+
+
 
         }
         scrollPane.setViewportView(pnlShowList);
@@ -159,6 +166,9 @@ class ShowList extends JPanel {
             for (Show show : clientController.getUser().getShows()) {
                 if (show.getName().toLowerCase().contains(getText().toLowerCase()))
                     searchShows.add(show);
+                else
+                    JOptionPane.showMessageDialog(null, "Hittade tyvärr inget med detta namn");
+
             }
             pnlShowList.removeAll();
             pnlShowList.setBackground(Color.decode("#6A86AA"));

@@ -45,7 +45,7 @@ public class ClientController {
 
         pnlBottom = new JPanel();
         pnlBottom.setLayout(new GridLayout(1, 5, 1, 1));
-        pnlBottom.setBackground(Color.decode("#4E4E4E"));
+//        pnlBottom.setBackground(Color.decode("#4E4E4E"));
 
 
         generateNavigationButton("profile", "Profile", pnlProfile);
