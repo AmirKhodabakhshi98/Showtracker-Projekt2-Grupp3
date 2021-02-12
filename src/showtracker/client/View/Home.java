@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
  * Panel showing the next episode to watch in a show
  */
 public class Home extends JPanel {
+
     private ClientController clientController;
     private JScrollPane scrollPane = new JScrollPane();
 
@@ -51,7 +52,8 @@ public class Home extends JPanel {
                 panel.setBorder(BorderFactory.createBevelBorder(1));
 
                 JButton button = new JButton("I've seen it!");
-                button.setFont(new Font("Monospaced", Font.PLAIN, 14));
+                button.setFont(FontsAndColors.getFontBold(14));
+                button.setFont(FontsAndColors.getFontPlain(14));
                 button.addActionListener(new EpisodeListener(currentEpisode));
 
                 JLabel label = new JLabel(String.format("<html><div style=\"width:150px;\">%s<br>Season %s, episode %s%s</div></html>",

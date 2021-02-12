@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import showtracker.Helper;
 import showtracker.User;
+import showtracker.client.View.FontsAndColors;
 
 /**
  * @author Basir Ramazani
@@ -26,10 +27,10 @@ class Profile extends JPanel {
     private JTextField txfConfirmPassword;
     private JPasswordField pwfPassword;
 
+
+
     /**
      * Constructor that takes a ClientController instance
-     *
-     * @param cc
      */
     Profile(ClientController clientController) {
         this.clientController = clientController;
@@ -43,10 +44,39 @@ class Profile extends JPanel {
         removeAll();
         user = clientController.getUser();
         add(profilePicturePanel(), BorderLayout.NORTH);
-        add(initiatePanel(), BorderLayout.CENTER);
+        add(initiatePanel(), BorderLayout.WEST);
+        add(rightFillerPanel(), BorderLayout.CENTER);
         changePanel();
         add(pnlSouth, BorderLayout.SOUTH);
     }
+
+
+    /**
+     * Method to create the right side of the Profile page.
+     * Contain the app logo.
+     * @return Right side of Profile page.
+     * Added by Paul to balance the former GUI.
+     */
+    private JPanel rightFillerPanel () {
+        JPanel panelFillerRight = new JPanel();
+        panelFillerRight.setLayout(new BorderLayout());
+        panelFillerRight.setBackground(FontsAndColors.getProjectBlue());
+
+        JPanel panelLogo = new JPanel();
+        JLabel lbLogo = new JLabel(new ImageIcon(FontsAndColors.getLogo(250, 250)));
+
+        panelLogo.setBackground(FontsAndColors.getProjectBlue());
+        JPanel panelGlue = new JPanel();
+        panelGlue.setPreferredSize(new Dimension(200, 100));
+        panelGlue.setBackground(FontsAndColors.getProjectBlue());
+
+        panelLogo.add(lbLogo);
+        panelFillerRight.add(panelGlue, BorderLayout.NORTH);
+        panelFillerRight.add(panelLogo, BorderLayout.CENTER);
+
+        return panelFillerRight;
+    }
+
 
     /**
      * Creates the Profile panel
@@ -55,24 +85,38 @@ class Profile extends JPanel {
      */
     private JPanel initiatePanel() {
         JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 2, 3, 1));
+        panel.setBackground(Color.decode("#6A86AA"));
 
-        panel.setLayout(new GridLayout(3, 2, 6, 1));
-        JLabel lblInputName = new JLabel(user.getUserName());
+        //Title
+        JLabel lblTitle = new JLabel("\t\tMy profile");         //Profile
+        lblTitle.setFont(FontsAndColors.getFontTitle(20));
+
+        //Email
+        JLabel lblEmail = new JLabel("\t\tEmail:");
+        lblEmail.setFont(FontsAndColors.getFontBold(16));
         lblInputEmail = new JLabel(user.getEmail());
+        lblInputEmail.setFont(FontsAndColors.getFontPlain(16));
 
-        JLabel lblTitle = new JLabel(" My profile");
+        //Username
+        JLabel lblUsername = new JLabel("\t\tUsername:");
+        lblUsername.setFont(FontsAndColors.getFontBold(16));
+        JLabel lblInputName = new JLabel(user.getUserName());
+        lblInputName.setFont(FontsAndColors.getFontPlain(16));
 
-        JLabel lblUsername = new JLabel("    Username:  ");
-        JLabel lblEmail = new JLabel("    Email:  ");
         txfChangeMail = new JTextField();
+
         panel.add(lblTitle);
         panel.add(new JLabel());
-
-        panel.add(lblUsername);
-        panel.add(lblInputName);
-
         panel.add(lblEmail);
         panel.add(lblInputEmail);
+        panel.add(lblUsername);
+        panel.add(lblInputName);
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+        panel.add(new JLabel());
+        panel.add(new JLabel());
 
         return panel;
     }
