@@ -12,7 +12,6 @@ import java.awt.*;
  */
 public abstract class FontsAndColors {
 
-
     /**
      * Body text
      * @return Monospaced font in bold size of choice.
@@ -66,6 +65,9 @@ public abstract class FontsAndColors {
         return image;
     }
 
+
+    //TEST COLOR WHITE
+    //		pnlSearchResult.setBackground(Color.decode("#F8F7ED"));
 
 
 }

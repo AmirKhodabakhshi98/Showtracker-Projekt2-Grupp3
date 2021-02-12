@@ -16,12 +16,13 @@ import showtracker.client.View.FontsAndColors;
  * Changes made by Moustafa & Filip
  * <p>
  * A profile panel for user
+ * Changes made by Paul
+ * @version 1.0.2
  */
 
 class Profile extends JPanel {
     private ClientController clientController;
     private User user;
-    private JPanel pnlSouth;
     private JLabel lblInputEmail;
     private JTextField txfChangeMail;
     private JTextField txfConfirmPassword;
@@ -45,9 +46,8 @@ class Profile extends JPanel {
         user = clientController.getUser();
         add(profilePicturePanel(), BorderLayout.NORTH);
         add(initiatePanel(), BorderLayout.WEST);
-        add(rightFillerPanel(), BorderLayout.CENTER);
-        changePanel();
-        add(pnlSouth, BorderLayout.SOUTH);
+        add(centerLogoPanel(), BorderLayout.CENTER);
+        add(changePanel(), BorderLayout.EAST);
     }
 
 
@@ -57,13 +57,13 @@ class Profile extends JPanel {
      * @return Right side of Profile page.
      * Added by Paul to balance the former GUI.
      */
-    private JPanel rightFillerPanel () {
+    private JPanel centerLogoPanel() {
         JPanel panelFillerRight = new JPanel();
         panelFillerRight.setLayout(new BorderLayout());
         panelFillerRight.setBackground(FontsAndColors.getProjectBlue());
 
         JPanel panelLogo = new JPanel();
-        JLabel lbLogo = new JLabel(new ImageIcon(FontsAndColors.getLogo(250, 250)));
+        JLabel lbLogo = new JLabel(new ImageIcon(FontsAndColors.getLogo(300, 300)));
 
         panelLogo.setBackground(FontsAndColors.getProjectBlue());
         JPanel panelGlue = new JPanel();
@@ -93,7 +93,7 @@ class Profile extends JPanel {
         lblTitle.setFont(FontsAndColors.getFontTitle(20));
 
         //Email
-        JLabel lblEmail = new JLabel("\t\tEmail:");
+        JLabel lblEmail = new JLabel("\t\te-mail:");
         lblEmail.setFont(FontsAndColors.getFontBold(16));
         lblInputEmail = new JLabel(user.getEmail());
         lblInputEmail.setFont(FontsAndColors.getFontPlain(16));
@@ -123,23 +123,39 @@ class Profile extends JPanel {
 
     /**
      * Creates a panel with buttons for changing information
+     * modified by Paul, moved the panel to the west instead of a new South panel.
+     * Also removed the initiation and joined with the other panels.
      */
-    private void changePanel() {
-        pnlSouth = new JPanel(new BorderLayout());
-        JPanel panel = new JPanel();
+    private JPanel changePanel() {
+        JPanel pnlWestChange = new JPanel(new BorderLayout());
+        pnlWestChange.setPreferredSize(new Dimension(160, 400));
 
-        JButton btnChangeEmail = new JButton("Change Email?");
-        JButton btnChangePass = new JButton("Change Password?");
+        JPanel panel = new JPanel();
+        JPanel panelNorthGlue = new JPanel();
+        panel.setBackground(FontsAndColors.getProjectBlue());
+
+        panelNorthGlue.setPreferredSize(new Dimension(100,  100));
+        panelNorthGlue.setBackground(FontsAndColors.getProjectBlue());
+
+        JButton btnChangeEmail = new JButton("Change e-mail");
+        btnChangeEmail.setFont(FontsAndColors.getFontPlain(14));
+        btnChangeEmail.setPreferredSize(new Dimension(150, 40));
+        JButton btnChangePass = new JButton("Change Password");
+        btnChangePass.setFont(FontsAndColors.getFontPlain(14));
+        btnChangePass.setPreferredSize(new Dimension(150, 40));
 
         panel.add(btnChangeEmail);
         panel.add(btnChangePass);
 
-        pnlSouth.add(panel, BorderLayout.SOUTH);
+        pnlWestChange.add(panelNorthGlue, BorderLayout.NORTH);
+        pnlWestChange.add(panel, BorderLayout.CENTER);
 
         btnChangeEmail.addActionListener(new ValidateEmailListener());
-
         btnChangePass.addActionListener(new ValidatePasswordListener());
+
+        return pnlWestChange;
     }
+
 
     /**
      * Creates a panel that lets a user change their emailexit.png
@@ -147,7 +163,7 @@ class Profile extends JPanel {
      */
     private JPanel changeEmailPanel() {
         JPanel panel = new JPanel();
-        JLabel lblChangEmail = new JLabel("Enter your email");
+        JLabel lblChangEmail = new JLabel("Enter your e-mail");
 
         panel.setLayout(new BorderLayout());
 
@@ -173,7 +189,6 @@ class Profile extends JPanel {
             JLabel lblImage = new JLabel(imgIcon);
             pnlTop.add(lblImage);
         }
-
         return pnlTop;
     }
 
@@ -226,16 +241,16 @@ class Profile extends JPanel {
      */
     private class ValidateEmailListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            int res = JOptionPane.showConfirmDialog(null, changeEmailPanel(), "Change Email",
+            int res = JOptionPane.showConfirmDialog(null, changeEmailPanel(), "Change e-mail",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             while (!(Helper.checkEmailValidity(txfChangeMail.getText())) && res == JOptionPane.OK_OPTION) {
 
                 if (!Helper.checkEmailValidity(txfChangeMail.getText()))
-                    JOptionPane.showMessageDialog(null, "Email not valid!", "No Email",
+                    JOptionPane.showMessageDialog(null, "e-mail not valid!", "No e-mail",
                             JOptionPane.WARNING_MESSAGE);
 
-                res = JOptionPane.showConfirmDialog(null, changeEmailPanel(), "Email", JOptionPane.OK_CANCEL_OPTION,
+                res = JOptionPane.showConfirmDialog(null, changeEmailPanel(), "e-mail", JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE);
             }
 
@@ -255,7 +270,7 @@ class Profile extends JPanel {
             boolean passwordChanged = false;
             int res;
             do {
-                res = JOptionPane.showConfirmDialog(null, changePasswordPanel(), "Change pwfPassword!",
+                res = JOptionPane.showConfirmDialog(null, changePasswordPanel(), "Change Password",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
                 while (!(Helper.checkPasswordValidity(new String(pwfPassword.getPassword()))) && res == JOptionPane.OK_OPTION) {

@@ -78,8 +78,8 @@ class SearchShows extends JPanel {
 		TextPrompt textPrompt = new TextPrompt("Search for a show here!", txfSearchBar);
 		textPrompt.setFont(FontsAndColors.getFontItalic(16));
 		textPrompt.changeAlpha(0.5f);
-//		textPrompt.changeStyle(Font.BOLD + Font.PLAIN);
 	}
+
 
 	/**
 	 * Method for either displaying the results from a show search, or showing a "no results" warning
@@ -123,6 +123,8 @@ class SearchShows extends JPanel {
 	/**
 	 * Printing out the results from the search
 	 * @param arrStrSearchResults The search terms
+	 * Modified by Paul
+	 * @version 1.0.3
 	 */
 	private void updateSearchResults(String[][] arrStrSearchResults) {
 
@@ -130,26 +132,30 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setLayout(new GridBagLayout());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		String str = "";
 		for (String[] arrStr : arrStrSearchResults) {
+			if (arrStr[0] == null) { drawNoSearchResultPanel(); }
+
 			JPanel pnlMainCard = new JPanel();
 
 			pnlMainCard.setPreferredSize(new Dimension(800, 80));
 			pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
 			pnlMainCard.setLayout(new BorderLayout());
+			pnlMainCard.setBackground(FontsAndColors.getProjectBlue());
 
+			// Add button
 			JButton btnAdd = new JButton("Add");
-			btnAdd.setFont(FontsAndColors.getFontBold(14));
-			btnAdd.setPreferredSize(new Dimension(100, 200));
-
-			btnAdd.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE),
-					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
+			btnAdd.setFont(FontsAndColors.getFontBold(16));
+			btnAdd.setPreferredSize(new Dimension(150, 10));
+//			btnAdd.setBorder(BorderFactory.createRaisedBevelBorder());
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			pnlMainCard.add(btnAdd, BorderLayout.EAST);
-			pnlMainCard.add(new JLabel(arrStr[0] + "\t" + arrStr[1]), BorderLayout.CENTER);
 
+			//Result Label
+			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + arrStr[1]);
+			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
+
+			pnlMainCard.add(btnAdd, BorderLayout.EAST);
+			pnlMainCard.add(lblSearchResult, BorderLayout.CENTER);
 
 			gbc.gridx = 0;
 			gbc.weightx = 1;
@@ -157,15 +163,15 @@ class SearchShows extends JPanel {
 			pnlSearchResult.add(pnlMainCard, gbc);
 		}
 
-		JLabel lblTest = new JLabel(str);
-		pnlSearchResult.add(lblTest);
-
 		JPanel panel = new JPanel();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.weighty = 1;
 		pnlSearchResult.add(panel, gbc);
 	}
 
+
+
+	// TODO: 2021-02-12 Denna metod kanske ska fixa om vi har tid, känns klumpig att visa om man inte hittar i OMDB  - PM
 	/**
 	 * Draws a panel for creating a show when no results are found
 	 */
