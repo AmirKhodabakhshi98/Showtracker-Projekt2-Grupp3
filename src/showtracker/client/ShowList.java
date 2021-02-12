@@ -114,7 +114,7 @@ class ShowList extends JPanel {
             pnlShowList.add(new JPanel(), gbc);
 
         } else {
-            pnlShowList.add(new JLabel("   Ingen serie eller film tillagd ännu !!"));
+            pnlShowList.add(new JLabel("   Nothing in your list at the moment!"));
             pnlShowList.add(new JLabel("          "));
             ImageIcon imi = new ImageIcon("images/Showtrack.png");
             Image image = imi.getImage().getScaledInstance(150, 150, Image.SCALE_AREA_AVERAGING);
@@ -167,7 +167,7 @@ class ShowList extends JPanel {
                 if (show.getName().toLowerCase().contains(getText().toLowerCase()))
                     searchShows.add(show);
                 else
-                    JOptionPane.showMessageDialog(null, "Hittade tyvärr inget med detta namn");
+                    JOptionPane.showMessageDialog(null, "The search gave no result!");
 
             }
             pnlShowList.removeAll();
