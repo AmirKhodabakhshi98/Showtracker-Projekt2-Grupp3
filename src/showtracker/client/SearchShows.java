@@ -8,8 +8,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-import showtracker.Episode;
 import showtracker.Show;
+import showtracker.client.View.FontsAndColors;
 
 /**
  * 
@@ -34,7 +34,6 @@ class SearchShows extends JPanel {
 	private JPanel pnlMyShow = new JPanel();
 
 	private JScrollPane spnSearchResult = new JScrollPane();
-	private Font fontLabels = new Font("Monospaced", Font.BOLD, 14);
 
 	/**
 	 * Constructor that takes a ClientController instance
@@ -42,25 +41,30 @@ class SearchShows extends JPanel {
 	 */
 	SearchShows(ClientController clientController) {
 		this.clientController = clientController;
-//		pnlSearchResult.setBackground(Color.decode("#6A86AA"));  //Färgen på logan, testar lite bara. Kan tas bort.
 		setLayout(new BorderLayout());
+
+		//Search Bar
 		JPanel pnlSearchBar = new JPanel();
-		add(pnlSearchBar, BorderLayout.NORTH);
-		add(spnSearchResult, BorderLayout.CENTER);
-		pnlSearchBar.setBackground(Color.decode("#6A86AA"));
+		pnlSearchBar.setBackground(FontsAndColors.getProjectBlue());
 		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
+
+		add(pnlSearchBar, BorderLayout.NORTH);
+		add(spnSearchResult, BorderLayout.CENTER);
+
 		txfSearchBar.setPreferredSize(new Dimension(200,60));
+		txfSearchBar.setFont(FontsAndColors.getFontBold(16));
 		JButton btnSearchBar = new JButton("Search");
-		btnSearchBar.setFont(fontLabels);
+		btnSearchBar.setFont(FontsAndColors.getFontPlain(16));
 		btnSearchBar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JButton btnCreateShow = new JButton("Create Show");
-		btnCreateShow.setFont(fontLabels);
+		btnCreateShow.setFont(FontsAndColors.getFontPlain(16));
 		btnCreateShow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
 		btnSearchBar.addActionListener(e -> drawSearchResultPanel(txfSearchBar.getText()));
 		txfSearchBar.addKeyListener(new EnterListener());
+
 		pnlSearchBar.add(txfSearchBar);
 		pnlSearchBar.add(btnSearchBar);
 		pnlSearchBar.add(btnCreateShow);
@@ -71,10 +75,11 @@ class SearchShows extends JPanel {
 	 */
 	void draw() {
 		pnlSearchResult.removeAll();
-		TextPrompt textPrompt = new TextPrompt("Enter show", txfSearchBar);
+		TextPrompt textPrompt = new TextPrompt("Search for a show here!", txfSearchBar);
+		textPrompt.setFont(FontsAndColors.getFontItalic(16));
 		textPrompt.changeAlpha(0.5f);
-		textPrompt.changeStyle(Font.BOLD + Font.PLAIN);
 	}
+
 
 	/**
 	 * Method for either displaying the results from a show search, or showing a "no results" warning
@@ -118,6 +123,8 @@ class SearchShows extends JPanel {
 	/**
 	 * Printing out the results from the search
 	 * @param arrStrSearchResults The search terms
+	 * Modified by Paul
+	 * @version 1.0.3
 	 */
 	private void updateSearchResults(String[][] arrStrSearchResults) {
 
@@ -125,44 +132,36 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setLayout(new GridBagLayout());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		String str = "";
 		for (String[] arrStr : arrStrSearchResults) {
+			if (arrStr[0] == null) { drawNoSearchResultPanel(); }
+
 			JPanel pnlMainCard = new JPanel();
 
 			pnlMainCard.setPreferredSize(new Dimension(800, 80));
 			pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
 			pnlMainCard.setLayout(new BorderLayout());
+			pnlMainCard.setBackground(FontsAndColors.getProjectBlue());
 
+			// Add button
 			JButton btnAdd = new JButton("Add");
-			btnAdd.setFont(fontLabels);
-			btnAdd.setPreferredSize(new Dimension(100, 200));
-
-			btnAdd.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE),
-					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
+			btnAdd.setFont(FontsAndColors.getFontBold(16));
+			btnAdd.setPreferredSize(new Dimension(150, 10));
+//			btnAdd.setBorder(BorderFactory.createRaisedBevelBorder());
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			pnlMainCard.add(btnAdd, BorderLayout.EAST);
-			pnlMainCard.add(new JLabel(arrStr[0] + "\t" + arrStr[1]), BorderLayout.CENTER);
 
+			//Result Label
+			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + arrStr[1]);
+			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
+
+			pnlMainCard.add(btnAdd, BorderLayout.EAST);
+			pnlMainCard.add(lblSearchResult, BorderLayout.CENTER);
 
 			gbc.gridx = 0;
 			gbc.weightx = 1;
 
 			pnlSearchResult.add(pnlMainCard, gbc);
 		}
-/*
-		for (int i=0; i<arrStrSearchResults.length; i++){
-			for (int j=0; j<arrStrSearchResults[i].length; j++){
-
-
-			str+= arrStrSearchResults[i][j];
-			}
-		}
-
- */
-		JLabel lblTest = new JLabel(str);
-		pnlSearchResult.add(lblTest);
 
 		JPanel panel = new JPanel();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -170,6 +169,9 @@ class SearchShows extends JPanel {
 		pnlSearchResult.add(panel, gbc);
 	}
 
+
+
+	// TODO: 2021-02-12 Denna metod kanske ska fixa om vi har tid, känns klumpig att visa om man inte hittar i OMDB  - PM
 	/**
 	 * Draws a panel for creating a show when no results are found
 	 */
