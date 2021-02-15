@@ -62,6 +62,7 @@ class DatabaseReader {
         return jsoResponse;
     }
 
+
     /**
      * Gets the episodes of a show
      * @param id The show's ID
@@ -70,20 +71,17 @@ class DatabaseReader {
      */
     private JSONArray getEpisodesOfSeason(String id, int season) {
 
-        System.out.println("episode of show");
-
         HttpGet request  = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id +"&season=" + season);
         JSONObject joResponse = getJSONFromRequest(request);
         String strError = (String) joResponse.get("Error");
         if (strError == null) {
-            JSONArray jsaResponse = (JSONArray) joResponse.get("Episodes");
-//            System.out.print("getEpisodesOfSeason " + jsaResponse);
-            return jsaResponse;
+            return (JSONArray) joResponse.get("Episodes");
         } else {
-            System.out.println(strError);
+            System.err.println(strError);
             return null;
         }
     }
+
 
     /**
      * Generates a Show object from a show's name and ID
@@ -107,8 +105,8 @@ class DatabaseReader {
         System.out.println("Total seasons: " + seasons);
         JSONArray jsaEpisodes;
         for (int i =1; i < seasons + 1; i++) {
+
             jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
-            System.out.println(jsaEpisodes.get(i));
 
             for (Object obj : jsaEpisodes) {
                 JSONObject jso = (JSONObject) obj;
@@ -116,13 +114,13 @@ class DatabaseReader {
                 int intSeason = Integer.parseInt(String.valueOf(i));
                 int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
                 String strName = (String) jso.get("Title");
-                String strTvdbId = (String.valueOf(jso.get("imdbID")));
-                String strImdbId = (String.valueOf(jso.get("imdbID")));
+                String strTvdbId = (String.valueOf(jso.get("imdbID")));  // Remove?
+                String strIMDBid = (String.valueOf(jso.get("imdbID")));
                 String strDescription = ((String) jso.get("Plot"));
 
                 Episode episode = new Episode(show, intEpisode, intSeason);
-                episode.setTvdbId(strTvdbId);
-                episode.setImdbId(strImdbId);
+                episode.setTvdbId(strTvdbId); // Remove or update for use from OMDB?
+                episode.setIMDBid(strIMDBid);
                 episode.setName(strName);
                 episode.setDescription(strDescription);
                 show.addEpisode(episode);
@@ -148,11 +146,11 @@ class DatabaseReader {
 
     /**
      * Send in a request, and receives a JSON object in return
-     * @param request
+     * @param request Http request to API address
      * @return
      */
     private JSONObject getJSONFromRequest(HttpUriRequest request) {
-        System.out.println("CC 173 | get Json From Request: " + request);
+        System.out.println(getClass().getSimpleName() + "| Row 153 | getJsonFromRequest");
 
         JSONObject jsoResponse = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
