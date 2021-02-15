@@ -30,7 +30,7 @@ public class Episode implements Comparable<Episode>, Serializable {
         return tvdbId;
     }
 
-    public void setImdbId(String id) {
+    public void setIMDBid(String id) {
         imdbId = id;
     }
 

@@ -34,8 +34,6 @@ public class Controller {
 
 		if (new File("files/users.obj").exists())
 			users = (HashMap<String, String>) Helper.readFromFile("files/users.obj");
-		if (new File("files/token.obj").exists())
-			dbr.setToken((String) Helper.readFromFile("files/token.obj"));
 	}
 
 	/**
@@ -174,15 +172,6 @@ public class Controller {
 		gui.setActiveThreads(intThreads);
 	}
 
-	/**
-	 * Get authentication token from TheTVDB
-	 * @return
-	 */
-	String authenticateTheTVDB() {
-		String strToken = dbr.authenticateTheTVDB();
-		Helper.writeToFile(strToken, "files/token.obj");
-		return strToken;
-	}
 
 	/**
 	 * Main method to start the Server

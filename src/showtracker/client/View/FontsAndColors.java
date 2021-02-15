@@ -7,6 +7,7 @@ import java.awt.*;
 /**
  * This class is created to assist in developing GUI components
  * the class holds methods for used fonts, colors and images in the project.
+ * Adda
  * @author Paul Moustakas
  * @version 1.0.0
  */
