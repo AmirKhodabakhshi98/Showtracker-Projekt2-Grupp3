@@ -57,22 +57,22 @@ class GUI {
     /**
      * Opens a panel that lets the user get an authentication token from TheTVDB
      */
-    private void authenticateTheTVDB() {
-        String token = controller.authenticateTheTVDB();
-        JTextArea textArea = new JTextArea(8, 50);
-        textArea.setText(token);
-        textArea.setLineWrap(true);
-        JLabel label = new JLabel("Go to https://api.thetvdb.com/swagger#/ and enter the following token:");
-        label.setPreferredSize(new Dimension(100, 50));
-        JButton button = new JButton("Open browser");
-        button.addActionListener(e -> openBrowser());
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(label, BorderLayout.NORTH);
-        panel.add(button, BorderLayout.SOUTH);
-        panel.add(textArea, BorderLayout.CENTER);
-        JOptionPane.showMessageDialog(null, panel);
-    }
+//    private void authenticateTheTVDB() {
+//        String token = controller.authenticateTheTVDB();
+//        JTextArea textArea = new JTextArea(8, 50);
+//        textArea.setText(token);
+//        textArea.setLineWrap(true);
+//        JLabel label = new JLabel("Go to https://api.thetvdb.com/swagger#/ and enter the following token:");
+//        label.setPreferredSize(new Dimension(100, 50));
+//        JButton button = new JButton("Open browser");
+//        button.addActionListener(e -> openBrowser());
+//        JPanel panel = new JPanel();
+//        panel.setLayout(new BorderLayout());
+//        panel.add(label, BorderLayout.NORTH);
+//        panel.add(button, BorderLayout.SOUTH);
+//        panel.add(textArea, BorderLayout.CENTER);
+//        JOptionPane.showMessageDialog(null, panel);
+//    }
 
     /**
      * Method for opening a browser to submit a token
@@ -99,7 +99,7 @@ class GUI {
         pnlMain.add(lblActiveThreads);
         btnStop.setEnabled(false);
         JButton bnAuthenticate = new JButton("Authenticate");
-        bnAuthenticate.addActionListener(e -> authenticateTheTVDB());
+//        bnAuthenticate.addActionListener(e -> authenticateTheTVDB());
         pnlMain.add(bnAuthenticate);
         frame.add(pnlMain);
         frame.setVisible(true);

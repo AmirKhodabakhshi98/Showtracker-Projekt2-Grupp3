@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class Show implements Serializable {
     private static final long serialVersionUID = -7641780883231752094L;
-    private String strTvdbId;
+//    private String strTvdbId;
     private String strImdbId;
     private String strName;
     private String strDescription;
@@ -20,13 +20,13 @@ public class Show implements Serializable {
         setLastWatched();
     }
 
-    public void setTvdbId(String strTvdbId) {
-        this.strTvdbId = strTvdbId;
-    }
-
-    public String getTvdbId() {
-        return strTvdbId;
-    }
+//    public void setTvdbId(String strTvdbId) {  //Unnecessary code ATM, leave it util next meeting.
+//        this.strTvdbId = strTvdbId;
+//    }
+//
+//    public String getTvdbId() {
+//        return strTvdbId;
+//    }
 
     public void setImdbId(String strImdbId) {
         this.strImdbId = strImdbId;
