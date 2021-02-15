@@ -145,7 +145,7 @@ class DatabaseReader {
         return httpGet;
     }
 
-    
+
     /**
      * Send in a request, and receives a JSON object in return
      * @param request
