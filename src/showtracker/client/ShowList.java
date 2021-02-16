@@ -1,24 +1,22 @@
 package showtracker.client;
 
-import java.awt.*;
-import java.util.ArrayList;
+import showtracker.Helper;
+import showtracker.Show;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import showtracker.Helper;
-import showtracker.Show;
+import java.awt.*;
+import java.util.ArrayList;
 
 /**
- * 
  * @author Basir Ramazani
- * Changes made by Filip & Adam 
- * 
+ * Changes made by Filip & Adam
+ * <p>
  * A panel for user show list
- *
+ * <p>
  * updated 2021-02-09
  * @author Paul Moustakas & Andreas von Uthmann
  * @version 1.0.1
@@ -32,6 +30,7 @@ class ShowList extends JPanel {
 
     /**
      * Constructor that takes a ClientController instance
+     *
      * @param clientController
      */
     ShowList(ClientController clientController) {
@@ -52,10 +51,9 @@ class ShowList extends JPanel {
 
     /**
      * Refereshes the view with a selected amount of shows, from the search list
+     *
      * @param shows The shows to show
-     *
      * @author Paul Moustakas, Andreas Von Uthmann:  Updated GUI components, size, max, min, fonts etc. Removed HTLM and replaced with pure Java for Labels.
-     *
      */
     private void draw(ArrayList<Show> shows) {
         shows.sort(new Helper.NameComparator());
@@ -122,7 +120,6 @@ class ShowList extends JPanel {
             pnlShowList.add(lbLogo);
 
 
-
         }
         scrollPane.setViewportView(pnlShowList);
         scrollPane.setLayout(new ScrollPaneLayout());
@@ -136,9 +133,9 @@ class ShowList extends JPanel {
 
         MyDocumentListener() {
             javax.swing.text.Document doc = this.getDocument();
-            this.setPreferredSize(new Dimension(700,30));
+            this.setPreferredSize(new Dimension(700, 30));
             TextPrompt tp7 = new TextPrompt("Search Yor List", this);
-            tp7.setForeground( Color.GRAY );
+            tp7.setForeground(Color.GRAY);
             tp7.changeAlpha(0.5f);
             tp7.changeStyle(Font.BOLD + Font.CENTER_BASELINE);
             doc.addDocumentListener(this);
@@ -164,11 +161,11 @@ class ShowList extends JPanel {
         private void searchShow() {
             ArrayList<Show> searchShows = new ArrayList<>();
             for (Show show : clientController.getUser().getShows()) {
-                if (show.getName().toLowerCase().contains(getText().toLowerCase()))
+                if (show.getName().toLowerCase().contains(getText().toLowerCase())) {
                     searchShows.add(show);
-                else
+                } else {
                     JOptionPane.showMessageDialog(null, "The search gave no result!");
-
+                }
             }
             pnlShowList.removeAll();
             pnlShowList.setBackground(Color.decode("#6A86AA"));
