@@ -55,6 +55,7 @@ public abstract class FontsAndColors {
         return Color.decode(("#6A86AA"));
     }
 
+    public static Color getLoginGray (){return  Color.decode(("#4E4E4E"));}
 
 
     /**

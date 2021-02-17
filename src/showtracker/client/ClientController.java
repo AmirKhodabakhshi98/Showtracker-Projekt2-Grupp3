@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import showtracker.Show;
 import showtracker.User;
+import showtracker.client.View.FontsAndColors;
 import showtracker.client.View.Home;
 
 /**
@@ -41,7 +42,7 @@ public class ClientController {
         pnlLogin = new Login(this);
 
         pnlCenter.setLayout(new CardLayout());
-        pnlCenter.setBackground(Color.decode("#4E4E4E"));
+        pnlCenter.setBackground(FontsAndColors.getLoginGray());
 
         pnlBottom = new JPanel();
         pnlBottom.setLayout(new GridLayout(1, 5, 1, 1));

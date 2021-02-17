@@ -3,6 +3,7 @@ package showtracker.client;
 import showtracker.Episode;
 import showtracker.Helper;
 import showtracker.Show;
+import showtracker.client.View.FontsAndColors;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -41,14 +42,10 @@ class ShowInfo extends JPanel {
         scrollPane.setLayout(new ScrollPaneLayout());
         scrollPane.setBackground(Color.decode("#6A86AA"));
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-//        scrollPane.getViewport().removeAll();
-//        Box box = Box.createVerticalBox();
-//        scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));
 
         pnlShowInfo.setLayout(new BorderLayout());
         pnlShowInfo.setBackground(Color.decode("#6A86AA"));
         pnlShowInfo.add(Box.createHorizontalGlue());
-//		pnlMain.add(box);
 
         JLabel lblHeader = new JLabel(show.getName());
 
@@ -93,38 +90,38 @@ class ShowInfo extends JPanel {
                 JButton btnSeason = new JButton("Show Season");
 
                 JPanel panel = new JPanel(new FlowLayout());
-//            JLabel label = new JLabel("Card Label");
+                panel.setBackground(FontsAndColors.getProjectBlue());
 			    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-
-                JPanel pnlSouth = new JPanel(new FlowLayout());
-			    pnlSouth.add(btnSeason);
                 JButton button;
                 JLabel seasonlbl;
 
+
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800,80));
+                pnlMain.setBackground(FontsAndColors.getProjectBlue());
                 Border cardBorder = BorderFactory.createRaisedBevelBorder();
                 pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
-                pnlMain.add(panel, BorderLayout.CENTER);
-                pnlMain.add(pnlSouth, BorderLayout.SOUTH);
-                pnlMain.setBackground(Color.decode("#6A86AA"));
-                if (listener.getSeason() == 0)
+
+                pnlMain.setBackground(FontsAndColors.getProjectBlue());
+                if (listener.getSeason() == 0) {
                     button = new JButton("Specials");
-                else
-                    button = new JButton("Season " + Helper.df.format(listener.getSeason()));
-                seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
+                }
+                else {
+                    seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
 
-                seasonlbl.setMinimumSize(new Dimension(100, 30));
-                seasonlbl.setMaximumSize(new Dimension(100, 30));
-                btnSeason.addActionListener(listener);
-                btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                panel.add(seasonlbl);
-                panel.add(btnSeason);
-                gbc.gridx = 0;
-                gbc.weightx = 1;
-                pnlShowInfo.add(pnlMain, gbc);
-
+                    seasonlbl.setMinimumSize(new Dimension(100, 30));
+                    seasonlbl.setMaximumSize(new Dimension(100, 30));
+                    seasonlbl.setFont(new Font("Monospaced", Font.PLAIN, 17));
+                    btnSeason.addActionListener(listener);
+                    btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    panel.add(seasonlbl, BorderLayout.CENTER);
+                    panel.add(btnSeason, BorderLayout.CENTER);
+                    pnlMain.add(panel, BorderLayout.CENTER);
+                    gbc.gridx = 0;
+                    gbc.weightx = 1;
+                    pnlShowInfo.add(pnlMain, gbc);
+                }
 
                 if (listener.getOpen())
                     for (Episode episode : show.getEpisodes())
@@ -147,12 +144,13 @@ class ShowInfo extends JPanel {
                             checkBox.setSelected(episode.isWatched());
                             checkBox.addActionListener(new EpisodeListener(episode));
                             episodePanel.add(checkBox, BorderLayout.EAST);
+                            episodePanel.setBackground(FontsAndColors.getProjectBlue());
                             pnlShowInfo.add(episodePanel,gbc);
                         }
                 gbc.anchor = GridBagConstraints.NORTHWEST;
                 gbc.weighty = 1;
                 pnlShowInfo.add(new JPanel(), gbc);
-//            pnlMain.add(panel);
+                pnlShowInfo.setBackground(FontsAndColors.getProjectBlue());
             }
 
         revalidate();
