@@ -109,7 +109,7 @@ class DatabaseReader {
 
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&t=Friends");
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
-    //    System.out.println(jsoResponse);
+        System.out.println(jsoResponse.toString());
         System.out.println(jsoResponse.get("Title"));
         System.out.println(jsoResponse.get("Year"));
 
@@ -118,7 +118,7 @@ class DatabaseReader {
     public static void main(String[] args) {
         String [][] arr;
         DatabaseReader dbr = new DatabaseReader();
-        //dbr.test();
+        dbr.test();
         dbr.searchOMDBdbShows("License to kill");
 
     }
