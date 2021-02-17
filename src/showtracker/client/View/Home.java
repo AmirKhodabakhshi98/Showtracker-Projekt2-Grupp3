@@ -27,6 +27,7 @@ public class Home extends JPanel {
         add(scrollPane);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setPreferredSize(new Dimension(960, 400));
+        scrollPane.setBackground(Color.decode("#6A86AA"));
     }
 
     /**
@@ -39,6 +40,7 @@ public class Home extends JPanel {
         scrollPane.getViewport().removeAll();
         Box box = Box.createVerticalBox();
         clientController.getUser().getShows().sort(new Helper.LastWatchedComparator());
+        scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));
 
         int episodeCounter = 0;
         for (Show show : clientController.getUser().getShows()) {
@@ -55,26 +57,38 @@ public class Home extends JPanel {
                 button.setFont(FontsAndColors.getFontBold(14));
                 button.setFont(FontsAndColors.getFontPlain(14));
                 button.addActionListener(new EpisodeListener(currentEpisode));
+                button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                button.setPreferredSize(new Dimension(120, 10));
 
-                JLabel label = new JLabel(String.format("<html><div style=\"width:150px;\">%s<br>Season %s, episode %s%s</div></html>",
-                        show.getName(),
+                JLabel label = new JLabel(String.format("<html><div style=\"width:450px;\">%s<br>Season %s, episode %s%s</div></html>",
+                        String.format(show.getName()),
                         Helper.df.format(currentEpisode.getSeasonNumber()),
                         Helper.df.format(currentEpisode.getEpisodeNumber()),
                         currentEpisode.getName() != null && !currentEpisode.getName().equals("") ? ":<br>" + currentEpisode.getName() : ""));
 
-                label.setFont(new Font("Monospaced", Font.PLAIN, 14));
+                label.setFont(new Font("Monospaced", Font.PLAIN, 16));
                 panel.add(button, BorderLayout.EAST);
                 panel.add(label, BorderLayout.CENTER);
                 panel.setMaximumSize(new Dimension(960, 80));
+                panel.setBackground(Color.decode("#6A86AA"));
                 box.add(panel);
             }
         }
 
-        if (episodeCounter == 0)
-            box.add(new JLabel("<html><p style=\"width:200px; align:center;\">\nNo new episodes to display. Either search for new shows, or go to your list and set some episodes to \"not watched\".</p></html>"));
+        JLabel emptyList = new JLabel("<html><br><p style=\"width:500px; align:center;\">\nNo new episodes to display. Either search for new shows, or go to your list and set some episodes to \"not watched\".</p></html>");
+        if (episodeCounter == 0) {
+            box.add(emptyList);
+            emptyList.setFont(new Font("Monospaced", Font.PLAIN, 16));
+            ImageIcon imi = new ImageIcon("images/Showtrack.png");
+            Image image = imi.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            JLabel lbLogo = new JLabel(new ImageIcon(image));
+            box.add(lbLogo);
+        }
+
         scrollPane.setViewportView(box);
         scrollPane.revalidate();
         scrollPane.repaint();
+        scrollPane.setBackground(Color.decode("#6A86AA"));
     }
 
 
