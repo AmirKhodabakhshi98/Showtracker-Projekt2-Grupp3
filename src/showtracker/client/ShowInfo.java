@@ -5,6 +5,7 @@ import showtracker.Helper;
 import showtracker.Show;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Show info panel
  */
 class ShowInfo extends JPanel {
-    private JPanel pnlMain = new JPanel();
+    private JPanel pnlShowInfo = new JPanel();
     private ArrayList<SeasonListener> listeners = new ArrayList<>();
     private Show show;
 
@@ -36,16 +37,16 @@ class ShowInfo extends JPanel {
      */
     private void initiatePanels() {
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setViewportView(pnlMain);
+        scrollPane.setViewportView(pnlShowInfo);
         scrollPane.setLayout(new ScrollPaneLayout());
         scrollPane.setBackground(Color.decode("#6A86AA"));
 //        scrollPane.getViewport().removeAll();
 //        Box box = Box.createVerticalBox();
 //        scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));
 
-        pnlMain.setLayout(new BoxLayout(pnlMain, BoxLayout.Y_AXIS));
-        pnlMain.setBackground(Color.decode("#6A86AA"));
-        pnlMain.add(Box.createHorizontalGlue());
+        pnlShowInfo.setLayout(new BorderLayout());
+        pnlShowInfo.setBackground(Color.decode("#6A86AA"));
+        pnlShowInfo.add(Box.createHorizontalGlue());
 //		pnlMain.add(box);
 
         JLabel lblHeader = new JLabel(show.getName());
@@ -59,7 +60,7 @@ class ShowInfo extends JPanel {
         btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null,
-                "<html><body><p style=\"width: 100px;\">" +
+                "<html><body><p style=\"width: 200px;\">" +
                         show.getDescription() +
                         "</p></body></html>", "Show info", JOptionPane.PLAIN_MESSAGE));
 
@@ -82,128 +83,80 @@ class ShowInfo extends JPanel {
      * Refreshing the view
      */
     private void draw() {
-        pnlMain.removeAll();
+        pnlShowInfo.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
-        pnlMain.setLayout(new GridBagLayout());
+        pnlShowInfo.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        for (SeasonListener listener : listeners) {
-            JButton btnSeason = new JButton("Show Season");
+            for (SeasonListener listener : listeners) {
 
-            JPanel panel = new JPanel(new FlowLayout());
+                JButton btnSeason = new JButton("Show Season");
+
+                JPanel panel = new JPanel(new FlowLayout());
 //            JLabel label = new JLabel("Card Label");
-//			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+			    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-//            label.setText(show.getName());
 
-//            panel.add(Box.createVerticalBox());
-//            panel.setBackground(Color.decode("#6A86AA"));
+                JPanel pnlSouth = new JPanel(new FlowLayout());
+			    pnlSouth.add(btnSeason);
+                JButton button;
+                JLabel seasonlbl;
 
-//			panel.add(label);
-//			panel.add(btnSeason);
+                JPanel pnlMain = new JPanel(new BorderLayout());
+                pnlMain.setPreferredSize(new Dimension(800,80));
+                Border cardBorder = BorderFactory.createRaisedBevelBorder();
+                pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
+                pnlMain.add(panel, BorderLayout.CENTER);
+                pnlMain.add(pnlSouth, BorderLayout.SOUTH);
+                pnlMain.setBackground(Color.decode("#6A86AA"));
+                if (listener.getSeason() == 0)
+                    button = new JButton("Specials");
+                else
+                    button = new JButton("Season " + Helper.df.format(listener.getSeason()));
+                seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
 
-            JPanel pnlSouth = new JPanel(new FlowLayout());
-//			pnlSouth.add(btnSeason);
-            JButton button;
-            JLabel seasonlbl;
-            if (listener.getSeason() == 0)
-                button = new JButton("Specials");
-            else
-                button = new JButton("Season " + Helper.df.format(listener.getSeason()));
-            seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
+                seasonlbl.setMinimumSize(new Dimension(100, 30));
+                seasonlbl.setMaximumSize(new Dimension(100, 30));
+                btnSeason.addActionListener(listener);
+                btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                panel.add(seasonlbl);
+                panel.add(btnSeason);
+                gbc.gridx = 0;
+                gbc.weightx = 1;
+                pnlShowInfo.add(pnlMain, gbc);
 
-            seasonlbl.setMinimumSize(new Dimension(100, 30));
-            seasonlbl.setMaximumSize(new Dimension(100, 30));
-            btnSeason.addActionListener(listener);
-            btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            panel.add(seasonlbl);
-            panel.add(btnSeason);
 
-            if (listener.getOpen())
-                for (Episode episode : show.getEpisodes())
-                    if (episode.getSeasonNumber() == listener.getSeason()) {
-                        JButton infoButton = new JButton("Info - Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
-                        infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        infoButton.addActionListener(e -> {
-                            JOptionPane.showMessageDialog(null,
-                                    "<html><body><p style=\"width: 200px;\">" +
-                                            show.getEpisode(episode.getSeasonNumber(),
-                                                    episode.getEpisodeNumber()).getDescription() +
-                                            "</p></body></html>", episode.getName(), JOptionPane.INFORMATION_MESSAGE);
-                        });
-                        panel.add(infoButton);
-                        JCheckBox checkBox = new JCheckBox();
-                        checkBox.setSelected(episode.isWatched());
-                        checkBox.addActionListener(new EpisodeListener(episode));
-                        panel.add(checkBox);
-                    }
-            pnlMain.add(panel);
-        }
+                if (listener.getOpen())
+                    for (Episode episode : show.getEpisodes())
+                        if (episode.getSeasonNumber() == listener.getSeason()) {
+                            JPanel episodePanel = new JPanel(new BorderLayout());
+                            Border Border = BorderFactory.createRaisedBevelBorder();
+                            episodePanel.setBorder(Border); // new LineBorder(Color.DARK_GRAY)
+                            episodePanel.setBackground(Color.decode("#6A86AA"));
+                            JButton infoButton = new JButton("Info - Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
+                            infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                            infoButton.addActionListener(e -> {
+                                JOptionPane.showMessageDialog(null,
+                                        "<html><body><p style=\"width: 200px;\">" +
+                                                show.getEpisode(episode.getSeasonNumber(),
+                                                        episode.getEpisodeNumber()).getDescription() +
+                                                "</p></body></html>", episode.getName(), JOptionPane.INFORMATION_MESSAGE);
+                            });
+                            episodePanel.add(infoButton, BorderLayout.CENTER);
+                            JCheckBox checkBox = new JCheckBox();
+                            checkBox.setSelected(episode.isWatched());
+                            checkBox.addActionListener(new EpisodeListener(episode));
+                            episodePanel.add(checkBox, BorderLayout.EAST);
+                            pnlShowInfo.add(episodePanel,gbc);
+                        }
+                gbc.anchor = GridBagConstraints.NORTHWEST;
+                gbc.weighty = 1;
+                pnlShowInfo.add(new JPanel(), gbc);
+//            pnlMain.add(panel);
+            }
+
         revalidate();
         repaint();
     }
-
-
-    private void drawTest(ArrayList<SeasonListener> listeners) {
-        pnlMain.removeAll();
-        GridBagConstraints gbc = new GridBagConstraints();
-        pnlMain.setLayout(new GridBagLayout());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        for (SeasonListener listener : listeners) {
-            JButton btnSeason = new JButton("Show Season");
-
-            JPanel panel = new JPanel(new FlowLayout());
-//            JLabel label = new JLabel("Card Label");
-//			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-
-//            label.setText(show.getName());
-
-//            panel.add(Box.createVerticalBox());
-//            panel.setBackground(Color.decode("#6A86AA"));
-
-//			panel.add(label);
-//			panel.add(btnSeason);
-
-            JPanel pnlSouth = new JPanel(new FlowLayout());
-//			pnlSouth.add(btnSeason);
-            JButton button;
-            JLabel seasonlbl;
-            if (listener.getSeason() == 0)
-                button = new JButton("Specials");
-            else
-                button = new JButton("Season " + Helper.df.format(listener.getSeason()));
-            seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
-
-            seasonlbl.setMinimumSize(new Dimension(100, 30));
-            seasonlbl.setMaximumSize(new Dimension(100, 30));
-            btnSeason.addActionListener(listener);
-            btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            panel.add(seasonlbl);
-            panel.add(btnSeason);
-
-            if (listener.getOpen())
-                for (Episode episode : show.getEpisodes())
-                    if (episode.getSeasonNumber() == listener.getSeason()) {
-                        JButton infoButton = new JButton("Info - Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
-                        infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                        infoButton.addActionListener(e -> {
-                            JOptionPane.showMessageDialog(null,
-                                    "<html><body><p style=\"width: 200px;\">" +
-                                            show.getEpisode(episode.getSeasonNumber(),
-                                                    episode.getEpisodeNumber()).getDescription() +
-                                            "</p></body></html>", episode.getName(), JOptionPane.INFORMATION_MESSAGE);
-                        });
-                        panel.add(infoButton);
-                        JCheckBox checkBox = new JCheckBox();
-                        checkBox.setSelected(episode.isWatched());
-                        checkBox.addActionListener(new EpisodeListener(episode));
-                        panel.add(checkBox);
-                    }
-            pnlMain.add(panel);
-        }
-        revalidate();
-        repaint();
-    }
-
 
     /**
      * Inner class for handling the opening and closing of each season
