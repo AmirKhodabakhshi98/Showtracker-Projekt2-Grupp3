@@ -49,8 +49,10 @@ class SearchShows extends JPanel {
 		pnlSearchBar.setSize(350, 200);
 		pnlSearchBar.setLayout(new GridLayout(1,3));
 
+		spnSearchResult.getVerticalScrollBar().setUnitIncrement(16);
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
+
 
 		txfSearchBar.setPreferredSize(new Dimension(200,60));
 		txfSearchBar.setFont(FontsAndColors.getFontBold(16));

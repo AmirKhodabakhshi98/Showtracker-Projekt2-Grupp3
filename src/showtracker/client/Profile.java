@@ -127,8 +127,8 @@ class Profile extends JPanel {
      * Also removed the initiation and joined with the other panels.
      */
     private JPanel changePanel() {
-        JPanel pnlWestChange = new JPanel(new BorderLayout());
-        pnlWestChange.setPreferredSize(new Dimension(160, 400));
+        JPanel pnlEastChange = new JPanel(new BorderLayout());
+        pnlEastChange.setPreferredSize(new Dimension(200, 400));
 
         JPanel panel = new JPanel();
         JPanel panelNorthGlue = new JPanel();
@@ -147,13 +147,13 @@ class Profile extends JPanel {
         panel.add(btnChangeEmail);
         panel.add(btnChangePass);
 
-        pnlWestChange.add(panelNorthGlue, BorderLayout.NORTH);
-        pnlWestChange.add(panel, BorderLayout.CENTER);
+        pnlEastChange.add(panelNorthGlue, BorderLayout.NORTH);
+        pnlEastChange.add(panel, BorderLayout.CENTER);
 
         btnChangeEmail.addActionListener(new ValidateEmailListener());
         btnChangePass.addActionListener(new ValidatePasswordListener());
 
-        return pnlWestChange;
+        return pnlEastChange;
     }
 
 

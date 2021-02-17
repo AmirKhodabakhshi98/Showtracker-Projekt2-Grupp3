@@ -40,6 +40,7 @@ class ShowInfo extends JPanel {
         scrollPane.setViewportView(pnlShowInfo);
         scrollPane.setLayout(new ScrollPaneLayout());
         scrollPane.setBackground(Color.decode("#6A86AA"));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 //        scrollPane.getViewport().removeAll();
 //        Box box = Box.createVerticalBox();
 //        scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));

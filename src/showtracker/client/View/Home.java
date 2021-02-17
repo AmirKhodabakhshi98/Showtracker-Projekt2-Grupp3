@@ -38,6 +38,7 @@ public class Home extends JPanel {
     public void draw() {
 
         scrollPane.getViewport().removeAll();
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         Box box = Box.createVerticalBox();
         clientController.getUser().getShows().sort(new Helper.LastWatchedComparator());
         scrollPane.getViewport().setBackground(Color.decode("#6A86AA"));

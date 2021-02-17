@@ -39,6 +39,7 @@ class ShowList extends JPanel {
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
     }
 

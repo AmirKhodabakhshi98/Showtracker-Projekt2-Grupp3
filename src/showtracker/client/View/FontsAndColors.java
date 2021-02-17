@@ -56,6 +56,7 @@ public abstract class FontsAndColors {
     }
 
 
+
     /**
      * Project new Logo Image
      * @return Project logo - size of choice
