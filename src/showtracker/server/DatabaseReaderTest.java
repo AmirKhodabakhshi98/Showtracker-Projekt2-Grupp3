@@ -27,37 +27,35 @@ class DatabaseReaderTest {
     }
 
     @org.junit.jupiter.api.Test
-    void searchOMDBdbShows() {
+    void searchOMDBdbShowsOneWord() {
         String[][] array = new String[1][2];
         array[0][0] = "Friends";
         array[0][1] = "tt0108778";
         DatabaseReader databaseReader = new DatabaseReader();
-  //      databaseReader.searchOMDBdbShows("Friends");
         assertArrayEquals (array,databaseReader.searchOMDBdbShows("Friends"));
 
     }
+
     @org.junit.jupiter.api.Test
-    void searchOMDBdbShowsNull() {
+    void searchOMDBdbShowsAndSign() {
+        String[][] array = new String[1][2];
+        array[0][0] = "Love & Anarchy";
+        array[0][1] = "tt10888876";
+        DatabaseReader databaseReader = new DatabaseReader();
+        assertArrayEquals (array,databaseReader.searchOMDBdbShows("Love & Anarchy"));
+    }
+
+
+
+    @org.junit.jupiter.api.Test
+    void searchOMDBdbShowsEmptyString() {
         String[][] array = new String[1][2];
         array[0][0] = null;
         array[0][1] = null;
         DatabaseReader databaseReader = new DatabaseReader();
-        //      databaseReader.searchOMDBdbShows("Friends");
-//        assertArrayEquals (array,databaseReader.searchOMDBdbShows("Friends"));
         assertArrayEquals(array,databaseReader.searchOMDBdbShows(""));
     }
 
-    //Testar för serie med "totalseason: N/A"
-    @org.junit.jupiter.api.Test
-    void searchOMDBdbShowsTotalSeasonNA() {
-        String[][] array = new String[1][2];
-        array[0][0] = "Blacklist";
-        array[0][1] = "tt9892494";
-        DatabaseReader databaseReader = new DatabaseReader();
-        //      databaseReader.searchOMDBdbShows("Friends");
-//        assertArrayEquals (array,databaseReader.searchOMDBdbShows("Friends"));
-        assertArrayEquals(array,databaseReader.searchOMDBdbShows("Blacklist"));
-    }
 
 
 
