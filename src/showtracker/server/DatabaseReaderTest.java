@@ -15,18 +15,6 @@ class DatabaseReaderTest {
     }
 
     @org.junit.jupiter.api.Test
-    void authenticateTheTVDB() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void setToken() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void refreshToken() {
-    }
-
-    @org.junit.jupiter.api.Test
     void searchOMDBdbShowsOneWord() {
         String[][] array = new String[1][2];
         array[0][0] = "Friends";
@@ -56,12 +44,6 @@ class DatabaseReaderTest {
         assertArrayEquals(array,databaseReader.searchOMDBdbShows(""));
     }
 
-
-
-
-    @org.junit.jupiter.api.Test
-    void main() {
-    }
 
     @org.junit.jupiter.api.Test
     void searchTheTVDBShow() {
