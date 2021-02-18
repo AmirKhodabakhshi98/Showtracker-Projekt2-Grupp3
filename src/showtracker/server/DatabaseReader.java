@@ -39,10 +39,13 @@ class DatabaseReader {
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=" + apicode + "&t=" + stbSearchTerms);
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
 
-        String [][] show = new String[1][2];
+        String [][] show = new String[1][4];
 
         show [0][0] = (String) jsoResponse.get("Title");
         show [0][1] = (String) jsoResponse.get("imdbID");
+        show [0][2] = (String) jsoResponse.get("Poster");
+        show [0][3] = (String) jsoResponse.get("imdbRating");
+
         
         return show;
     }

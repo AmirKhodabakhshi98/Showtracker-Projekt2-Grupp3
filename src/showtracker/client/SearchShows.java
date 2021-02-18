@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import showtracker.Show;
@@ -50,6 +53,7 @@ class SearchShows extends JPanel {
 		pnlSearchBar.setLayout(new GridLayout(1,3));
 
 		spnSearchResult.getVerticalScrollBar().setUnitIncrement(16);
+		pnlSearchResult.setBackground(FontsAndColors.getProjectBlue());
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
 
@@ -144,6 +148,20 @@ class SearchShows extends JPanel {
 			pnlMainCard.setLayout(new BorderLayout());
 			pnlMainCard.setBackground(FontsAndColors.getProjectBlue());
 
+			Image image = null;
+			JPanel pnlPoster = new JPanel();
+			pnlPoster.setPreferredSize(new Dimension(60,60));
+			try {
+
+				URL url = new URL(arrStr[2]);
+				image = ImageIO.read(url);
+				JLabel lblImage = new JLabel(new ImageIcon(image));
+				lblImage.setPreferredSize(new Dimension(55,55));
+				pnlPoster.add(lblImage);
+			}catch (Exception e){
+				System.err.println();
+			}
+
 			// Add button
 			JButton btnAdd = new JButton("Add");
 			btnAdd.setFont(FontsAndColors.getFontBold(16));
@@ -153,9 +171,10 @@ class SearchShows extends JPanel {
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 			//Result Label
-			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + arrStr[1]);
+			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + arrStr[3]);
 			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
 
+			pnlMainCard.add(pnlPoster, BorderLayout.WEST);
 			pnlMainCard.add(btnAdd, BorderLayout.EAST);
 			pnlMainCard.add(lblSearchResult, BorderLayout.CENTER);
 
@@ -163,12 +182,16 @@ class SearchShows extends JPanel {
 			gbc.weightx = 1;
 
 			pnlSearchResult.add(pnlMainCard, gbc);
+			pnlSearchResult.setBackground(FontsAndColors.getProjectBlue());
+
 		}
 
 		JPanel panel = new JPanel();
+		panel.setBackground(FontsAndColors.getProjectBlue());
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.weighty = 1;
 		pnlSearchResult.add(panel, gbc);
+
 	}
 
 
