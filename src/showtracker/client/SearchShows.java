@@ -171,7 +171,7 @@ class SearchShows extends JPanel {
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 			//Result Label
-			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + arrStr[3]);
+			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
 			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
 
 			pnlMainCard.add(pnlPoster, BorderLayout.WEST);

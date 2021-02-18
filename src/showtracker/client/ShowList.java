@@ -164,9 +164,11 @@ class ShowList extends JPanel {
             for (Show show : clientController.getUser().getShows()) {
                 if (show.getName().toLowerCase().contains(getText().toLowerCase())) {
                     searchShows.add(show);
-                } else {
-                    JOptionPane.showMessageDialog(null, "The search gave no result!");
                 }
+//                else {
+//                    JOptionPane.showMessageDialog(null, "The search gave no result!");
+//                }
+
             }
             pnlShowList.removeAll();
             pnlShowList.setBackground(Color.decode("#6A86AA"));
