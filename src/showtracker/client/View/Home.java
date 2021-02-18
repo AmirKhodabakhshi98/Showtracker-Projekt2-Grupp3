@@ -54,12 +54,23 @@ public class Home extends JPanel {
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(BorderFactory.createBevelBorder(1));
 
-                JButton button = new JButton("I've seen it!");
-                button.setFont(FontsAndColors.getFontBold(14));
+
+                // Add button
+                ImageIcon icon = new ImageIcon("images/binoculars.png");
+                Image imageAdd = icon.getImage();
+                Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(newAddImage);
+
+                JButton button = new JButton();
+                button.setText("\nI've seen it!");
+                button.setIcon(icon);
+                button.setBorderPainted(false);
                 button.setFont(FontsAndColors.getFontPlain(14));
+
+
                 button.addActionListener(new EpisodeListener(currentEpisode));
                 button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                button.setPreferredSize(new Dimension(120, 10));
+                button.setPreferredSize(new Dimension(200, 80));
 
                 JLabel label = new JLabel(String.format("<html><div style=\"width:450px;\">%s<br>Season %s, episode %s%s</div></html>",
                         String.format(show.getName()),
