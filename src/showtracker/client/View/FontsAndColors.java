@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * This class is created to assist in developing GUI components
  * the class holds methods for used fonts, colors and images in the project.
- * Adda
+ * Please add more if you like!
  * @author Paul Moustakas
  * @version 1.0.0
  */
@@ -20,6 +20,7 @@ public abstract class FontsAndColors {
     public static Font getFontPlain(int size) {
         return new Font("Monospaced", Font.PLAIN, size);
     }
+
 
     /**
      * Body text Bold
@@ -67,10 +68,6 @@ public abstract class FontsAndColors {
         Image image = imi.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return image;
     }
-
-
-    //TEST COLOR WHITE
-    //		pnlSearchResult.setBackground(Color.decode("#F8F7ED"));
 
 
 }

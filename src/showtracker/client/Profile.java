@@ -63,7 +63,7 @@ class Profile extends JPanel {
         panelFillerRight.setBackground(FontsAndColors.getProjectBlue());
 
         JPanel panelLogo = new JPanel();
-        JLabel lbLogo = new JLabel(new ImageIcon(FontsAndColors.getLogo(300, 300)));
+        JLabel lbLogo = new JLabel(new ImageIcon(FontsAndColors.getLogo(250, 250)));
 
         panelLogo.setBackground(FontsAndColors.getProjectBlue());
         JPanel panelGlue = new JPanel();

@@ -148,18 +148,21 @@ class SearchShows extends JPanel {
 			pnlMainCard.setLayout(new BorderLayout());
 			pnlMainCard.setBackground(FontsAndColors.getProjectBlue());
 
-			Image image = null;
-			JPanel pnlPoster = new JPanel();
-			pnlPoster.setPreferredSize(new Dimension(60,60));
-			try {
+			//Poster container
+			JPanel pnlPoster = new JPanel(new BorderLayout());
+			JLabel lblImage = new JLabel();
 
+			//Poster
+			BufferedImage image;
+			try {
 				URL url = new URL(arrStr[2]);
 				image = ImageIO.read(url);
-				JLabel lblImage = new JLabel(new ImageIcon(image));
-				lblImage.setPreferredSize(new Dimension(55,55));
-				pnlPoster.add(lblImage);
-			}catch (Exception e){
-				System.err.println();
+				Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
+				ImageIcon imageIcon = new ImageIcon(dImg);
+				lblImage.setIcon(imageIcon);
+				pnlPoster.add(lblImage, BorderLayout.CENTER);
+			} catch (Exception e){
+				System.err.println("SearchShow | Row 166 | Poster Exception ");
 			}
 
 			// Add button
@@ -171,7 +174,7 @@ class SearchShows extends JPanel {
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 			//Result Label
-			JLabel lblSearchResult = new JLabel(arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
+			JLabel lblSearchResult = new JLabel("\t" + arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
 			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
 
 			pnlMainCard.add(pnlPoster, BorderLayout.WEST);
