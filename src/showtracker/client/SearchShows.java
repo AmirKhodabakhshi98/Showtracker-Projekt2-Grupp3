@@ -166,10 +166,12 @@ class SearchShows extends JPanel {
 			}
 
 			// Add button
-			JButton btnAdd = new JButton("Add");
-			btnAdd.setFont(FontsAndColors.getFontBold(16));
-			btnAdd.setPreferredSize(new Dimension(150, 10));
-//			btnAdd.setBorder(BorderFactory.createRaisedBevelBorder());
+			ImageIcon icon = new ImageIcon("images/plus-2.png");
+			Image imageAdd = icon.getImage();
+			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
+			icon = new ImageIcon(newAddImage);
+			JButton btnAdd = new JButton(icon);
+			btnAdd.setBorderPainted(false);
 			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -229,11 +231,20 @@ class SearchShows extends JPanel {
 	 */
 	private void addRemoveShow(String strShowName, JButton btnAdd, boolean blnAdd) {
 		if (!blnAdd) {
-			btnAdd.setText("REMOVE");
-			System.out.println(strShowName + " is added to list");
+
+			ImageIcon icon = new ImageIcon("images/error.png");
+			Image imageAdd = icon.getImage();
+			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
+			icon = new ImageIcon(newAddImage);
+			btnAdd.setIcon(icon);
 		} else {
-			btnAdd.setText("Add");
-			System.out.println(strShowName + " is removed from list");
+
+			ImageIcon icon = new ImageIcon("images/plus-2.png");
+			Image imageAdd = icon.getImage();
+			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
+			icon = new ImageIcon(newAddImage);
+			btnAdd.setIcon(icon);
+
 			clientController.getUser().removeShow(new Show(strShowName));
 		}
 	}
