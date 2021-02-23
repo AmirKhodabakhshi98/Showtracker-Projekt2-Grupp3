@@ -172,7 +172,7 @@ class SearchShows extends JPanel {
 			icon = new ImageIcon(newAddImage);
 			JButton btnAdd = new JButton(icon);
 			btnAdd.setBorderPainted(false);
-			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], btnAdd));
+			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], arrStrSearchResults[0][4], btnAdd));
 			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 			//Result Label
@@ -328,18 +328,26 @@ class SearchShows extends JPanel {
 		private String strShowName;
 		private String strShowId;
 		private JButton btnAdd;
+		private String type;
 
-		AddListener(String strShowName, String strShowId, JButton btnAdd) {
+		AddListener(String strShowName, String strShowId, String type, JButton btnAdd) {
 			this.strShowName = strShowName;
 			this.strShowId = strShowId;
 			this.btnAdd = btnAdd;
+			this.type = type;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (blnAdd) {
 				blnAdd = false;
-				clientController.generateShow(strShowName, strShowId);
+				//checks if selected media type is series or movie
+				if (type.equals("series")){
+					clientController.generateShow(strShowName, strShowId);
+				}
+				else if (type.equals("movie")){
+					clientController.generateMovie(strShowName, strShowId);
+				}
 			} else
 				blnAdd = true;
 			addRemoveShow(strShowName, btnAdd, blnAdd);

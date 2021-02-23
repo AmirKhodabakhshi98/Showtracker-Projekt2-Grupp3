@@ -3,6 +3,7 @@ package showtracker.client;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.lang.reflect.Array;
 
 import javax.swing.*;
 
@@ -249,6 +250,16 @@ public class ClientController {
         String[] arrStrGenerateShowRequest = {strShowName, strShowId};
         Show show = (Show) connection.packEnvelope(arrStrGenerateShowRequest, "getShow");
         user.addShow(show);
+    }
+
+    //generates a movie
+    void generateMovie(String strShowName, String strShowId){
+        String[] arrStrGenerateMovieRequest = {strShowName,strShowId};
+        String[] temp = (String[]) connection.packEnvelope(arrStrGenerateMovieRequest, "getMovie");
+
+        for (int i = 0; i<temp.length; i++){
+            System.out.println(temp[i]);
+        }
     }
 
     /**

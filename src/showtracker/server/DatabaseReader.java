@@ -39,12 +39,13 @@ class DatabaseReader {
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=" + apicode + "&t=" + stbSearchTerms);
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
 
-        String [][] show = new String[1][4];
+        String [][] show = new String[1][5];
 
         show [0][0] = (String) jsoResponse.get("Title");
         show [0][1] = (String) jsoResponse.get("imdbID");
         show [0][2] = (String) jsoResponse.get("Poster");
         show [0][3] = (String) jsoResponse.get("imdbRating");
+        show [0][4] = (String) jsoResponse.get("Type");
 
         
         return show;
@@ -131,6 +132,32 @@ class DatabaseReader {
         }
         System.out.println("DatabaseReader: Show created.");
         return show;
+    }
+
+    String[] generateMovie(String[] input){
+
+        System.out.println("db generateMovie");
+        JSONObject jsoShow = searchOmdbShow(input[1]);
+        System.out.println("jsoShow created");
+
+        String[] output = new String[9];
+
+        output[0] = (String) jsoShow.get("Title");
+        output[1] = (String) jsoShow.get("Year");
+        output[2] = (String) jsoShow.get("Released");
+        output[3] = (String) jsoShow.get("Plot");
+        output[4] = (String) jsoShow.get("Poster");
+        output[5] = (String) jsoShow.get("imdbID");
+        output[6] = (String) jsoShow.get("imdbRating");
+        output[7] = (String) jsoShow.get("BoxOffice");
+        output[8] = (String) jsoShow.get("Metascore");
+
+        System.out.println("collected movie info");
+
+        return output;
+
+
+
     }
 
 

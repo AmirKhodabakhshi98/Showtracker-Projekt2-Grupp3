@@ -80,6 +80,11 @@ public class Controller {
 				String[] strArrPassword = (String[]) envInput.getContent();
 				returnEnvelope = updatePass(strArrPassword);
 				break;
+			case "getMovie":
+				String[] info = (String[]) envInput.getContent();
+				String[] movie = dbr.generateMovie(info);
+				System.out.println("returning movie");
+				returnEnvelope = new Envelope(movie, "movie");
 		}
 		return returnEnvelope;
 	}
