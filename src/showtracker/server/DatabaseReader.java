@@ -50,7 +50,6 @@ class DatabaseReader {
         return show;
     }
 
-
     /**
      * Searches OMDB for a single show info
      * @param id In query
