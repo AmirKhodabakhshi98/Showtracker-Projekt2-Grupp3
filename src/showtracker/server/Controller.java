@@ -115,7 +115,8 @@ public class Controller {
 				Helper.writeToFile(user, "files/users/" + strArrUserInfo[0] + ".usr");
 			}
 			return new Envelope("User registered", "signin");
-		} else {
+		} else
+			{
 			return new Envelope("Username already taken", "signin");
 		}
 	}

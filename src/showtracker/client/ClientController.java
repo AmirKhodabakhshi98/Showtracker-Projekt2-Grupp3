@@ -31,9 +31,15 @@ public class ClientController {
     private Connection connection = new Connection("127.0.0.1", 5555);
     private JPanel pnlBottom;
 
+    public ClientController() {
+        initiatePanels();
+        startApplication();
+    }
+
     /**
      * Method for setting all the main panels
      */
+
     private void initiatePanels() {
         pnlProfile = new Profile(this);
         pnlShowList = new ShowList(this);
@@ -107,34 +113,46 @@ public class ClientController {
      * @param strPanel String name of the panel (is set in generateNavigationButtons())
      * @param show     Which Show to display (can be null in all panels except for ShowInfo)
      */
-    void setPanel(String strPanel, Show show) {
+    String setPanel(String strPanel, Show show) {
         CardLayout cardLayout = (CardLayout) (pnlCenter.getLayout());
+        String returnValue = "Error";
 
-        switch (strPanel) {
-            case "Home":
-                pnlHome.draw();
-                break;
-            case "ShowList":
-                pnlShowList.draw();
-                break;
-            case "Profile":
-                pnlProfile.draw();
-                break;
-            case "Logout":
-                setButtonsEnabled(false);
-                pnlLogin.draw();
-                pnlLogin.revalidate();
-                pnlLogin.setBackground(Color.getColor("6C709D"));
-                pnlSearchShows.draw();
-                if (user != null)
-                    new Thread(() -> updateUser(user)).run();
-                break;
-            case "Info":
-                pnlCenter.add(new ShowInfo(show), "Info");
-                break;
+        if (strPanel != null) {
+            switch (strPanel) {
+                case "Home":
+                    pnlHome.draw();
+                    returnValue = "Home";
+                    break;
+                case "ShowList":
+                    pnlShowList.draw();
+                    returnValue = "ShowList";
+                    break;
+                case "Profile":
+                    pnlProfile.draw();
+                    returnValue = "Profile";
+                    break;
+                case "Logout":
+                    setButtonsEnabled(false);
+                    pnlLogin.draw();
+                    pnlLogin.revalidate();
+                    pnlLogin.setBackground(Color.getColor("6C709D"));
+                    pnlSearchShows.draw();
+                    if (user != null)
+                        new Thread(() -> updateUser(user)).run();
+                    returnValue = "Logout";
+                    break;
+                case "Info":
+                    pnlCenter.add(new ShowInfo(show), "Info");
+                    returnValue = "Info";
+                    break;
+                default:
+                    returnValue = "Error";
+
+            }
         }
 
         cardLayout.show(pnlCenter, strPanel);
+        return returnValue;
     }
 
     /**
@@ -187,13 +205,14 @@ public class ClientController {
      *
      * @param user The logged in user
      */
-    void finalizeUser(User user) {
+    String finalizeUser(User user) {
         System.out.println(user.getUserName());
         setUser(user);
         setButtonsEnabled(true);
         setPanel("Home", null);
         pnlProfile.draw();
         System.out.println("Welcome back!");
+        return "Success";
     }
 
     /**
@@ -276,7 +295,5 @@ public class ClientController {
      */
     public static void main(String[] args) {
         ClientController clientController = new ClientController();
-        clientController.initiatePanels();
-        clientController.startApplication();
     }
 }
