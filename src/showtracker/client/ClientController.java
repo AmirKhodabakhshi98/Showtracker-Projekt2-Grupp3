@@ -228,23 +228,13 @@ public class ClientController {
         return (String) connection.packEnvelope(arrStrUpdatePassword, "updatePassword");
     }
 
-    /** 
-     * Updates a show with new available episodes
-     *
-     * @param show The show to update
-     * @return The updated Show object
-     */
-    public Show updateShow(Show show) {
-        return (Show) connection.packEnvelope(show, "updateShow");
-    }
-
     /**
      * Send a User object to the server to write over the old version
      *
      * @param user The User object to update
      * @return The result of the user update
      */
-    private String updateUser(User user) {
+    public String updateUser(User user) {
         return (String) connection.packEnvelope(user, "updateUser");
     }
 

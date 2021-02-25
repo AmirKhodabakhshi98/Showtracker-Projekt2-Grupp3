@@ -169,27 +169,4 @@ class DatabaseReader {
         }
         return jsoResponse;
     }
-
-
-
-    /**
-     * Update a Show with new episodes
-     * @param show
-     * @return
-     */
-    Show updateShow(Show show) {
-        System.out.println("update show");
-
-        String[] strArrSearchRequest = {show.getName()}; //show.getTvdbId()
-        Show shwLatest = generateShow(strArrSearchRequest);
-        /*
-        for (Episode episode: shwLatest.getEpisodes())
-            if (!show.containsById(episode))
-                show.addEpisode(episode);
-        show.sortEpisodes();
-
-         */
-
-        return show;
-    }
 }

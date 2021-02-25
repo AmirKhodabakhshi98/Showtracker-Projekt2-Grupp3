@@ -71,11 +71,6 @@ public class Controller {
 				User usrUpdate = (User) envInput.getContent();
 				returnEnvelope = updateUser(usrUpdate);
 				break;
-			case "updateShow":
-				Show shwUpdate = (Show) envInput.getContent();
-				shwUpdate = dbr.updateShow(shwUpdate);
-				returnEnvelope = new Envelope(shwUpdate, "updated");
-				break;
 			case "updatePassword":
 				String[] strArrPassword = (String[]) envInput.getContent();
 				returnEnvelope = updatePass(strArrPassword);

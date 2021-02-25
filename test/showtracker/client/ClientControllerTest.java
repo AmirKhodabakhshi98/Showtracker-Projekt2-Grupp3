@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import showtracker.Show;
 import showtracker.User;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClientControllerTest {
@@ -56,8 +59,13 @@ class ClientControllerTest {
     }
 
     @org.junit.jupiter.api.Test
+    void setPanelInfoNull() {
+        Assertions.assertEquals("Info", clientController.setPanel("Info", null));
+    }
+
+    @org.junit.jupiter.api.Test
     void setPanelInfo() {
-        Assertions.assertEquals("Profile", clientController.setPanel("Profile", null));
+        Assertions.assertEquals("Info", clientController.setPanel("Info", show));
     }
 
     @org.junit.jupiter.api.Test
@@ -131,6 +139,13 @@ class ClientControllerTest {
 
     @org.junit.jupiter.api.Test
     void checkUsernameTakenEmpty() {
+        try {
+            Files.deleteIfExists(Paths.get("files/users/.usr"));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
         Assertions.assertEquals(false, clientController.checkUsernameTaken(""));
     }
 
@@ -169,22 +184,27 @@ class ClientControllerTest {
     }
 
     @org.junit.jupiter.api.Test
-    void updateShow() {
+    void updateUser() {
+        Assertions.assertEquals("Profile saved",clientController.updateUser(user));
     }
 
     @org.junit.jupiter.api.Test
     void searchShows() {
-        Assertions.assertEquals("Breaking Bad",clientController.searchShows("Breaking Bad"));
+        String[][] strings = clientController.searchShows("Breaking Bad");
+        Assertions.assertEquals("tt0903747",strings[0][1]);
     }
 
     @org.junit.jupiter.api.Test
-    void searchShowsEmpty() {
-        clientController.searchShows("");
+    void searchShowsEmpty()
+    {
+        String[][] strings = clientController.searchShows("");
+        Assertions.assertEquals(null,strings[0][1]);
     }
 
-    @org.junit.jupiter.api.Test
+    /*@org.junit.jupiter.api.Test
     void searchShowsNull() {
-        clientController.searchShows(null);
+        String[][] strings = clientController.searchShows(null);
+        Assertions.assertEquals(null,strings[0][1]);
     }
 
     @org.junit.jupiter.api.Test
@@ -218,19 +238,7 @@ class ClientControllerTest {
         clientController.generateShow("Breaking Bad", null);
     }
 
-    @org.junit.jupiter.api.Test
-    void getUser() {
-
-    }
-
-    @org.junit.jupiter.api.Test
-    void setUser() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void main() {
-    }
-
+     */
 
 }
 

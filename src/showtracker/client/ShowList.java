@@ -67,11 +67,9 @@ class ShowList extends JPanel {
         if (shows.size() > 0) {
             for (Show show : shows) {
                 JButton btnInfo = new JButton("Info");
-                JButton btnUpdate = new JButton("Update");
                 JButton btnRemove = new JButton("Remove");
 
                 btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                btnUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
@@ -83,7 +81,6 @@ class ShowList extends JPanel {
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
-                pnlSouth.add(btnUpdate);
                 pnlSouth.add(btnRemove);
                 pnlSouth.setBackground(Color.decode("#6A86AA"));
 
@@ -96,7 +93,6 @@ class ShowList extends JPanel {
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
-                btnUpdate.addActionListener(e -> clientController.getUser().updateShow(clientController.updateShow(show)));
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeShow(show);
                     draw();
