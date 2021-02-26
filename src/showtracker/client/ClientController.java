@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 
 import javax.swing.*;
 
+import showtracker.Movie;
 import showtracker.Show;
 import showtracker.User;
 import showtracker.client.View.FontsAndColors;
@@ -255,11 +256,10 @@ public class ClientController {
     //generates a movie
     void generateMovie(String strShowName, String strShowId){
         String[] arrStrGenerateMovieRequest = {strShowName,strShowId};
-        String[] temp = (String[]) connection.packEnvelope(arrStrGenerateMovieRequest, "getMovie");
+        Movie movie = (Movie) connection.packEnvelope(arrStrGenerateMovieRequest, "getMovie");
 
-        for (int i = 0; i<temp.length; i++){
-            System.out.println(temp[i]);
-        }
+        user.addMovie(movie);
+
     }
 
     /**

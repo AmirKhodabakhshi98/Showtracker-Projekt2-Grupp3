@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.apache.http.HttpResponse;
 import org.json.simple.parser.JSONParser;
 import showtracker.Episode;
+import showtracker.Movie;
 import showtracker.Show;
 
 import java.io.*;
@@ -134,7 +135,7 @@ class DatabaseReader {
         return show;
     }
 
-    String[] generateMovie(String[] input){
+    Movie generateMovie(String[] input){
 
         System.out.println("db generateMovie");
         JSONObject jsoShow = searchOmdbShow(input[1]);
@@ -142,6 +143,18 @@ class DatabaseReader {
 
         String[] output = new String[9];
 
+        return new Movie(
+                (String) jsoShow.get("Title"),
+                (String) jsoShow.get("Year"),
+                (String) jsoShow.get("Released"),
+                (String) jsoShow.get("Plot"),
+                (String) jsoShow.get("Poster"),
+                (String) jsoShow.get("imdbID"),
+                (String) jsoShow.get("imdbRating"),
+                (String) jsoShow.get("BoxOffice"),
+                (String) jsoShow.get("Metascore")
+        );
+/*
         output[0] = (String) jsoShow.get("Title");
         output[1] = (String) jsoShow.get("Year");
         output[2] = (String) jsoShow.get("Released");
@@ -156,6 +169,8 @@ class DatabaseReader {
 
         return output;
 
+
+ */
 
 
     }
