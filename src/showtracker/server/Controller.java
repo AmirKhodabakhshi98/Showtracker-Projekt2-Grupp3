@@ -15,15 +15,19 @@ import java.util.HashMap;
  * Changes made by Adam
  */
 public class Controller {
-	private DatabaseReader dbr = new DatabaseReader();
+	private IDatabaseReader dbr;
 	private GUI gui = new GUI(this);
-	private Connection connection = new Connection(this);
+	private IConnection connection;
 	private HashMap<String, String> users = new HashMap<>();
 
 	/**
 	 * Constructor that reads the current list of users
 	 */
-	private Controller() {
+	Controller(IDatabaseReader dbr, IConnection connection) {
+		this.dbr = dbr;
+		this.connection = connection;
+		this.connection.setController(this);
+
 		gui.start();
 		File folFiles = new File("files/");
 		File folUsers = new File("files/users/");
@@ -94,7 +98,7 @@ public class Controller {
 	 * @param strArrUserInfo Array with user info
 	 * @return The reply
 	 */
-	private Envelope updatePass(String[] strArrUserInfo) {
+	Envelope updatePass(String[] strArrUserInfo) {
 		String strPassword = users.get(strArrUserInfo[0]);
 		if (strPassword.equals(strArrUserInfo[1])) {
 			users.put(strArrUserInfo[0], strArrUserInfo[2]);
@@ -110,7 +114,7 @@ public class Controller {
 	 * @param strArrUserInfo Array with user info
 	 * @return The reply
 	 */
-	private Envelope signUp(String[] strArrUserInfo) {
+	Envelope signUp(String[] strArrUserInfo) {
 		String strUser = users.get(strArrUserInfo[0]);
 		if (strUser == null) {
 			User user = new User(strArrUserInfo[0], strArrUserInfo[2], null);
@@ -130,7 +134,7 @@ public class Controller {
 	 * @param strArrUserInfo Array with the user info
 	 * @return The reply
 	 */
-	private Envelope loginUser(String[] strArrUserInfo) {
+	Envelope loginUser(String[] strArrUserInfo) {
 		User user = null;
 		String strPassword = users.get(strArrUserInfo[0]);
 		if (strPassword != null && strPassword.equals(strArrUserInfo[1]))
@@ -143,7 +147,7 @@ public class Controller {
 	 * @param user The user to update
 	 * @return The reply
 	 */
-	private Envelope updateUser(User user) {
+	Envelope updateUser(User user) {
 		if (user != null) {
 			Helper.writeToFile(user, "files/users/" + user.getUserName() + ".usr");
 			return new Envelope("Profile saved", "confirmation");
@@ -183,6 +187,8 @@ public class Controller {
 	 * @param args
 	 */
 	public static void main (String[] args) {
-		Controller controller = new Controller ();
+		DatabaseReader dbr = new DatabaseReader();
+		Connection connection = new Connection();
+		Controller controller = new Controller(dbr, connection);
 	}
 }
