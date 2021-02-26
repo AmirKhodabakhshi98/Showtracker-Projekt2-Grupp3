@@ -122,7 +122,7 @@ public class ClientController {
             case "ShowList":
                 pnlShowList.draw();
                 break;
-            case "MoveList":
+            case "MovieList":
                 pnlMovieList.draw();
                 break;
             case "Profile":
