@@ -24,6 +24,7 @@ public class ClientController {
     private User user;
     private Profile pnlProfile;
     private ShowList pnlShowList;
+    private MovieList pnlMovieList;
     private Home pnlHome;
     private SearchShows pnlSearchShows;
     private Login pnlLogin;
@@ -38,6 +39,7 @@ public class ClientController {
     private void initiatePanels() {
         pnlProfile = new Profile(this);
         pnlShowList = new ShowList(this);
+        pnlMovieList = new MovieList(this);
         pnlHome = new Home(this);
         pnlSearchShows = new SearchShows(this);
         pnlLogin = new Login(this);
@@ -52,6 +54,7 @@ public class ClientController {
 
         generateNavigationButton("profile", "Profile", pnlProfile);
         generateNavigationButton("list", "ShowList", pnlShowList);
+        generateNavigationButton("movie", "MovieList", pnlMovieList);
         generateNavigationButton("home", "Home", pnlHome);
         generateNavigationButton("search", "SearchShows", pnlSearchShows);
         generateNavigationButton("exit", "Logout", pnlLogin);
@@ -117,6 +120,9 @@ public class ClientController {
                 break;
             case "ShowList":
                 pnlShowList.draw();
+                break;
+            case "MoveList":
+                pnlMovieList.draw();
                 break;
             case "Profile":
                 pnlProfile.draw();
