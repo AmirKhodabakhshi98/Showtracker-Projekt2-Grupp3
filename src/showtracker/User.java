@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String strUserName, strUserEmail;
 
     private ArrayList<Show> shows = new ArrayList<>();
+    private ArrayList<Movie> movies = new ArrayList<>();
 
     public User(String strUserName, String strUserEmail, String strImagePath) {
         this.strUserName = strUserName;
@@ -71,6 +72,21 @@ public class User implements Serializable {
         shows.add(show);
     }
 
+    public void addMovie(Movie movie){
+        if (movies.contains(movie)){
+            int i = 1;
+            String newName;
+            do {
+                newName = movie.getTitle() + " (" + i++ + ")";
+            } while (movies.contains(new Movie(newName)));
+            do {
+                newName = JOptionPane.showInputDialog("A show with that name already exists, please enter a new name.", newName);
+            } while (movies.contains(new Movie(newName)));
+            if (newName != null)
+                movie.setTitle(newName);
+        }
+    }
+
     /**
      * Updates a Show in the User's library
      * @param show
@@ -85,6 +101,7 @@ public class User implements Serializable {
         }
     }
 
+
     /**
      * Removes a Show from the User's library
      * @param show
@@ -95,8 +112,18 @@ public class User implements Serializable {
         }
     }
 
+    public void removeMovie(Movie movie){
+        if (movies.contains(movie)){
+            movies.remove(movie);
+        }
+    }
+
     public ArrayList<Show> getShows() {
         return shows;
+    }
+
+    public ArrayList<Movie> getMovies(){
+        return movies;
     }
 
     /**
@@ -106,5 +133,9 @@ public class User implements Serializable {
      */
     public boolean containsShow(Show show) {
         return shows.contains(show);
+    }
+
+    public boolean containsMovie(Movie movie){
+        return movies.contains(movie);
     }
 }

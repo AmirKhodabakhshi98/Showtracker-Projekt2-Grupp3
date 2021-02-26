@@ -1,10 +1,6 @@
 package showtracker.server;
 
-import showtracker.Envelope;
-
-import showtracker.Helper;
-import showtracker.Show;
-import showtracker.User;
+import showtracker.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -82,7 +78,7 @@ public class Controller {
 				break;
 			case "getMovie":
 				String[] info = (String[]) envInput.getContent();
-				String[] movie = dbr.generateMovie(info);
+				Movie movie = dbr.generateMovie(info);
 				System.out.println("returning movie");
 				returnEnvelope = new Envelope(movie, "movie");
 		}
