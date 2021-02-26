@@ -1,6 +1,7 @@
 package showtracker.client;
 
 import showtracker.Helper;
+import showtracker.Movie;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,7 +34,7 @@ public class MovieList extends JPanel {
     }
 
     private void draw(ArrayList<Movie> movies){
-        movies.sort(new Helper.NameComparator());
+        movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -51,7 +52,7 @@ public class MovieList extends JPanel {
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
                 label.setFont(new Font("Monospaced", Font.BOLD, 18));
-                label.setText(movie.getName());
+                label.setText(movie.getTitle());
                 pnlMiddle.add(label);
                 pnlMiddle.setBackground(Color.decode("#6A86AA"));
 
@@ -68,7 +69,7 @@ public class MovieList extends JPanel {
                 pnlMain.add(pnlSouth, BorderLayout.SOUTH);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
-                btnInfo.addActionListener(e -> clientController.setPanel("Info", movie));
+               // btnInfo.addActionListener(e -> clientController.setPanel("Info", movie));
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();
@@ -125,7 +126,7 @@ public class MovieList extends JPanel {
         private void searchMovie(){
             ArrayList<Movie> searchMovies = new ArrayList<Movie>();
             for(Movie movie: clientController.getUser().getMovies()){
-                if(movie.getName().toLowerCase().contains(getText().toLowerCase())){
+                if(movie.getTitle().toLowerCase().contains(getText().toLowerCase())){
                     searchMovies.add(movie);
                 }
             }

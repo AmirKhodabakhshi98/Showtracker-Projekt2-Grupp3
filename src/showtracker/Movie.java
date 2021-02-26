@@ -1,6 +1,7 @@
 package showtracker;
 
 
+import java.io.Serializable;
 import java.util.Timer;
 
 /**
@@ -9,8 +10,9 @@ import java.util.Timer;
  * A class for saving a movie
  */
 
-public class Movie {
+public class Movie implements Serializable {
 
+    private static final long serialVersionUID = -7641780883231752094L;
     private String title;
     private String year;
     private String released;

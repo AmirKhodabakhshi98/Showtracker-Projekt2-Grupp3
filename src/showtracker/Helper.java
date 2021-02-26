@@ -37,7 +37,7 @@ public class Helper {
 
     /**
      * Method for writing an Object to file
-     * @param o Object to write
+     * @param obj Object to write
      * @param file File to write to
      */
     public static void writeToFile(Object obj, String file) {
@@ -150,6 +150,13 @@ public class Helper {
         @Override
         public int compare(Show show1, Show show2) {
             return show1.getName().compareTo(show2.getName()) ;
+        }
+    }
+
+    public static class NameComparatorMovie implements Comparator<Movie>{
+        @Override
+        public int compare(Movie movie1, Movie movie2){
+            return movie1.getTitle().compareTo(movie2.getTitle());
         }
     }
 }

@@ -73,7 +73,7 @@ public class User implements Serializable {
     }
 
     public void addMovie(Movie movie){
-        if (movies.contains(movie)){
+        /*if (movies.contains(movie)){
             int i = 1;
             String newName;
             do {
@@ -85,6 +85,10 @@ public class User implements Serializable {
             if (newName != null)
                 movie.setTitle(newName);
         }
+
+         */
+        System.out.println(movie.getTitle() + "This is a test");
+        movies.add(movie);
     }
 
     /**
