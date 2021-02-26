@@ -16,15 +16,14 @@ import java.util.LinkedList;
  * 
  * Connection hanterar kopplingen mellan klient och server
  */
-class Connection implements IConnection {
+class Connection {
     private boolean blnIsOnline = false;
     private Controller controller;
     private Buffer<Socket> socketBuffer = new Buffer<>();
     private int intActiveThreads = 0;
     private LinkedList<Thread> threads = new LinkedList<>();
 
-    @Override
-    public void setController(Controller controller) {
+    Connection(Controller controller) {
         this.controller = controller;
     }
 
@@ -32,8 +31,7 @@ class Connection implements IConnection {
      * Method for starting the server
      * @param intThreads The amount of threads to start for clients
      */
-    @Override
-    public void startConnection(int intThreads) {
+    void startConnection(int intThreads) {
         if (!blnIsOnline) {
             blnIsOnline = true;
             for (int i = 0; i < intThreads; i++) {
@@ -48,8 +46,7 @@ class Connection implements IConnection {
     }
 
 
-    @Override
-    public void stopConnection() {
+    void stopConnection() {
         System.out.println("Connection exiting...");
         if (blnIsOnline) {
             for (Thread thread : threads) {
@@ -69,14 +66,14 @@ class Connection implements IConnection {
     /**
      * Increase the int keeping track of active threads
      */
-    void increaseThreadCount() {
+    private synchronized void increaseThreadCount() {
         controller.setThreadCount(intActiveThreads++);
     }
 
     /**
      * Decrease the int keeping track of active threads
      */
-    void decreaseThreadCount() {
+    private synchronized void decreaseThreadCount() {
         controller.setThreadCount(intActiveThreads--);
     }
 
