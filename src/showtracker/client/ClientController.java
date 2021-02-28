@@ -118,7 +118,6 @@ public class ClientController {
      * @param strPanel String name of the panel (is set in generateNavigationButtons())
      * @param show     Which Show to display (can be null in all panels except for ShowInfo)
      */
-    void setPanel(String strPanel, Show show) {
     String setPanel(String strPanel, Show show) {
         CardLayout cardLayout = (CardLayout) (pnlCenter.getLayout());
         String returnValue = "Error";
@@ -212,7 +211,6 @@ public class ClientController {
      *
      * @param user The logged in user
      */
-    void finalizeUser(User user) {
     String finalizeUser(User user) {
         System.out.println(user.getUserName());
         setUser(user);
@@ -242,7 +240,6 @@ public class ClientController {
      * @param user The User object to update
      * @return The result of the user update
      */
-    private String updateUser(User user) {
     public String updateUser(User user) {
         return (String) connection.packEnvelope(user, "updateUser");
     }
