@@ -132,6 +132,10 @@ public class ClientController {
                     pnlShowList.draw();
                     returnValue = "ShowList";
                     break;
+                case "MovieList":
+                    pnlMovieList.draw();
+                    returnValue = "MovieList";
+                    break;
                 case "Profile":
                     pnlProfile.draw();
                     returnValue = "Profile";
