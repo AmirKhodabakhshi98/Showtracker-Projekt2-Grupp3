@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import showtracker.Envelope;
+import showtracker.Movie;
 import showtracker.Show;
 import showtracker.User;
 
@@ -269,6 +270,11 @@ public class ControllerTest {
 
 		@Override
 		public Show updateShow(Show show) {
+			return null;
+		}
+
+		@Override
+		public Movie generateMovie(String[] input) {
 			return null;
 		}
 	}

@@ -1,6 +1,7 @@
 package showtracker.server;
 
 import org.json.simple.JSONObject;
+import showtracker.Movie;
 import showtracker.Show;
 
 interface IDatabaseReader {
@@ -11,4 +12,6 @@ interface IDatabaseReader {
 	Show generateShow(String[] arShow);
 
 	Show updateShow(Show show);
+
+	Movie generateMovie(String[] input);
 }

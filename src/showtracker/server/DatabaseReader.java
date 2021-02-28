@@ -137,7 +137,8 @@ class DatabaseReader implements IDatabaseReader {
         return show;
     }
 
-    Movie generateMovie(String[] input){
+
+    public Movie generateMovie(String[] input){
 
         System.out.println("db generateMovie");
         JSONObject jsoShow = searchOmdbShow(input[1]);
