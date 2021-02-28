@@ -217,7 +217,6 @@ class DatabaseReader implements IDatabaseReader {
     }
 
 
-
     /**
      * Update a Show with new episodes
      * @param show
@@ -239,4 +238,5 @@ class DatabaseReader implements IDatabaseReader {
 
         return show;
     }
+
 }

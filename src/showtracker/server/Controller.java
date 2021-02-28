@@ -71,11 +71,6 @@ public class Controller {
 				User usrUpdate = (User) envInput.getContent();
 				returnEnvelope = updateUser(usrUpdate);
 				break;
-			case "updateShow":
-				Show shwUpdate = (Show) envInput.getContent();
-				shwUpdate = dbr.updateShow(shwUpdate);
-				returnEnvelope = new Envelope(shwUpdate, "updated");
-				break;
 			case "updatePassword":
 				String[] strArrPassword = (String[]) envInput.getContent();
 				returnEnvelope = updatePass(strArrPassword);
@@ -120,7 +115,8 @@ public class Controller {
 				Helper.writeToFile(user, "files/users/" + strArrUserInfo[0] + ".usr");
 			}
 			return new Envelope("User registered", "signin");
-		} else {
+		} else
+			{
 			return new Envelope("Username already taken", "signin");
 		}
 	}
