@@ -69,7 +69,8 @@ public class MovieList extends JPanel {
                 pnlMain.add(pnlSouth, BorderLayout.SOUTH);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
-               // btnInfo.addActionListener(e -> clientController.setPanel("Info", movie));
+               btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
+                       "<p style = \"width: 200px;\">" + movie.getPlot() + "</p></body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();
