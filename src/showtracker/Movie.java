@@ -67,6 +67,14 @@ public class Movie implements Serializable {
         this.title= title;
     }
 
+    public String getPlot(){
+        return plot;
+    }
+
+    public void setPlot(String plot){
+        this.plot = plot;
+    }
+
 
 
 }
