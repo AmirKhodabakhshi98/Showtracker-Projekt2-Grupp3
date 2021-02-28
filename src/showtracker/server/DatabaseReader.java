@@ -20,7 +20,7 @@ import java.io.*;
  * @version 1.0.1
  */
 
-class DatabaseReader {
+class DatabaseReader implements IDatabaseReader {
     private String apicode = "a203d499";
 
 
@@ -29,7 +29,8 @@ class DatabaseReader {
      * @param strSearchTerms String with search terms
      * @return A String matrix with name and ID from the shows found
      */ // TODO: 2021-02-09 Could, if time left, improve the search function with separators for better search hits Paul M.
-    String[][] searchOMDBdbShows(String strSearchTerms) {
+    @Override
+    public String[][] searchOMDBdbShows(String strSearchTerms) {
 
         String[] strArrSearchTerms = strSearchTerms.split(" ");
         StringBuilder stbSearchTerms = new StringBuilder(strArrSearchTerms[0]);
@@ -52,13 +53,13 @@ class DatabaseReader {
         return show;
     }
 
-
     /**
      * Searches OMDB for a single show info
      * @param id In query
      * @return query Json Object
      */
-    JSONObject searchOmdbShow(String id) {
+    @Override
+    public JSONObject searchOmdbShow(String id) {
         System.out.println("Search Query OMDB: " + id);
 
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id);
@@ -93,7 +94,8 @@ class DatabaseReader {
      * @param arShow Name and ID of the show
      * @return A Show object
      */
-    Show generateShow(String[] arShow) {
+    @Override
+    public Show generateShow(String[] arShow) {
 
         System.out.println("DatabaseReader: Generating show \"" + arShow[0] + "\"...");
 
@@ -220,7 +222,8 @@ class DatabaseReader {
      * @param show
      * @return
      */
-    Show updateShow(Show show) {
+    @Override
+    public Show updateShow(Show show) {
         System.out.println("update show");
 
         String[] strArrSearchRequest = {show.getName()}; //show.getTvdbId()
