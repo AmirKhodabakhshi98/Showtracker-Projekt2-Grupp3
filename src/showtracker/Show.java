@@ -10,8 +10,9 @@ import java.util.*;
  */
 public class Show implements Serializable {
     private static final long serialVersionUID = -7641780883231752094L;
-//    private String strTvdbId;
+    private String Poster;
     private String strImdbId;
+    private String ImdbRating;
     private String strName;
     private String strDescription;
     private LinkedList<Episode> episodes = new LinkedList<>();
@@ -29,6 +30,22 @@ public class Show implements Serializable {
 //    public String getTvdbId() {
 //        return strTvdbId;
 //    }
+
+    public void setPoster(String Poster){
+        this.Poster = Poster;
+    }
+
+    public String getPoster(){
+        return Poster;
+    }
+
+    public void setImdbRating(String ImdbRating){
+        this.ImdbRating = ImdbRating;
+    }
+
+    public String getImdbRating(){
+        return ImdbRating;
+    }
 
     public void setImdbId(String strImdbId) {
         this.strImdbId = strImdbId;

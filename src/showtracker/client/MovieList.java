@@ -3,12 +3,15 @@ package showtracker.client;
 import showtracker.Helper;
 import showtracker.Movie;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MovieList extends JPanel {
@@ -66,11 +69,28 @@ public class MovieList extends JPanel {
                 Border cardBorder = BorderFactory.createRaisedBevelBorder();
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
-                pnlMain.add(pnlSouth, BorderLayout.SOUTH);
+                pnlMain.add(pnlSouth, BorderLayout.EAST);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
+                //Poster container
+                JLabel lblImage = new JLabel();
+                JPanel pnlPoster = new JPanel(new BorderLayout());
+
+                //Poster
+                BufferedImage image;
+                try {
+                    URL url = new URL(movie.getPoster());
+                    image = ImageIO.read(url);
+                    Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
+                    ImageIcon imageIcon = new ImageIcon(dImg);
+                    lblImage.setIcon(imageIcon);
+                    pnlPoster.add(lblImage, BorderLayout.WEST);
+                } catch (Exception e){
+                    System.err.println("Poster Exception in class MovieList, row 89");
+                }
+
                btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
-                       "<p style = \"width: 300px;\">" + movie.getPlot() + "</p></body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
+                       "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();
@@ -79,6 +99,7 @@ public class MovieList extends JPanel {
                 gbc.gridx = 0;
                 gbc.weightx= 1;
 
+                pnlMain.add(pnlPoster, BorderLayout.WEST);
                 pnlMovieList.add(pnlMain, gbc);
             }
             gbc.anchor = GridBagConstraints.NORTHWEST;

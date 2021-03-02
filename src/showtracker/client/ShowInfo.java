@@ -58,9 +58,9 @@ class ShowInfo extends JPanel {
         btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null,
-                "<html><body><p style=\"width: 200px;\">" +
-                        show.getDescription() +
-                        "</p></body></html>", "Show info", JOptionPane.PLAIN_MESSAGE));
+                "<html><body><p style=\"width: 300px;\">" +
+                        show.getDescription() + "</p><br>" + "Imdb Rating: " + show.getImdbRating() +
+                        "</body></html>", "Show info", JOptionPane.PLAIN_MESSAGE));
 
         JPanel pnlHeader = new JPanel();
         pnlHeader.setBounds(0, 0, 500, 50);

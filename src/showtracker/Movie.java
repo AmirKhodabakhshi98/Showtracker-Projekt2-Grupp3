@@ -2,6 +2,7 @@ package showtracker;
 
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Timer;
 
 /**
@@ -73,6 +74,22 @@ public class Movie implements Serializable {
 
     public void setPlot(String plot){
         this.plot = plot;
+    }
+
+    public String getImdbRating(){
+        return imdbRating;
+    }
+
+    public void setImdbRating(){
+        this.imdbRating = imdbRating;
+    }
+
+    public void setPoster(){
+        this.poster = poster;
+    }
+
+    public String getPoster(){
+        return poster;
     }
 
 
