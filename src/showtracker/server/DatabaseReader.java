@@ -106,7 +106,8 @@ class DatabaseReader implements IDatabaseReader {
         show.setDescription((String) jsoShow.get("Plot"));
         show.setImdbId((String) jsoShow.get("imdbId"));
         show.setImdbRating((String) jsoShow.get("imdbRating"));
-        show.setPoster((String) jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
+        show.setPoster((String) jsoShow.get("Poster"));
+        System.out.println(jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
 
 
         int seasons = Integer.parseInt( String.valueOf(jsoShow.get("totalSeasons")));
@@ -124,14 +125,12 @@ class DatabaseReader implements IDatabaseReader {
                 String strName = (String) jso.get("Title");
                 String strIMDBid = (String.valueOf(jso.get("imdbID")));
                 String strDescription = ((String) jso.get("Plot"));
-                String poster = ((String) jso.get("Poster"));
 
                 Episode episode = new Episode(show, intEpisode, intSeason);
                 episode.setIMDBid(strIMDBid);
                 episode.setName(strName);
                 episode.setDescription(strDescription);
                 show.addEpisode(episode);
-                show.setPoster(poster);
             }
         }
         System.out.println("DatabaseReader: Show created.");
