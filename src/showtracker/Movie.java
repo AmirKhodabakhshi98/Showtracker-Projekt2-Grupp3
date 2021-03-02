@@ -109,9 +109,6 @@ public class Movie implements Serializable {
         this.released = released;
     }
 
-    public String getPoster() {
-        return poster;
-    }
 
     public void setPoster(String poster) {
         this.poster = poster;
@@ -125,9 +122,6 @@ public class Movie implements Serializable {
         this.imdbId = imdbId;
     }
 
-    public String getImdbRating() {
-        return imdbRating;
-    }
 
     public void setImdbRating(String imdbRating) {
         this.imdbRating = imdbRating;
