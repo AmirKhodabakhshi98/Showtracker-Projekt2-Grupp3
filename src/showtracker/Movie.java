@@ -76,5 +76,59 @@ public class Movie implements Serializable {
     }
 
 
+    public String getYear() {
+        return year;
+    }
 
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getReleased() {
+        return released;
+    }
+
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public String getImdbRating() {
+        return imdbRating;
+    }
+
+    public void setImdbRating(String imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public String getBoxOffice() {
+        return boxOffice;
+    }
+
+    public void setBoxOffice(String boxOffice) {
+        this.boxOffice = boxOffice;
+    }
+
+    public String getMetascore() {
+        return metascore;
+    }
+
+    public void setMetascore(String metascore) {
+        this.metascore = metascore;
+    }
 }

@@ -11,6 +11,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import showtracker.Movie;
 import showtracker.Show;
 import showtracker.client.View.FontsAndColors;
 
@@ -35,6 +36,7 @@ class SearchShows extends JPanel {
 	private JPanel pnlSearchResult = new JPanel();
 	private JPanel pnlMyOwnShowPanel = new JPanel();
 	private JPanel pnlMyShow = new JPanel();
+	private JPanel pnlMyOwnMoviePanel = new JPanel();
 
 	private JScrollPane spnSearchResult = new JScrollPane();
 
@@ -50,7 +52,7 @@ class SearchShows extends JPanel {
 		JPanel pnlSearchBar = new JPanel();
 		pnlSearchBar.setBackground(FontsAndColors.getProjectBlue());
 		pnlSearchBar.setSize(350, 200);
-		pnlSearchBar.setLayout(new GridLayout(1,3));
+		pnlSearchBar.setLayout(new GridLayout(1,4));
 
 		spnSearchResult.getVerticalScrollBar().setUnitIncrement(16);
 		pnlSearchResult.setBackground(FontsAndColors.getProjectBlue());
@@ -68,13 +70,22 @@ class SearchShows extends JPanel {
 		btnCreateShow.setFont(FontsAndColors.getFontPlain(16));
 		btnCreateShow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCreateShow.addActionListener(e -> drawNoSearchResultPanel());
+
 		btnSearchBar.addActionListener(e -> drawSearchResultPanel(txfSearchBar.getText()));
 		txfSearchBar.addKeyListener(new EnterListener());
+
+		JButton btnCreateMovie = new JButton("Create Movie");
+		btnCreateMovie.setFont(FontsAndColors.getFontPlain(16));
+		btnCreateMovie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCreateMovie.addActionListener(e -> createOwnMovie());
 
 		pnlSearchBar.add(txfSearchBar);
 		pnlSearchBar.add(btnSearchBar);
 		pnlSearchBar.add(btnCreateShow);
+		pnlSearchBar.add(btnCreateMovie);
 	}
+
+
 
 	/**
 	 * Method for refreshing the view
@@ -223,6 +234,46 @@ class SearchShows extends JPanel {
 		spnSearchResult.setViewportView(pnlSearchResult);
 	}
 
+
+	/**
+	 * Method for user to create their own movie
+	 */
+	private void createOwnMovie(){
+		pnlSearchResult.removeAll();
+		pnlMyOwnShowPanel.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlSearchResult.setLayout(new BorderLayout());
+		pnlMyOwnMoviePanel.setLayout(new BoxLayout(pnlMyOwnMoviePanel, BoxLayout.Y_AXIS));
+
+		JTextField txfMovieName = new JTextField();
+		txfMovieName.setText(txfSearchBar.getText());
+		JButton btnSubmit = new JButton("Submit");
+
+		pnlMyOwnMoviePanel.add(new JLabel("Name: "));
+		pnlMyOwnMoviePanel.add(txfMovieName);
+		pnlMyOwnMoviePanel.add(btnSubmit, BorderLayout.SOUTH);
+
+		btnSubmit.addActionListener(e -> clientController.getUser().addMovie(new Movie(txfMovieName.getText()))); //adds the movie to user
+
+		pnlSearchResult.add(pnlMyOwnMoviePanel, BorderLayout.NORTH);
+		spnSearchResult.setViewportView(pnlSearchResult);
+
+		//pnlMyOwnMoviePanel.add(new JLabel(""));
+
+//			clientController.getUser().addShow(show);
+
+	//	btnSubmit.addActionListener(e -> creat);
+
+
+
+
+
+
+
+	}
+
+
+
 	/**
 	 * Switches a show between adding it to the user's library and removing it
 	 * @param strShowName The name of the show
@@ -319,6 +370,8 @@ class SearchShows extends JPanel {
 			JOptionPane.showMessageDialog(null, "Show created successfully!");
 		}
 	}
+
+
 
 	/**
 	 * An inner class for toggling a to add or remove a show.
