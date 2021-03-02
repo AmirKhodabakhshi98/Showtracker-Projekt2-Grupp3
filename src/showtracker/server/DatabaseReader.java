@@ -13,6 +13,7 @@ import showtracker.Movie;
 import showtracker.Show;
 
 import java.io.*;
+import java.net.URL;
 
 /**
  * Modification GRP 3
@@ -48,7 +49,6 @@ class DatabaseReader implements IDatabaseReader {
         show [0][2] = (String) jsoResponse.get("Poster");
         show [0][3] = (String) jsoResponse.get("imdbRating");
         show [0][4] = (String) jsoResponse.get("Type");
-
         
         return show;
     }
@@ -105,7 +105,8 @@ class DatabaseReader implements IDatabaseReader {
         Show show = new Show((String) jsoShow.get("Title"));
         show.setDescription((String) jsoShow.get("Plot"));
         show.setImdbId((String) jsoShow.get("imdbId"));
-//        show.setTvdbId(String.valueOf( jsoShow.get("imdbID"))); // planned to be removed // TEMP REMOVED
+        show.setImdbRating((String) jsoShow.get("imdbRating"));
+        show.setPoster((String) jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
 
 
         int seasons = Integer.parseInt( String.valueOf(jsoShow.get("totalSeasons")));
@@ -121,16 +122,16 @@ class DatabaseReader implements IDatabaseReader {
                 int intSeason = Integer.parseInt(String.valueOf(i));
                 int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
                 String strName = (String) jso.get("Title");
-                String strTvdbId = (String.valueOf(jso.get("imdbID")));  // Remove?
                 String strIMDBid = (String.valueOf(jso.get("imdbID")));
                 String strDescription = ((String) jso.get("Plot"));
+                String poster = ((String) jso.get("Poster"));
 
                 Episode episode = new Episode(show, intEpisode, intSeason);
-                episode.setTvdbId(strTvdbId); // Remove or update for use from OMDB?
                 episode.setIMDBid(strIMDBid);
                 episode.setName(strName);
                 episode.setDescription(strDescription);
                 show.addEpisode(episode);
+                show.setPoster(poster);
             }
         }
         System.out.println("DatabaseReader: Show created.");

@@ -3,12 +3,15 @@ package showtracker.client;
 import showtracker.Helper;
 import showtracker.Show;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -89,8 +92,25 @@ class ShowList extends JPanel {
                 Border cardBorder = BorderFactory.createRaisedBevelBorder();
                 pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
-                pnlMain.add(pnlSouth, BorderLayout.SOUTH);
+                pnlMain.add(pnlSouth, BorderLayout.EAST);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
+
+                //Poster container
+                JLabel lblImage = new JLabel();
+                JPanel pnlPoster = new JPanel(new BorderLayout());
+
+                //Poster
+                BufferedImage image;
+                try {
+                    URL url = new URL(show.getPoster());
+                    image = ImageIO.read(url);
+                    Image dImg = image.getScaledInstance(50,80, Image.SCALE_AREA_AVERAGING);
+                    ImageIcon imageIcon = new ImageIcon(dImg);
+                    lblImage.setIcon(imageIcon);
+                    pnlPoster.add(lblImage, BorderLayout.WEST);
+                } catch (Exception e){
+                    System.err.println("Poster exception in class Showlist");
+                }
 
                 btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
                 btnRemove.addActionListener(e -> {
@@ -101,6 +121,7 @@ class ShowList extends JPanel {
                 gbc.gridx = 0;
                 gbc.weightx = 1;
 
+                pnlMain.add(pnlPoster, BorderLayout.WEST);
                 pnlShowList.add(pnlMain, gbc);
 
             }
@@ -131,7 +152,7 @@ class ShowList extends JPanel {
         MyDocumentListener() {
             javax.swing.text.Document doc = this.getDocument();
             this.setPreferredSize(new Dimension(700, 30));
-            TextPrompt tp7 = new TextPrompt("Search Yor List", this);
+            TextPrompt tp7 = new TextPrompt("Search Your List", this);
             tp7.setForeground(Color.GRAY);
             tp7.changeAlpha(0.5f);
             tp7.changeStyle(Font.BOLD + Font.CENTER_BASELINE);
