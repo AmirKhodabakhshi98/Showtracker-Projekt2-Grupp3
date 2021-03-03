@@ -12,6 +12,7 @@ import showtracker.Episode;
 import showtracker.Movie;
 import showtracker.Show;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 
@@ -34,7 +35,13 @@ class DatabaseReader implements IDatabaseReader {
     public String[][] searchOMDBdbShows(String strSearchTerms) {
 
         String[] strArrSearchTerms = strSearchTerms.split(" ");
+        System.out.println(strSearchTerms);
         StringBuilder stbSearchTerms = new StringBuilder(strArrSearchTerms[0]);
+
+        //Used for changing '&' chars to '%26' //Edvin
+        for(int i = 0; i <strArrSearchTerms.length; i++){
+            strArrSearchTerms[i] = strArrSearchTerms[i].replaceAll("&", "%26");
+        }
 
         for (int i = 1; i < strArrSearchTerms.length; i++)
             stbSearchTerms.append("+").append(strArrSearchTerms[i]);
@@ -109,29 +116,33 @@ class DatabaseReader implements IDatabaseReader {
         show.setPoster((String) jsoShow.get("Poster"));
         System.out.println(jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
 
+        try {
 
-        int seasons = Integer.parseInt( String.valueOf(jsoShow.get("totalSeasons")));
-        System.out.println("Total seasons: " + seasons);
-        JSONArray jsaEpisodes;
-        for (int i =1; i < seasons + 1; i++) {
+            int seasons = Integer.parseInt(String.valueOf(jsoShow.get("totalSeasons")));
+            System.out.println("Total seasons: " + seasons);
+            JSONArray jsaEpisodes;
+            for (int i = 1; i < seasons + 1; i++) {
 
-            jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
+                jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
 
-            for (Object obj : jsaEpisodes) {
-                JSONObject jso = (JSONObject) obj;
+                for (Object obj : jsaEpisodes) {
+                    JSONObject jso = (JSONObject) obj;
 
-                int intSeason = Integer.parseInt(String.valueOf(i));
-                int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
-                String strName = (String) jso.get("Title");
-                String strIMDBid = (String.valueOf(jso.get("imdbID")));
-                String strDescription = ((String) jso.get("Plot"));
+                    int intSeason = Integer.parseInt(String.valueOf(i));
+                    int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
+                    String strName = (String) jso.get("Title");
+                    String strIMDBid = (String.valueOf(jso.get("imdbID")));
+                    String strDescription = ((String) jso.get("Plot"));
 
-                Episode episode = new Episode(show, intEpisode, intSeason);
-                episode.setIMDBid(strIMDBid);
-                episode.setName(strName);
-                episode.setDescription(strDescription);
-                show.addEpisode(episode);
+                    Episode episode = new Episode(show, intEpisode, intSeason);
+                    episode.setIMDBid(strIMDBid);
+                    episode.setName(strName);
+                    episode.setDescription(strDescription);
+                    show.addEpisode(episode);
+                }
             }
+        } catch (Exception e){
+            //Do nothing
         }
         System.out.println("DatabaseReader: Show created.");
         return show;
