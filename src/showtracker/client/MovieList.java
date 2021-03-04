@@ -40,12 +40,37 @@ public class MovieList extends JPanel {
         movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
-        //gbc.fill = GridBagConstraints.HORIZONTAL;
-        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
+      //  gbc.fill = GridBagConstraints.HORIZONTAL;
+      //  pnlMovieList.setBackground(Color.decode("#E3E2DD"));
 
         pnlMovieList.removeAll();
         if(movies.size() > 0){
+
+            int i = 2;
             for(Movie movie : movies){
+
+                String colorMiddle = "";
+                String colorSouth = "";
+                String colorMain = "";
+                String colorPoster = "";
+                String colorTitle = "";
+
+                if (i % 2 == 0){
+                     colorMiddle = "#33001a"; //ccebff //4d0026 //33001a
+                     colorSouth = colorMiddle;
+                     colorPoster = colorMiddle;
+                    colorTitle = "#ffffff";
+                }
+                else {
+                     colorMiddle = "#33001a";
+                     colorSouth = colorMiddle;
+                    colorPoster = colorMiddle;
+                    colorTitle = "#ffffff";
+
+
+                }
+                i++;
+
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
 
@@ -54,26 +79,27 @@ public class MovieList extends JPanel {
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
+                label.setForeground(Color.decode(colorTitle));
                 label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode("#F8F8F8"));
+                pnlMiddle.setBackground(Color.decode(colorMiddle));
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-                pnlSouth.setBackground(Color.decode("#F8F8F8"));
+                pnlSouth.setBackground(Color.decode(colorSouth));
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 162));
-                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#CCCCCC"));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#6A86AA"));
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 //Poster container
-                Border posterBorder = BorderFactory.createLineBorder(Color.decode("#F8F8F8"), 10, false);
+                Border posterBorder = BorderFactory.createLineBorder(Color.decode(colorPoster), 10, false);
                 JLabel lblImage = new JLabel();
                 lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
