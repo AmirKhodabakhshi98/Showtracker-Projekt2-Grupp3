@@ -21,9 +21,8 @@ import showtracker.client.View.Home;
  * Changes made by Filip, Moustafa, Basir & Adam
  */
 
-public class ClientController implements Serializable {
+public class ClientController {
 
-    private static final long serialVersionUID = -8815667314209823140L;
 
     private User user;
     private Profile pnlProfile;
@@ -270,7 +269,9 @@ public class ClientController implements Serializable {
     void generateShow(String strShowName, String strShowId) {
         String[] arrStrGenerateShowRequest = {strShowName, strShowId};
         Show show = (Show) connection.packEnvelope(arrStrGenerateShowRequest, "getShow");
+
         user.addShow(show);
+        updateUser(user);
     }
 
     //generates a movie
@@ -279,6 +280,7 @@ public class ClientController implements Serializable {
         Movie movie = (Movie) connection.packEnvelope(arrStrGenerateMovieRequest, "getMovie");
 
         user.addMovie(movie);
+        updateUser(user);
 
     }
 
