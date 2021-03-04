@@ -40,8 +40,8 @@ public class MovieList extends JPanel {
         movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        pnlMovieList.setBackground(Color.decode("#6A86AA"));
+        //gbc.fill = GridBagConstraints.HORIZONTAL;
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
 
         pnlMovieList.removeAll();
         if(movies.size() > 0){
@@ -54,26 +54,28 @@ public class MovieList extends JPanel {
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
-                label.setFont(new Font("Monospaced", Font.BOLD, 18));
+                label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode("#6A86AA"));
+                pnlMiddle.setBackground(Color.decode("#F8F8F8"));
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-                pnlSouth.setBackground(Color.decode("#6A86AA"));
+                pnlSouth.setBackground(Color.decode("#F8F8F8"));
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setPreferredSize(new Dimension(800, 80));
-                Border cardBorder = BorderFactory.createRaisedBevelBorder();
+                pnlMain.setPreferredSize(new Dimension(800, 162));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#CCCCCC"));
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 //Poster container
+                Border posterBorder = BorderFactory.createLineBorder(Color.decode("#F8F8F8"), 10, false);
                 JLabel lblImage = new JLabel();
+                lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
 
                 //Poster
@@ -81,7 +83,7 @@ public class MovieList extends JPanel {
                 try {
                     URL url = new URL(movie.getPoster());
                     image = ImageIO.read(url);
-                    Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
+                    Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
                     ImageIcon imageIcon = new ImageIcon(dImg);
                     lblImage.setIcon(imageIcon);
                     pnlPoster.add(lblImage, BorderLayout.WEST);
