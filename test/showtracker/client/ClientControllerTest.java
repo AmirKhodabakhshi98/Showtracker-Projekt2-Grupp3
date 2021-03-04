@@ -39,6 +39,11 @@ class ClientControllerTest {
     }
 
     @org.junit.jupiter.api.Test
+    void setPanelMovieToNull() {
+        Assertions.assertEquals("MovieList", clientController.setPanel("MovieList", null));
+    }
+
+    @org.junit.jupiter.api.Test
     void setPanelShowList() {
         Assertions.assertEquals("ShowList", clientController.setPanel("ShowList", show));
     }
@@ -66,6 +71,11 @@ class ClientControllerTest {
     @org.junit.jupiter.api.Test
     void setPanelInfo() {
         Assertions.assertEquals("Info", clientController.setPanel("Info", show));
+    }
+
+    @org.junit.jupiter.api.Test
+    void setPanelMovieList() {
+        Assertions.assertEquals("MovieList", clientController.setPanel("MovieList", show));
     }
 
     @org.junit.jupiter.api.Test
@@ -105,6 +115,13 @@ class ClientControllerTest {
 
     @org.junit.jupiter.api.Test
     void signUp() {
+        try {
+            Files.deleteIfExists(Paths.get("Users/test2.usr"));
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
         Assertions.assertEquals("User registered", clientController.signUp("test2", pwd,
                 "test@gmail.com", null));
     }
@@ -171,11 +188,15 @@ class ClientControllerTest {
         Assertions.assertEquals("Password changed",clientController.updatePassword("test2", pwd, "testTest321"));
     }
 
-    @org.junit.jupiter.api.Test
+
+
+    /*@org.junit.jupiter.api.Test
     void updatePasswordToNull() {
         clientController.updatePassword("test2", "testTest321", "testTest123");
         Assertions.assertEquals("Password changed",clientController.updatePassword("test2", pwd, null));
     }
+
+     */
 
     @org.junit.jupiter.api.Test
     void updatePasswordFromNull() {
@@ -206,6 +227,8 @@ class ClientControllerTest {
         String[][] strings = clientController.searchShows(null);
         Assertions.assertEquals(null,strings[0][1]);
     }
+
+     */
 
     @org.junit.jupiter.api.Test
     void generateShow()
@@ -238,7 +261,41 @@ class ClientControllerTest {
         clientController.generateShow("Breaking Bad", null);
     }
 
-     */
+    // --
+
+    @org.junit.jupiter.api.Test
+    void generateMovie()
+    {
+        clientController.generateMovie("Shrek", "tt0126029");
+    }
+
+    @org.junit.jupiter.api.Test
+    void generateMovieEmptyName()
+    {
+        clientController.generateShow("", "tt0126029");
+    }
+
+    @org.junit.jupiter.api.Test
+    void generateMovieNullName()
+    {
+        clientController.generateShow(null, "tt0126029");
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void generateMovieEmptyId()
+    {
+        clientController.generateShow("Shrek", "");
+    }
+
+    @org.junit.jupiter.api.Test
+    void generateMovieNullId()
+    {
+        clientController.generateShow("Shrek", null);
+    }
+
+
+
 
 }
 
