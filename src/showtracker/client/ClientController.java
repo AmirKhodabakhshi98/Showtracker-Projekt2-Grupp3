@@ -3,6 +3,7 @@ package showtracker.client;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 
 import javax.swing.*;
@@ -20,7 +21,9 @@ import showtracker.client.View.Home;
  * Changes made by Filip, Moustafa, Basir & Adam
  */
 
-public class ClientController {
+public class ClientController implements Serializable {
+
+    private static final long serialVersionUID = -8815667314209823140L;
 
     private User user;
     private Profile pnlProfile;

@@ -90,7 +90,8 @@ public class MovieList extends JPanel {
                 }
 
                btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
-                       "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
+                       "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</p><br>" + "Released: "
+                       + movie.getYear() + "</p><br>" + "Actors: " + movie.getActors() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();

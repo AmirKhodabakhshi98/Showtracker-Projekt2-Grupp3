@@ -60,6 +60,8 @@ class ShowInfo extends JPanel {
         btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null,
                 "<html><body><p style=\"width: 300px;\">" +
                         show.getDescription() + "</p><br>" + "Imdb Rating: " + show.getImdbRating() +
+                        "</p><br>" + "Released: " + show.getYear()+
+                        "</p><br>" + "Actors: " + show.getActors()+
                         "</body></html>", "Show info", JOptionPane.PLAIN_MESSAGE));
 
         JPanel pnlHeader = new JPanel();

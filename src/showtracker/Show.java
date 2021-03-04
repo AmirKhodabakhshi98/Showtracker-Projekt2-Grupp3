@@ -17,6 +17,8 @@ public class Show implements Serializable {
     private String strDescription;
     private LinkedList<Episode> episodes = new LinkedList<>();
     private Date dteLastWatched;
+    private String actors;
+    private String year;
 
     public Show(String strName) {
         this.strName = strName;
@@ -30,6 +32,21 @@ public class Show implements Serializable {
 //    public String getTvdbId() {
 //        return strTvdbId;
 //    }
+    public void setActors(String actors){
+        this.actors = actors;
+    }
+
+    public String getActors(){
+        return actors;
+    }
+
+    public void setYear(String year){
+        this.year = year;
+    }
+
+    public String getYear(){
+        return year;
+    }
 
     public void setPoster(String Poster){
         this.Poster = Poster;

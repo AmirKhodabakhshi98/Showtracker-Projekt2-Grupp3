@@ -23,6 +23,7 @@ public class Movie implements Serializable {
     private String imdbRating;
     private String boxOffice;
     private String metascore;
+    private String actors;
 
     private boolean isWatched;
 
@@ -40,7 +41,8 @@ public class Movie implements Serializable {
                  String imdbId,
                  String imdbRating,
                  String boxOffice,
-                 String metascore) {
+                 String metascore,
+                 String actors) {
 
         this.title = title;
         this.year = year;
@@ -51,6 +53,13 @@ public class Movie implements Serializable {
         this.imdbRating = imdbRating;
         this.boxOffice = boxOffice;
         this.metascore = metascore;
+        this.actors = actors;
+    }
+
+    public void setActors(String actors){this.actors = actors;}
+
+    public String getActors(){
+        return actors;
     }
 
     public void setWatched(boolean isWatched) {

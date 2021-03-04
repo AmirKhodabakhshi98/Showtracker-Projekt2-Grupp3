@@ -114,6 +114,8 @@ class DatabaseReader implements IDatabaseReader {
         show.setImdbId((String) jsoShow.get("imdbId"));
         show.setImdbRating((String) jsoShow.get("imdbRating"));
         show.setPoster((String) jsoShow.get("Poster"));
+        show.setActors((String) jsoShow.get("Actors"));
+        show.setYear((String) jsoShow.get("Year"));
         System.out.println(jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
 
         try {
@@ -166,7 +168,7 @@ class DatabaseReader implements IDatabaseReader {
                 (String) jsoShow.get("imdbID"),
                 (String) jsoShow.get("imdbRating"),
                 (String) jsoShow.get("BoxOffice"),
-                (String) jsoShow.get("Metascore")
+                (String) jsoShow.get("Metascore"), (String) jsoShow.get("Actors")
         );
 /*
         output[0] = (String) jsoShow.get("Title");
