@@ -93,6 +93,7 @@ public class Controller {
 		String strPassword = users.get(strArrUserInfo[0]);
 		if (strPassword.equals(strArrUserInfo[1])) {
 			users.put(strArrUserInfo[0], strArrUserInfo[2]);
+			Helper.writeToFile(users, "files/users.obj"); // Fixes bugg B2
 
 			return new Envelope("Password changed", "reply");
 		} else {

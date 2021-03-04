@@ -80,12 +80,12 @@ class ShowList extends JPanel {
                 label.setFont(new Font("Monospaced", Font.BOLD, 18));
                 label.setText(show.getName());
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode("#6A86AA"));
+                pnlMiddle.setBackground(Color.decode("#58a0bc")); //PANEL BACKGROUND
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-                pnlSouth.setBackground(Color.decode("#6A86AA"));
+                pnlSouth.setBackground(Color.decode("#58a0bc")); //BUTTON PANEL / RIGHT SIDE
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 80));
@@ -93,7 +93,7 @@ class ShowList extends JPanel {
                 pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
-                pnlMain.setBackground(Color.decode("#6A86AA"));
+                pnlMain.setBackground(Color.decode("#ffcc66")); //LINES BETWEEN/AROUND PANELS
 
                 //Poster container
                 JLabel lblImage = new JLabel();
