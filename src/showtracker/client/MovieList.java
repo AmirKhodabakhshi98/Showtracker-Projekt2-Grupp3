@@ -41,7 +41,7 @@ public class MovieList extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
       //  gbc.fill = GridBagConstraints.HORIZONTAL;
-      //  pnlMovieList.setBackground(Color.decode("#E3E2DD"));
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
 
         pnlMovieList.removeAll();
         if(movies.size() > 0){
@@ -56,13 +56,13 @@ public class MovieList extends JPanel {
                 String colorTitle = "";
 
                 if (i % 2 == 0){
-                     colorMiddle = "#33001a"; //ccebff //4d0026 //33001a
+                     colorMiddle = "#F8F8F8"; //ccebff //4d0026 //33001a
                      colorSouth = colorMiddle;
                      colorPoster = colorMiddle;
                     colorTitle = "#ffffff";
                 }
                 else {
-                     colorMiddle = "#33001a";
+                     colorMiddle = "#F8F8F8";
                      colorSouth = colorMiddle;
                     colorPoster = colorMiddle;
                     colorTitle = "#ffffff";
@@ -86,11 +86,9 @@ public class MovieList extends JPanel {
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
-<<<<<<< Updated upstream
                 label.setForeground(Color.decode(colorTitle));
-=======
                 label.setForeground(Color.decode("#6A86AA"));
->>>>>>> Stashed changes
+
                 label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
                 pnlMiddle.add(label);
@@ -99,16 +97,16 @@ public class MovieList extends JPanel {
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-<<<<<<< Updated upstream
+
                 pnlSouth.setBackground(Color.decode(colorSouth));
-=======
+
                 pnlSouth.add(cb);
                 pnlSouth.setBackground(Color.decode("#F8F8F8"));
->>>>>>> Stashed changes
+
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 162));
-                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#6A86AA"));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#E3E2DD"));
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
