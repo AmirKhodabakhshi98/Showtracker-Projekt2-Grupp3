@@ -23,7 +23,7 @@ public class MovieList extends JPanel {
     //Constructor, input: ClientController instancce
     MovieList(ClientController clientController){
         this.clientController = clientController;
-        pnlMovieList.setBackground(Color.decode("#6A86AA"));
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
@@ -41,7 +41,7 @@ public class MovieList extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
       //  gbc.fill = GridBagConstraints.HORIZONTAL;
-      //  pnlMovieList.setBackground(Color.decode("#E3E2DD"));
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
 
         pnlMovieList.removeAll();
         if(movies.size() > 0){
@@ -56,13 +56,13 @@ public class MovieList extends JPanel {
                 String colorTitle = "";
 
                 if (i % 2 == 0){
-                     colorMiddle = "#33001a"; //ccebff //4d0026 //33001a
+                     colorMiddle = "#F8F8F8"; //ccebff //4d0026 //33001a
                      colorSouth = colorMiddle;
                      colorPoster = colorMiddle;
                     colorTitle = "#ffffff";
                 }
                 else {
-                     colorMiddle = "#33001a";
+                     colorMiddle = "#F8F8F8";
                      colorSouth = colorMiddle;
                     colorPoster = colorMiddle;
                     colorTitle = "#ffffff";
@@ -73,13 +73,22 @@ public class MovieList extends JPanel {
 
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
-
+                String rating[]={"No rating","★","★★","★★★","★★★★","★★★★★"};
+                JComboBox cb = new JComboBox(rating);
+                if(movie.getPersonalRating() != null) {
+                    cb.setSelectedItem(movie.getPersonalRating());
+                } else if(movie.getPersonalRating() == null){
+                    cb.setSelectedItem(rating);
+                }
                 btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                cb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
                 label.setForeground(Color.decode(colorTitle));
+                label.setForeground(Color.decode("#6A86AA"));
+
                 label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
                 pnlMiddle.add(label);
@@ -88,11 +97,16 @@ public class MovieList extends JPanel {
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
+
                 pnlSouth.setBackground(Color.decode(colorSouth));
+
+                pnlSouth.add(cb);
+                pnlSouth.setBackground(Color.decode("#F8F8F8"));
+
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 162));
-                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#6A86AA"));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#E3E2DD"));
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
@@ -120,6 +134,12 @@ public class MovieList extends JPanel {
                btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
                        "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</p><br>" + "Released: "
                        + movie.getYear() + "</p><br>" + "Actors: " + movie.getActors() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
+                cb.addActionListener(e ->{
+                    String personalRating = (String) cb.getSelectedItem();
+                    System.out.println(personalRating);
+                    clientController.generatePersonalRating(movie, personalRating);
+                    cb.setSelectedItem(personalRating);
+                });
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();
