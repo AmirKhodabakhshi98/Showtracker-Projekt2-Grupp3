@@ -31,8 +31,15 @@ import showtracker.client.View.FontsAndColors;
 class SearchShows extends JPanel {
 
 	private ClientController clientController;
+
 	private JTextField txfSearchBar = new JTextField();
     private JTextField txfShowName = new JTextField();
+	private JTextField txfShowYear = new JTextField();
+	private	JTextField txfShowPlot = new JTextField();
+	private	JTextField txfShowActors = new JTextField();
+	private	JTextField txfShowIMDBRating = new JTextField();
+	private JTextField txfShowPoster = new JTextField();
+
 	private JPanel pnlSearchResult = new JPanel();
 	private JPanel pnlMyOwnShowPanel = new JPanel();
 	private JPanel pnlMyShow = new JPanel();
@@ -77,7 +84,7 @@ class SearchShows extends JPanel {
 		JButton btnCreateMovie = new JButton("Create Movie");
 		btnCreateMovie.setFont(FontsAndColors.getFontPlain(16));
 		btnCreateMovie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnCreateMovie.addActionListener(e -> createOwnMovie());
+		btnCreateMovie.addActionListener(e -> createOwnMoviePanel());
 
 		pnlSearchBar.add(txfSearchBar);
 		pnlSearchBar.add(btnSearchBar);
@@ -212,6 +219,7 @@ class SearchShows extends JPanel {
 
 
 
+
 	// TODO: 2021-02-12 Denna metod kanske ska fixa om vi har tid, känns klumpig att visa om man inte hittar i OMDB  - PM
 	/**
 	 * Draws a panel for creating a show when no results are found
@@ -222,10 +230,28 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setLayout(new BorderLayout());
 		pnlMyOwnShowPanel.setLayout(new BoxLayout(pnlMyOwnShowPanel, BoxLayout.Y_AXIS));
 		txfShowName.setText(txfSearchBar.getText());
+
 		JButton btnSubmit = new JButton("Submit");
+
 		JTextField txfNbrOfSeasons = new JTextField();
-		pnlMyOwnShowPanel.add(new JLabel("Name: "));
+
+
+
+		pnlMyOwnShowPanel.add(new JLabel("Title: "));
 		pnlMyOwnShowPanel.add(txfShowName);
+		pnlMyOwnShowPanel.add(new JLabel("Released:"));
+		pnlMyOwnShowPanel.add(txfShowYear);
+		pnlMyOwnShowPanel.add(new JLabel("IMDB Rating: "));
+		pnlMyOwnShowPanel.add(txfShowIMDBRating);
+		pnlMyOwnShowPanel.add(new JLabel("Actors: "));
+		pnlMyOwnShowPanel.add(txfShowActors);
+		pnlMyOwnShowPanel.add(new JLabel("Plot:"));
+		pnlMyOwnShowPanel.add(txfShowPlot);
+		pnlMyOwnShowPanel.add(new JLabel("Poster (web url): "));
+		pnlMyOwnShowPanel.add(txfShowPoster);
+
+
+
 		pnlMyOwnShowPanel.add(new JLabel("Number of Seasons"));
 		pnlMyOwnShowPanel.add(txfNbrOfSeasons);
 		pnlMyOwnShowPanel.add(btnSubmit, BorderLayout.SOUTH);
@@ -236,42 +262,85 @@ class SearchShows extends JPanel {
 
 
 	/**
-	 * Method for user to create their own movie
+	 * Method for user to input their own movie via GUI
 	 */
-	private void createOwnMovie(){
+	private void createOwnMoviePanel(){
 		pnlSearchResult.removeAll();
 		pnlMyOwnShowPanel.removeAll();
 		pnlMyOwnMoviePanel.removeAll();
 		pnlSearchResult.setLayout(new BorderLayout());
 		pnlMyOwnMoviePanel.setLayout(new BoxLayout(pnlMyOwnMoviePanel, BoxLayout.Y_AXIS));
 
-		JTextField txfMovieName = new JTextField();
-		txfMovieName.setText(txfSearchBar.getText());
-		JButton btnSubmit = new JButton("Submit");
+		JTextField txfMovieTitle = new JTextField();
+		txfMovieTitle.setText(txfSearchBar.getText());
 
-		pnlMyOwnMoviePanel.add(new JLabel("Name: "));
-		pnlMyOwnMoviePanel.add(txfMovieName);
-		pnlMyOwnMoviePanel.add(btnSubmit, BorderLayout.SOUTH);
+		JTextField txfMovieYear = new JTextField();
+		JTextField txfMovieIMDBRating = new JTextField();
+		JTextField txfMoviePlot = new JTextField();
+		JTextField txfMovieActors = new JTextField();
+		JTextField txfMoviePosterURL = new JTextField();
 
-		btnSubmit.addActionListener(e -> clientController.getUser().addMovie(new Movie(txfMovieName.getText()))); //adds the movie to user
+		JButton btnCreate = new JButton("Create");
+
+		pnlMyOwnMoviePanel.add(new JLabel("Title: "));
+		pnlMyOwnMoviePanel.add(txfMovieTitle);
+		pnlMyOwnMoviePanel.add(new JLabel("Released: "));
+		pnlMyOwnMoviePanel.add(txfMovieYear);
+		pnlMyOwnMoviePanel.add(new JLabel("IMDB Rating: "));
+		pnlMyOwnMoviePanel.add(txfMovieIMDBRating);
+		pnlMyOwnMoviePanel.add(new JLabel("Actors: "));
+		pnlMyOwnMoviePanel.add(txfMovieActors);
+		pnlMyOwnMoviePanel.add(new JLabel("Plot: "));
+		pnlMyOwnMoviePanel.add(txfMoviePlot);
+		pnlMyOwnMoviePanel.add(new JLabel("Poster (web url):"));
+		pnlMyOwnMoviePanel.add(txfMoviePosterURL);
+
+		pnlMyOwnMoviePanel.add(btnCreate, BorderLayout.SOUTH);
+
+
+
+		btnCreate.addActionListener(e -> {
+			saveOwnMovie(
+					txfMovieTitle.getText(),
+					txfMovieYear.getText(),
+					txfMovieIMDBRating.getText(),
+					txfMovieActors.getText(),
+					txfMoviePlot.getText(),
+					txfMoviePosterURL.getText()
+			);
+			txfMovieActors.setText("");
+			txfMovieTitle.setText("");
+			txfMovieYear.setText("");
+			txfMovieIMDBRating.setText("");
+			txfMoviePlot.setText("");
+			txfMoviePosterURL.setText("");
+			JOptionPane.showMessageDialog(null,"Movie successfully created!");
+
+				}
+		);
 
 		pnlSearchResult.add(pnlMyOwnMoviePanel, BorderLayout.NORTH);
 		spnSearchResult.setViewportView(pnlSearchResult);
 
-		//pnlMyOwnMoviePanel.add(new JLabel(""));
-
-//			clientController.getUser().addShow(show);
-
-	//	btnSubmit.addActionListener(e -> creat);
-
-
-
-
-
-
-
 	}
 
+	/**
+	 * Method  to save the users custom movie.
+	 */
+	private void saveOwnMovie(String title, String year, String imdbRating, String actors, String plot, String posterURL){
+
+		Movie movie = new Movie(title);
+		movie.setYear(year);
+		movie.setImdbRating(imdbRating);
+		movie.setActors(actors);
+		movie.setPlot(plot);
+		movie.setPoster(posterURL);
+		clientController.getUser().addMovie(movie);
+
+		clientController.updateUser(clientController.getUser());
+
+		System.out.println("Custom movie saved");
+	}
 
 
 	/**
@@ -361,6 +430,19 @@ class SearchShows extends JPanel {
 		}
 		if (blnParseIntSuccess) {
 			Show show = new Show(txfShowName.getText());
+			show.setYear(txfShowYear.getText());
+			show.setImdbRating(txfShowIMDBRating.getText());
+			show.setActors(txfShowActors.getText());
+			show.setDescription(txfShowPlot.getText());
+			show.setPoster(txfShowPoster.getText());
+
+			txfShowName.setText(null);
+			txfShowYear.setText(null);
+			txfShowIMDBRating.setText(null);
+			txfShowActors.setText(null);
+			txfShowPoster.setText(null);
+			txfShowPlot.setText(null);
+
 			for (int s = 0; s < arrTxfSeasons.length; s++)
 				for (int e = 0; e < arrIntEpisodes[s]; e++)
 	//				show.addEpisode(new Episode(show, e + 1, s + 1));
