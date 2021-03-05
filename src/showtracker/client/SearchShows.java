@@ -449,6 +449,7 @@ class SearchShows extends JPanel {
 
 			show.sortEpisodes();
 			clientController.getUser().addShow(show);
+			clientController.updateUser(clientController.getUser());
 			JOptionPane.showMessageDialog(null, "Show created successfully!");
 		}
 	}
