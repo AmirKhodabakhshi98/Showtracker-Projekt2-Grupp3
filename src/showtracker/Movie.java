@@ -24,6 +24,7 @@ public class Movie implements Serializable {
     private String boxOffice;
     private String metascore;
     private String actors;
+    private String personalRating;
 
     private boolean isWatched;
 
@@ -150,5 +151,13 @@ public class Movie implements Serializable {
 
     public void setMetascore(String metascore) {
         this.metascore = metascore;
+    }
+
+    public String getPersonalRating(){
+        return personalRating;
+    }
+
+    public void setPersonalRating(String personalRating){
+        this.personalRating = personalRating;
     }
 }
