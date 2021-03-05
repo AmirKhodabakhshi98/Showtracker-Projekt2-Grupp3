@@ -77,7 +77,7 @@ class ShowList extends JPanel {
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
-                label.setFont(new Font("Monospaced", Font.BOLD, 18));
+                label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(show.getName());
                 pnlMiddle.add(label);
                 pnlMiddle.setBackground(Color.decode("#58a0bc")); //PANEL BACKGROUND

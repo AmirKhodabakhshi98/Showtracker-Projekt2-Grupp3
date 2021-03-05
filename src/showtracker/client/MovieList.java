@@ -23,7 +23,7 @@ public class MovieList extends JPanel {
     //Constructor, input: ClientController instancce
     MovieList(ClientController clientController){
         this.clientController = clientController;
-        pnlMovieList.setBackground(Color.decode("#6A86AA"));
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
@@ -40,40 +40,82 @@ public class MovieList extends JPanel {
         movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        pnlMovieList.setBackground(Color.decode("#6A86AA"));
+      //  gbc.fill = GridBagConstraints.HORIZONTAL;
+        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
 
         pnlMovieList.removeAll();
         if(movies.size() > 0){
+
+            int i = 2;
             for(Movie movie : movies){
+
+                String colorMiddle = "";
+                String colorSouth = "";
+                String colorMain = "";
+                String colorPoster = "";
+                String colorTitle = "";
+
+                if (i % 2 == 0){
+                     colorMiddle = "#F8F8F8";
+                     colorSouth = colorMiddle;
+                     colorPoster = colorMiddle;
+                    colorTitle = "#ffffff";
+                }
+                else {
+                     colorMiddle = "#F8F8F8";
+                     colorSouth = colorMiddle;
+                    colorPoster = colorMiddle;
+                    colorTitle = "#ffffff";
+
+
+                }
+                i++;
+
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
-
+                String rating[]={"No rating","★","★★","★★★","★★★★","★★★★★"};
+                JComboBox cb = new JComboBox(rating);
+                if(movie.getPersonalRating() != null) {
+                    cb.setSelectedItem(movie.getPersonalRating());
+                } else if(movie.getPersonalRating() == null){
+                    cb.setSelectedItem(rating);
+                }
                 btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                cb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
-                label.setFont(new Font("Monospaced", Font.BOLD, 18));
+                label.setForeground(Color.decode(colorTitle));
+                label.setForeground(Color.decode("#6A86AA"));
+
+                label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode("#6A86AA"));
+                pnlMiddle.setBackground(Color.decode(colorMiddle));
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-                pnlSouth.setBackground(Color.decode("#6A86AA"));
+
+                pnlSouth.setBackground(Color.decode(colorSouth));
+
+                pnlSouth.add(cb);
+                pnlSouth.setBackground(Color.decode("#F8F8F8"));
+
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setPreferredSize(new Dimension(800, 80));
-                Border cardBorder = BorderFactory.createRaisedBevelBorder();
+                pnlMain.setPreferredSize(new Dimension(800, 162));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#E3E2DD"));
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
                 pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 //Poster container
+                Border posterBorder = BorderFactory.createLineBorder(Color.decode(colorPoster), 10, false);
                 JLabel lblImage = new JLabel();
+                lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
 
                 //Poster
@@ -81,7 +123,7 @@ public class MovieList extends JPanel {
                 try {
                     URL url = new URL(movie.getPoster());
                     image = ImageIO.read(url);
-                    Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
+                    Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
                     ImageIcon imageIcon = new ImageIcon(dImg);
                     lblImage.setIcon(imageIcon);
                     pnlPoster.add(lblImage, BorderLayout.WEST);
@@ -92,6 +134,11 @@ public class MovieList extends JPanel {
                btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
                        "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</p><br>" + "Released: "
                        + movie.getYear() + "</p><br>" + "Actors: " + movie.getActors() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
+                cb.addActionListener(e ->{
+                    String personalRating = (String) cb.getSelectedItem();
+                    clientController.generatePersonalRating(movie, personalRating);
+                    cb.setSelectedItem(personalRating);
+                });
                 btnRemove.addActionListener(e -> {
                     clientController.getUser().removeMovie(movie);
                     draw();
