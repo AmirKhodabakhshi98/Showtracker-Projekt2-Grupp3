@@ -56,7 +56,7 @@ public class MovieList extends JPanel {
                 String colorTitle = "";
 
                 if (i % 2 == 0){
-                     colorMiddle = "#F8F8F8"; //ccebff //4d0026 //33001a
+                     colorMiddle = "#F8F8F8";
                      colorSouth = colorMiddle;
                      colorPoster = colorMiddle;
                     colorTitle = "#ffffff";
@@ -136,7 +136,6 @@ public class MovieList extends JPanel {
                        + movie.getYear() + "</p><br>" + "Actors: " + movie.getActors() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
                 cb.addActionListener(e ->{
                     String personalRating = (String) cb.getSelectedItem();
-                    System.out.println(personalRating);
                     clientController.generatePersonalRating(movie, personalRating);
                     cb.setSelectedItem(personalRating);
                 });
