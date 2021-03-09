@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.*;
+
 /**
- * 
  * @author Filip Spånberg
  * Represents a user
  */
@@ -57,6 +57,10 @@ public class User implements Serializable {
      * @param show
      */
     public void addShow(Show show) {
+        if (show == null || !Show.isValid(show))
+            return;
+
+        show = new Show(show);
         if (shows.contains(show)) {
             int i = 1;
             String newName;
@@ -64,30 +68,37 @@ public class User implements Serializable {
                 newName = show.getName() + " (" + i++ + ")";
             } while (shows.contains(new Show(newName)));
             do {
-                newName = JOptionPane.showInputDialog("A show with that name already exists, please enter a new name.", newName);
+                newName = JOptionPane.showInputDialog("A show with that name "+
+                        "already exists, please enter a new name.", newName);
             } while (shows.contains(new Show(newName)));
             if (newName != null)
                 show.setName(newName);
         }
+
         shows.add(show);
     }
 
     public void addMovie(Movie movie){
-        /*if (movies.contains(movie)){
+        if (movie == null || !Movie.isValid(movie))
+            return;
+
+        movie = new Movie(movie);
+        if (movies.contains(movie)){
             int i = 1;
             String newName;
             do {
                 newName = movie.getTitle() + " (" + i++ + ")";
             } while (movies.contains(new Movie(newName)));
+
             do {
-                newName = JOptionPane.showInputDialog("A show with that name already exists, please enter a new name.", newName);
+                newName = JOptionPane.showInputDialog("A movie with that name "+
+                        "already exists, please enter a new name.", newName);
             } while (movies.contains(new Movie(newName)));
+
             if (newName != null)
                 movie.setTitle(newName);
         }
 
-         */
-        System.out.println(movie.getTitle() + "This is a test");
         movies.add(movie);
     }
 

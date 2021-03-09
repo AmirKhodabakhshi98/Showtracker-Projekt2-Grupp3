@@ -73,7 +73,7 @@ public class UserTest {
 	@Test
 	void addShow_null_content() {
 		User usr = new User("TestUser", "user@test.com", null);
-		Show show = new Show(null);
+		Show show = new Show((String)null);
 
 		usr.addShow(show);
 
@@ -141,7 +141,7 @@ public class UserTest {
 		usr.addShow(show);
 		int size = usr.getShows().size();
 
-		usr.removeShow(new Show(null));
+		usr.removeShow(new Show((String)null));
 
 		assertEquals(size, usr.getShows().size());
 	}
@@ -218,16 +218,18 @@ public class UserTest {
 	void addMovie_valid() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 
 		usr.addMovie(movie);
 
-		assertEquals(movie, usr.getMovies().get(0));
+		assertEquals(movie.getTitle(), usr.getMovies().get(0).getTitle());
 	}
 
 	@Test
 	void addMovie_valid_null() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 
 		usr.addMovie(movie);
 		usr.addMovie(null);
@@ -239,9 +241,14 @@ public class UserTest {
 	void addMovie_same() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 
 		usr.addMovie(movie);
-		usr.addMovie(new Movie("Test Movie"));
+
+		movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
+
+		usr.addMovie(movie);
 
 		assertEquals("Test Movie", usr.getMovies().get(0).getTitle());
 		assertEquals("Test Movie (1)", usr.getMovies().get(1).getTitle());
@@ -251,6 +258,7 @@ public class UserTest {
 	void addMovie_null_content() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId(null);
 
 		usr.addMovie(movie);
 
@@ -265,7 +273,9 @@ public class UserTest {
 	void removeMovie_null() {
 		User usr = new User("TestUser", "user@test.com", null);
 
-		usr.addMovie(new Movie("Test Movie"));
+		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
+		usr.addMovie(movie);
 
 		usr.removeMovie(null);
 
@@ -277,6 +287,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 		usr.addMovie(movie);
 
 		usr.removeMovie(movie);
@@ -289,6 +300,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 		usr.addMovie(movie);
 
 		int size = usr.getMovies().size();
@@ -303,11 +315,12 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
+		movie.setImdbId("0000");
 		usr.addMovie(movie);
 
 		int size = usr.getMovies().size();
 
-		usr.removeMovie(new Movie(null));
+		usr.removeMovie(new Movie((String)null));
 
 		assertEquals(size, usr.getMovies().size());
 	}

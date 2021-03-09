@@ -1,9 +1,6 @@
 package showtracker.server;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -11,11 +8,6 @@ import showtracker.Envelope;
 import showtracker.Movie;
 import showtracker.Show;
 import showtracker.User;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -194,10 +186,10 @@ public class ControllerTest {
 	@Test
 	void receiveLogIn_type() {
 		// Sign up in case the user doesn't exist
-		String[] arrStrUserInfo = {"TestUser", "Test1Password", "user@test.org"};
+		String[] arrStrUserInfo = {"TestUser1", "Test1Password", "user1@test.org"};
 		Envelope usrEnv = controller.signUp(arrStrUserInfo);
 
-		String[] arrStrUser = {"TestUser", "Test1Password"};
+		String[] arrStrUser = {"TestUser1", "Test1Password"};
 		Envelope in = new Envelope(arrStrUser, "logIn");
 		Envelope result = controller.receiveEnvelope(in);
 
@@ -226,15 +218,15 @@ public class ControllerTest {
 	@Test
 	void receiveLogIn_existing() {
 		// Sign up in case the user doesn't exist
-		String[] arrStrUserInfo = {"TestUser", "Test1Password", "user@test.org"};
+		String[] arrStrUserInfo = {"TestUser1", "Test1Password", "user1@test.org"};
 		Envelope usrEnv = controller.signUp(arrStrUserInfo);
 
-		String[] arrStrUser = {"TestUser", "Test1Password"};
+		String[] arrStrUser = {"TestUser1", "Test1Password"};
 		Envelope in = new Envelope(arrStrUser, "logIn");
 		Envelope result = controller.receiveEnvelope(in);
 
 		assertNotNull(result.getContent());
-		assertEquals("TestUser", ((User)result.getContent()).getUserName());
+		assertEquals("TestUser1", ((User)result.getContent()).getUserName());
 	}
 
 	//------------------------------------------------------------------------//
@@ -268,7 +260,7 @@ public class ControllerTest {
 		Envelope result = controller.receiveEnvelope(in);
 
 		assertEquals("rejection", result.getType());
-		assertEquals("Failed to save profile.", result.getContent());
+		assertEquals("No such user exists.", result.getContent());
 
 		// 2021-02-25, Kasper S. Skott
 		// At the time this test was written Controller.updateUser doesn't
@@ -459,7 +451,7 @@ public class ControllerTest {
 
 		@Override
 		public Show generateShow(String[] arShow) {
-			Show show = new Show(null);
+			Show show = new Show((String)null);
 			switch (arShow[0]) {
 				case "Friends":
 					show.setName("Friends");
@@ -496,11 +488,13 @@ public class ControllerTest {
 							"tt1375666",
 							"8.8",
 							"$292,576,195",
-							"74");
+							"74",
+							"Actor A, Actor B");
 				break;
 
 				default:
 					result = new Movie(
+							null,
 							null,
 							null,
 							null,

@@ -1,8 +1,6 @@
 package showtracker;
 
-import java.awt.*;
 import java.io.Serializable;
-import java.text.Format;
 import java.util.*;
 
 /**
@@ -10,9 +8,9 @@ import java.util.*;
  */
 public class Show implements Serializable {
     private static final long serialVersionUID = -7641780883231752094L;
-    private String Poster;
+    private String poster;
     private String strImdbId;
-    private String ImdbRating;
+    private String imdbRating;
     private String strName;
     private String strDescription;
     private LinkedList<Episode> episodes = new LinkedList<>();
@@ -25,13 +23,21 @@ public class Show implements Serializable {
         setLastWatched();
     }
 
-//    public void setTvdbId(String strTvdbId) {  //Unnecessary code ATM, leave it util next meeting.
-//        this.strTvdbId = strTvdbId;
-//    }
-//
-//    public String getTvdbId() {
-//        return strTvdbId;
-//    }
+    /**
+     * Copy constructor
+     */
+    public Show(Show other) {
+        poster          = other.poster;
+        strImdbId       = other.strImdbId;
+        imdbRating      = other.imdbRating;
+        strName         = other.strName;
+        strDescription  = other.strDescription;
+        episodes        = (LinkedList<Episode>)other.episodes.clone();
+        dteLastWatched  = other.dteLastWatched;
+        actors          = other.actors;
+        year            = other.year;
+    }
+
     public void setActors(String actors){
         this.actors = actors;
     }
@@ -49,19 +55,19 @@ public class Show implements Serializable {
     }
 
     public void setPoster(String Poster){
-        this.Poster = Poster;
+        this.poster = Poster;
     }
 
     public String getPoster(){
-        return Poster;
+        return poster;
     }
 
     public void setImdbRating(String ImdbRating){
-        this.ImdbRating = ImdbRating;
+        this.imdbRating = ImdbRating;
     }
 
     public String getImdbRating(){
-        return ImdbRating;
+        return imdbRating;
     }
 
     public void setImdbId(String strImdbId) {
@@ -78,6 +84,26 @@ public class Show implements Serializable {
 
     public String getName() {
         return strName;
+    }
+
+    /**
+     * Determines whether the information on the show is complete
+     * enough to be considered valid. This is to help prevent adding
+     * shows that contain certain null or empty members.
+     * @param show the show to check
+     * @return true if valid, false if invalid
+     * @author Kasper S. Skott
+     */
+    public static boolean isValid(Show show) {
+        if (show.strName == null ||
+            show.strImdbId == null)
+            return false;
+
+        if (show.strName.isEmpty() ||
+            show.strImdbId.isEmpty())
+            return false;
+
+        return true;
     }
 
     public void addEpisode(Episode episode) {

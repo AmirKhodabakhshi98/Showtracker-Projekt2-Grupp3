@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- * 
  * @author Filip Spånberg
  * Changes made by Adam
  */
@@ -44,42 +43,81 @@ public class Controller {
 	Envelope receiveEnvelope(Envelope envInput) {
 		Envelope returnEnvelope = null;
 
+		if (envInput.getType() == null)
+			return null;
+
 		switch (envInput.getType()) {
 			case "searchShows":
 				String strSearchTerms = (String) envInput.getContent();
-				String[][] strArrResponse = dbr.searchOMDBdbShows(strSearchTerms);
-				returnEnvelope = new Envelope(strArrResponse, "shows");
+				if (strSearchTerms == null) {
+					returnEnvelope = new Envelope(null, "shows");
+				}
+				else {
+					String[][] strArr = dbr.searchOMDBdbShows(strSearchTerms);
+					returnEnvelope = new Envelope(strArr, "shows");
+				}
 				break;
+
 			case "getShow":
 				String[] strArrEpisodeQuery = (String[]) envInput.getContent();
-				Show show = dbr.generateShow(strArrEpisodeQuery);
+				Show show;
+				if (strArrEpisodeQuery == null)
+					show = new Show((String)null);
+				else
+					show = dbr.generateShow(strArrEpisodeQuery);
+
 				returnEnvelope = new Envelope(show, "show");
 				break;
+
 			case "signUp":
 				String[] strArrSignup = (String[]) envInput.getContent();
 				returnEnvelope = signUp(strArrSignup);
 				break;
+
 			case "checkName":
 				String username = (String) envInput.getContent();
-				returnEnvelope = new Envelope(users.containsKey(username), "checkUsername");
+				returnEnvelope = new Envelope(users.containsKey(username),
+						"checkUsername");
 				break;
+
 			case "logIn":
 				String[] strArrLogin = (String[]) envInput.getContent();
-				returnEnvelope = loginUser(strArrLogin);
+				if (strArrLogin == null)
+					returnEnvelope = new Envelope(null, "user");
+				else
+					returnEnvelope = loginUser(strArrLogin);
+
 				break;
+
 			case "updateUser":
 				User usrUpdate = (User) envInput.getContent();
 				returnEnvelope = updateUser(usrUpdate);
 				break;
+
 			case "updatePassword":
 				String[] strArrPassword = (String[]) envInput.getContent();
-				returnEnvelope = updatePass(strArrPassword);
+				if (strArrPassword == null) {
+					returnEnvelope = new Envelope(
+							"No match with current password!", "reply");
+				}
+				else {
+					returnEnvelope = updatePass(strArrPassword);
+				}
+
 				break;
+
 			case "getMovie":
 				String[] info = (String[]) envInput.getContent();
-				Movie movie = dbr.generateMovie(info);
-				System.out.println("returning movie");
+				Movie movie;
+				if (info == null)
+					movie = new Movie((String)null);
+				else
+					movie = dbr.generateMovie(info);
+
 				returnEnvelope = new Envelope(movie, "movie");
+				break;
+
+			default: break;
 		}
 		return returnEnvelope;
 	}
@@ -91,6 +129,9 @@ public class Controller {
 	 */
 	Envelope updatePass(String[] strArrUserInfo) {
 		String strPassword = users.get(strArrUserInfo[0]);
+		if (strPassword == null)
+			return new Envelope("No match with current password!", "reply");
+
 		if (strPassword.equals(strArrUserInfo[1])) {
 			users.put(strArrUserInfo[0], strArrUserInfo[2]);
 			Helper.writeToFile(users, "files/users.obj"); // Fixes bugg B2
@@ -141,11 +182,14 @@ public class Controller {
 	 * @return The reply
 	 */
 	Envelope updateUser(User user) {
-		if (user != null) {
+		if (user == null || user.getUserName() == null)
+			return new Envelope("Failed to save profile.", "rejection");
+
+		if (users.containsKey(user.getUserName())) {
 			Helper.writeToFile(user, "files/users/" + user.getUserName() + ".usr");
 			return new Envelope("Profile saved", "confirmation");
 		} else {
-			return new Envelope("Failed to save profile.", "rejection");
+			return new Envelope("No such user exists.", "rejection");
 		}
 	}
 
