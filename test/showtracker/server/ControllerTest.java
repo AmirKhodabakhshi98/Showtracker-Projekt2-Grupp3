@@ -1,6 +1,9 @@
 package showtracker.server;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -9,12 +12,21 @@ import showtracker.Movie;
 import showtracker.Show;
 import showtracker.User;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Kasper S. Skott
  */
 public class ControllerTest {
+
+	private static final String TEST_POSTER_URL = "https://m.media-amazon.com/"+
+		"images/M/MV5BNDVkYjU0MzctMWRmZi00NTkxLTgwZWEtOWVhYjZlYjllYmU4XkEyXkFq"+
+		"cGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg";
 
 	private Controller controller;
 	private TestDatabaseReader dbr;
@@ -25,6 +37,7 @@ public class ControllerTest {
 		dbr = new TestDatabaseReader();
 		connection = new TestConnection();
 		controller = new Controller(dbr, connection);
+		controller.startConnection(1);
 	}
 
 	@AfterEach
@@ -64,6 +77,90 @@ public class ControllerTest {
 	//------------------------------------------------------------------------//
 
 	@Test
+	void receiveSearchShows_type() {
+		Envelope in = new Envelope("Friends", "searchShows");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof String[][]);
+	}
+
+	@Test
+	void receiveSearchShows_null() {
+		Envelope in = new Envelope(null, "searchShows");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertNull(result.getContent());
+	}
+
+	@Test
+	void receiveSearchShows_existing() {
+		Envelope in = new Envelope("Friends", "searchShows");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertEquals("tt0108778", ((String[][])result.getContent())[0][1]);
+	}
+
+	@Test
+	void receiveSearchShows_nonexisting() {
+		Envelope in = new Envelope("d908sa6hd1d02", "searchShows");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertNull(((String[][])result.getContent())[0][0]);
+	}
+
+	//------------------------------------------------------------------------//
+
+	@Test
+	void receiveGetShow_type() {
+		String[] arrStr = {"Friends", "tt0108778"};
+		Envelope in = new Envelope(arrStr, "getShow");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof Show);
+	}
+
+	@Test
+	void receiveGetShow_null() {
+		Envelope in = new Envelope(null, "getShow");
+		Envelope result = controller.receiveEnvelope(in);
+		Show show = (Show) result.getContent();
+
+		assertNull(show.getImdbId());
+	}
+
+	@Test
+	void receiveGetShow_existing() {
+		String[] arrStr = {"Friends", "tt0108778"};
+		Envelope in = new Envelope(arrStr, "getShow");
+		Envelope result = controller.receiveEnvelope(in);
+		Show show = (Show) result.getContent();
+
+		assertEquals("tt0108778", show.getImdbId());
+	}
+
+	@Test
+	void receiveGetShow_nonexisting() {
+		String[] arrStr = {"d908sa6hd1d02", "df85h1jds1f9ds2"};
+		Envelope in = new Envelope(arrStr, "getShow");
+		Envelope result = controller.receiveEnvelope(in);
+		Show show = (Show) result.getContent();
+
+		assertNull(show.getImdbId());
+	}
+
+	//------------------------------------------------------------------------//
+
+	@Test
+	void receiveCheckName_type() {
+		Envelope in = new Envelope(null, "checkName");
+		Envelope result = controller.receiveEnvelope(in);
+		String name = result.getContent().getClass().getName();
+
+
+		assertTrue(result.getContent() instanceof Boolean);
+	}
+
+	@Test
 	void receiveCheckName_null() {
 		Envelope in = new Envelope(null, "checkName");
 		Envelope result = controller.receiveEnvelope(in);
@@ -93,6 +190,19 @@ public class ControllerTest {
 	}
 
 	//------------------------------------------------------------------------//
+
+	@Test
+	void receiveLogIn_type() {
+		// Sign up in case the user doesn't exist
+		String[] arrStrUserInfo = {"TestUser", "Test1Password", "user@test.org"};
+		Envelope usrEnv = controller.signUp(arrStrUserInfo);
+
+		String[] arrStrUser = {"TestUser", "Test1Password"};
+		Envelope in = new Envelope(arrStrUser, "logIn");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof User);
+	}
 
 	@Test
 	void receiveLogIn_null() {
@@ -130,12 +240,23 @@ public class ControllerTest {
 	//------------------------------------------------------------------------//
 
 	@Test
+	void receiveUpdateUser_type() {
+		// Make sure this user doesn't exist!
+		User usr = new User("dc724af18fbdd4e59189f5fe768a5f8311527050",
+				"dcr24bf18fe5d4e29189f5fe7q3a5f8311567250", null);
+		Envelope in = new Envelope(usr, "updateUser");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof String);
+	}
+
+	@Test
 	void receiveUpdateUser_null() {
 		Envelope in = new Envelope(null, "updateUser");
 		Envelope result = controller.receiveEnvelope(in);
 
 		assertEquals("rejection", result.getType());
-		assertEquals("Failed to save profile.", (String)result.getContent());
+		assertEquals("Failed to save profile.", result.getContent());
 	}
 
 	@Test
@@ -147,7 +268,7 @@ public class ControllerTest {
 		Envelope result = controller.receiveEnvelope(in);
 
 		assertEquals("rejection", result.getType());
-		assertEquals("Failed to save profile.", (String)result.getContent());
+		assertEquals("Failed to save profile.", result.getContent());
 
 		// 2021-02-25, Kasper S. Skott
 		// At the time this test was written Controller.updateUser doesn't
@@ -170,6 +291,19 @@ public class ControllerTest {
 	}
 
 	//------------------------------------------------------------------------//
+
+	@Test
+	void receiveUpdatePasswd_type() {
+		// Sign up in case the user doesn't exist
+		String[] arrStrUserInfo = {"TestUser", "Test1Password", "user@test.org"};
+		Envelope usrEnv = controller.signUp(arrStrUserInfo);
+
+		String[] arrStr = {"TestUser", "InvalidPasswd", "Test2Password"};
+		Envelope in = new Envelope(arrStr, "updatePassword");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof String);
+	}
 
 	@Test
 	void receiveUpdatePasswd_null() {
@@ -230,6 +364,46 @@ public class ControllerTest {
 				(String)result.getContent());
 	}
 
+	//------------------------------------------------------------------------//
+
+	@Test
+	void receiveGetMovie_type() {
+		String[] arrStr = {"Inception", "tt1375666"};
+		Envelope in = new Envelope(arrStr, "getMovie");
+		Envelope result = controller.receiveEnvelope(in);
+
+		assertTrue(result.getContent() instanceof Movie);
+	}
+
+	@Test
+	void receiveGetMovie_null() {
+		Envelope in = new Envelope(null, "getMovie");
+		Envelope result = controller.receiveEnvelope(in);
+		Movie movie = (Movie) result.getContent();
+
+		assertNull(movie.getTitle());
+	}
+
+	@Test
+	void receiveGetMovie_existing() {
+		String[] arrStr = {"Inception", "tt1375666"};
+		Envelope in = new Envelope(arrStr, "getMovie");
+		Envelope result = controller.receiveEnvelope(in);
+		Movie movie = (Movie) result.getContent();
+
+		assertEquals("Inception", movie.getTitle());
+	}
+
+	@Test
+	void receiveGetMovie_nonexisting() {
+		String[] arrStr = {"d908sa6hd1d02", "df85h1jds1f9ds2"};
+		Envelope in = new Envelope(arrStr, "getMovie");
+		Envelope result = controller.receiveEnvelope(in);
+		Movie movie = (Movie) result.getContent();
+
+		assertNull(movie.getTitle());
+	}
+
 	////////////////////////////////////////////////////////////////////////////
 
 	private class TestConnection implements IConnection {
@@ -255,7 +429,27 @@ public class ControllerTest {
 
 		@Override
 		public String[][] searchOMDBdbShows(String strSearchTerms) {
-			return new String[0][];
+			String [][] show = new String[1][5];
+
+			switch (strSearchTerms) {
+				case "Friends":
+					show[0][0] = "Friends";
+					show[0][1] = "tt0108778";
+					show[0][2] = TEST_POSTER_URL;
+					show[0][3] = "8.9";
+					show[0][4] = "series";
+				break;
+
+				default:
+					show[0][0] = null;
+					show[0][1] = null;
+					show[0][2] = null;
+					show[0][3] = null;
+					show[0][4] = null;
+				break;
+			}
+
+			return show;
 		}
 
 		@Override
@@ -265,7 +459,18 @@ public class ControllerTest {
 
 		@Override
 		public Show generateShow(String[] arShow) {
-			return null;
+			Show show = new Show(null);
+			switch (arShow[0]) {
+				case "Friends":
+					show.setName("Friends");
+					show.setImdbId("tt0108778");
+					break;
+
+				default:
+					break;
+			}
+
+			return show;
 		}
 
 		@Override
@@ -275,7 +480,40 @@ public class ControllerTest {
 
 		@Override
 		public Movie generateMovie(String[] input) {
-			return null;
+			Movie result;
+
+			switch (input[0]) {
+				case "Inception":
+					result = new Movie(
+							"Inception",
+							"2010",
+							"16 Jul 2010",
+							"A thief who steals corporate secrets through "+
+									"the use of dream-sharing technology is "+
+									"given the inverse task of planting an "+
+									"idea into the mind of a C.E.O.",
+							TEST_POSTER_URL,
+							"tt1375666",
+							"8.8",
+							"$292,576,195",
+							"74");
+				break;
+
+				default:
+					result = new Movie(
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null);
+				break;
+			}
+
+			return result;
 		}
 	}
 
