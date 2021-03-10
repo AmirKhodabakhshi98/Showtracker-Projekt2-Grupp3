@@ -1,12 +1,10 @@
 package showtracker;
 
-
 import java.io.Serializable;
 
 /**
  * A class for saving a movie
  */
-
 public class Movie implements Serializable {
 
     private static final long serialVersionUID = -7641780883231752094L;
@@ -21,7 +19,7 @@ public class Movie implements Serializable {
     private String boxOffice;
     private String metascore;
     private String actors;
-    private String personalRating;
+    private Rating personalRating;
     private boolean isWatched;
 
     public Movie(String title){
@@ -49,6 +47,7 @@ public class Movie implements Serializable {
         this.boxOffice = boxOffice;
         this.metascore = metascore;
         this.actors = actors;
+        this.personalRating = Rating.NO_RATING;
     }
 
     /**
@@ -164,11 +163,11 @@ public class Movie implements Serializable {
         this.metascore = metascore;
     }
 
-    public String getPersonalRating(){
+    public Rating getPersonalRating(){
         return personalRating;
     }
 
-    public void setPersonalRating(String personalRating){
+    public void setPersonalRating(Rating personalRating){
         this.personalRating = personalRating;
     }
 

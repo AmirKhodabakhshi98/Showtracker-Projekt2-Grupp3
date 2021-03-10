@@ -73,13 +73,14 @@ public class MovieList extends JPanel {
 
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
-                String rating[]={"No rating","★","★★","★★★","★★★★","★★★★★"};
+                String[] rating= {"No rating","★","★★","★★★","★★★★","★★★★★"};
                 JComboBox cb = new JComboBox(rating);
-                if(movie.getPersonalRating() != null) {
-                    cb.setSelectedItem(movie.getPersonalRating());
-                } else if(movie.getPersonalRating() == null){
+
+                if(movie.getPersonalRating() != null)
+                    cb.setSelectedItem(movie.getPersonalRating().getStrValue());
+                else
                     cb.setSelectedItem(rating);
-                }
+
                 btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 cb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

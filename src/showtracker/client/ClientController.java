@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import javax.swing.*;
 
 import showtracker.Movie;
+import showtracker.Rating;
 import showtracker.Show;
 import showtracker.User;
 import showtracker.client.View.FontsAndColors;
@@ -286,7 +287,7 @@ public class ClientController {
 
     //Updates a users personal ratings for a film
     void generatePersonalRating(Movie movie, String personalRating){
-        movie.setPersonalRating(personalRating);
+        movie.setPersonalRating(Rating.get(personalRating));
     }
 
     /**
