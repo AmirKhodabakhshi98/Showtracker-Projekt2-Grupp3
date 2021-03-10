@@ -1,6 +1,7 @@
 package showtracker.client;
 
 import showtracker.Helper;
+import showtracker.Rating;
 import showtracker.Show;
 
 import javax.imageio.ImageIO;
@@ -11,6 +12,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -75,7 +78,7 @@ class ShowList extends JPanel {
             Show show;
             Color colorMiddle;
 
-            for(int i = 0; i < shows.size(); i++){
+            for(int i = 0; i < shows.size(); i++) {
                 show = shows.get(i);
 
                 if (i % 2 == 0)
@@ -85,9 +88,16 @@ class ShowList extends JPanel {
 
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
+                String[] rating = {"No rating","★","★★","★★★","★★★★","★★★★★"};
+                JComboBox cb = new JComboBox(rating);
+                if(show.getPersonalRating() != null)
+                    cb.setSelectedItem(show.getPersonalRating().getStrValue());
+                else
+                    cb.setSelectedItem(rating);
 
                 btnRemove.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                cb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
 
@@ -103,6 +113,7 @@ class ShowList extends JPanel {
                 pnlSouth.setBackground(colorMiddle);
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
+                pnlSouth.add(cb);
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 162));
@@ -118,22 +129,32 @@ class ShowList extends JPanel {
                 lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
 
-                //Poster
-                BufferedImage image;
-                try {
-                    URL url = new URL(show.getPoster());
-                    image = ImageIO.read(url);
-                    Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
-                    ImageIcon imageIcon = new ImageIcon(dImg);
-                    lblImage.setIcon(imageIcon);
-                    pnlPoster.add(lblImage, BorderLayout.WEST);
-                } catch (Exception e){
-                    System.err.println("Poster exception in class Showlist");
+                // Add poster if available
+                if (show.getPoster() != null &&
+                    !show.getPoster().isEmpty()
+                ) {
+                    BufferedImage image;
+                    try {
+                        URL url = new URL(show.getPoster());
+                        image = ImageIO.read(url);
+                        Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
+                        ImageIcon imageIcon = new ImageIcon(dImg);
+                        lblImage.setIcon(imageIcon);
+                        pnlPoster.add(lblImage, BorderLayout.WEST);
+                    } catch (IOException e) {
+                        System.err.println("Poster exception in class ShowList");
+                    }
                 }
 
                 final Show tmpShow = show;
                 btnInfo.addActionListener(e -> {
                     clientController.setPanel("Info", tmpShow);
+                });
+
+                cb.addActionListener(e ->{
+                    String personalRating = (String) cb.getSelectedItem();
+                    tmpShow.setPersonalRating(Rating.get(personalRating));
+                    cb.setSelectedItem(personalRating);
                 });
 
                 btnRemove.addActionListener(e -> {
@@ -146,12 +167,11 @@ class ShowList extends JPanel {
 
                 pnlMain.add(pnlPoster, BorderLayout.WEST);
                 pnlShowList.add(pnlMain, gbc);
-
             }
+
             gbc.anchor = GridBagConstraints.NORTHWEST;
             gbc.weighty = 1;
             pnlShowList.add(new JPanel(), gbc);
-
         }
         else {
             pnlShowList.add(new JLabel("   Nothing in your list at the moment!"));

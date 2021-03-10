@@ -2,6 +2,7 @@ package showtracker.client;
 
 import showtracker.Helper;
 import showtracker.Movie;
+import showtracker.Rating;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,6 +12,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -103,17 +105,21 @@ public class MovieList extends JPanel {
                 lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
 
-                //Poster
-                BufferedImage image;
-                try {
-                    URL url = new URL(movie.getPoster());
-                    image = ImageIO.read(url);
-                    Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
-                    ImageIcon imageIcon = new ImageIcon(dImg);
-                    lblImage.setIcon(imageIcon);
-                    pnlPoster.add(lblImage, BorderLayout.WEST);
-                } catch (Exception e){
-                    System.err.println("Poster Exception in class MovieList, row 89");
+                // Add poster if available
+                if (movie.getPoster() != null &&
+                    !movie.getPoster().isEmpty()
+                ) {
+                    BufferedImage image;
+                    try {
+                        URL url = new URL(movie.getPoster());
+                        image = ImageIO.read(url);
+                        Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
+                        ImageIcon imageIcon = new ImageIcon(dImg);
+                        lblImage.setIcon(imageIcon);
+                        pnlPoster.add(lblImage, BorderLayout.WEST);
+                    } catch (IOException e) {
+                        System.err.println("Poster exception in class MovieList");
+                    }
                 }
 
                 final Movie tmpMovie = movie;
@@ -121,7 +127,7 @@ public class MovieList extends JPanel {
 
                 cb.addActionListener(e ->{
                     String personalRating = (String) cb.getSelectedItem();
-                    clientController.generatePersonalRating(tmpMovie, personalRating);
+                    tmpMovie.setPersonalRating(Rating.get(personalRating));
                     cb.setSelectedItem(personalRating);
                 });
                 btnRemove.addActionListener(e -> {

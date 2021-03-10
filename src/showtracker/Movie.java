@@ -19,7 +19,7 @@ public class Movie implements Serializable {
     private String boxOffice;
     private String metascore;
     private String actors;
-    private Rating personalRating;
+    private int personalRating;
     private boolean isWatched;
 
     public Movie(String title){
@@ -47,7 +47,7 @@ public class Movie implements Serializable {
         this.boxOffice = boxOffice;
         this.metascore = metascore;
         this.actors = actors;
-        this.personalRating = Rating.NO_RATING;
+        this.personalRating = Rating.NO_RATING.getIntValue();
     }
 
     /**
@@ -163,12 +163,12 @@ public class Movie implements Serializable {
         this.metascore = metascore;
     }
 
-    public Rating getPersonalRating(){
-        return personalRating;
+    public Rating getPersonalRating() {
+        return Rating.get(personalRating);
     }
 
-    public void setPersonalRating(Rating personalRating){
-        this.personalRating = personalRating;
+    public void setPersonalRating(Rating personalRating) {
+        this.personalRating = personalRating.getIntValue();
     }
 
     /**
@@ -181,11 +181,11 @@ public class Movie implements Serializable {
      */
     public static boolean isValid(Movie movie) {
         if (movie.title == null ||
-            movie.imdbId == null)
+            movie.year == null)
             return false;
 
         if (movie.title.isEmpty() ||
-            movie.imdbId.isEmpty())
+            movie.year.isEmpty())
             return false;
 
         return true;

@@ -285,11 +285,6 @@ public class ClientController {
 
     }
 
-    //Updates a users personal ratings for a film
-    void generatePersonalRating(Movie movie, String personalRating){
-        movie.setPersonalRating(Rating.get(personalRating));
-    }
-
     /**
      * Returns the current User
      *

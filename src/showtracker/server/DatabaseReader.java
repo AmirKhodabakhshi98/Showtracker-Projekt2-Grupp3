@@ -111,7 +111,7 @@ class DatabaseReader implements IDatabaseReader {
 
         Show show = new Show((String) jsoShow.get("Title"));
         show.setDescription((String) jsoShow.get("Plot"));
-        show.setImdbId((String) jsoShow.get("imdbId"));
+        show.setImdbId((String) jsoShow.get("imdbID"));
         show.setImdbRating((String) jsoShow.get("imdbRating"));
         show.setPoster((String) jsoShow.get("Poster"));
         show.setActors((String) jsoShow.get("Actors"));

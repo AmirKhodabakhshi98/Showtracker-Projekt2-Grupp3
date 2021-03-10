@@ -35,8 +35,8 @@ public class UserTest {
 	void addShow_valid() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -47,8 +47,8 @@ public class UserTest {
 	void addShow_valid_null() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		usr.addShow(null);
@@ -60,8 +60,8 @@ public class UserTest {
 	void addShow_same() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		usr.addShow(show);
@@ -89,8 +89,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -104,8 +104,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -119,8 +119,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		int size = usr.getShows().size();
@@ -135,8 +135,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		int size = usr.getShows().size();
@@ -155,8 +155,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		Episode episode = new Episode(show, 1, 1);
 		show.addEpisode(episode);
@@ -175,8 +175,8 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Show show = new Show("Test Show");
-		show.setImdbId("tt0000000");
-		show.setDescription("Test description.");
+		show.setYear("2000");
+		show.addEpisode(new Episode(show, 1, 1));
 
 		Episode episode = new Episode(show, 1, 1);
 		episode.setWatched(true);
@@ -218,7 +218,7 @@ public class UserTest {
 	void addMovie_valid() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 
 		usr.addMovie(movie);
 
@@ -229,7 +229,7 @@ public class UserTest {
 	void addMovie_valid_null() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 
 		usr.addMovie(movie);
 		usr.addMovie(null);
@@ -241,12 +241,12 @@ public class UserTest {
 	void addMovie_same() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 
 		usr.addMovie(movie);
 
 		movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 
 		usr.addMovie(movie);
 
@@ -258,7 +258,7 @@ public class UserTest {
 	void addMovie_null_content() {
 		User usr = new User("TestUser", "user@test.com", null);
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId(null);
+		movie.setYear(null);
 
 		usr.addMovie(movie);
 
@@ -274,7 +274,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 		usr.addMovie(movie);
 
 		usr.removeMovie(null);
@@ -287,7 +287,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 		usr.addMovie(movie);
 
 		usr.removeMovie(movie);
@@ -300,7 +300,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 		usr.addMovie(movie);
 
 		int size = usr.getMovies().size();
@@ -315,7 +315,7 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 
 		Movie movie = new Movie("Test Movie");
-		movie.setImdbId("0000");
+		movie.setYear("2000");
 		usr.addMovie(movie);
 
 		int size = usr.getMovies().size();

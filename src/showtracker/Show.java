@@ -17,6 +17,7 @@ public class Show implements Serializable {
     private Date dteLastWatched;
     private String actors;
     private String year;
+    private int personalRating;
 
     public Show(String strName) {
         this.strName = strName;
@@ -36,6 +37,7 @@ public class Show implements Serializable {
         dteLastWatched  = other.dteLastWatched;
         actors          = other.actors;
         year            = other.year;
+        personalRating  = other.personalRating;
     }
 
     public void setActors(String actors){
@@ -86,6 +88,14 @@ public class Show implements Serializable {
         return strName;
     }
 
+    public Rating getPersonalRating() {
+        return Rating.get(personalRating);
+    }
+
+    public void setPersonalRating(Rating personalRating) {
+        this.personalRating = personalRating.getIntValue();
+    }
+
     /**
      * Determines whether the information on the show is complete
      * enough to be considered valid. This is to help prevent adding
@@ -96,11 +106,13 @@ public class Show implements Serializable {
      */
     public static boolean isValid(Show show) {
         if (show.strName == null ||
-            show.strImdbId == null)
+            show.year == null ||
+            show.episodes == null)
             return false;
 
         if (show.strName.isEmpty() ||
-            show.strImdbId.isEmpty())
+            show.year.isEmpty() ||
+            show.episodes.isEmpty())
             return false;
 
         return true;
