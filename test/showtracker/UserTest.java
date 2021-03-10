@@ -325,6 +325,29 @@ public class UserTest {
 		assertEquals(size, usr.getMovies().size());
 	}
 
+
 	//------------------------------------------------------------------------//
+	// These tests test part of CLFN06B (specification v3.8)
+	//------------------------------------------------------------------------//
+
+	@Test
+	void rateMovie_invalid(){
+		assertEquals(Rating.NO_RATING, Rating.get(null));
+		assertEquals(Rating.NO_RATING, Rating.get(8));
+		assertEquals(Rating.NO_RATING, Rating.get(-1));
+	}
+
+	@Test
+	void rateMovie_valid(){
+		assertEquals(Rating.NO_RATING, Rating.get(0));
+		assertEquals(Rating.ONE_STAR, Rating.get(1));
+		assertEquals(Rating.TWO_STARS, Rating.get(2));
+		assertEquals(Rating.THREE_STARS, Rating.get(3));
+		assertEquals(Rating.FOUR_STARS, Rating.get(4));
+		assertEquals(Rating.FIVE_STARS, Rating.get(5));
+
+
+	}
+
 
 }
