@@ -15,10 +15,15 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MovieList extends JPanel {
+
+    private static final int colorCard1      = 0xF8F8F8;
+    private static final int colorCard2      = 0xF2F2EF;
+    private static final int colorBackground = 0xDCDBD8;
+    private static final int colorTitle      = 0x6A86AA;
+
     private ClientController clientController;
     private JPanel pnlMovieList = new JPanel();
     private JScrollPane scrollPane = new JScrollPane();
-
 
     //Constructor, input: ClientController instancce
     MovieList(ClientController clientController){
@@ -40,40 +45,24 @@ public class MovieList extends JPanel {
         movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
-      //  gbc.fill = GridBagConstraints.HORIZONTAL;
-        pnlMovieList.setBackground(Color.decode("#E3E2DD"));
-
+        pnlMovieList.setBackground(Color.decode("#DCDBD8"));
         pnlMovieList.removeAll();
+
         if(movies.size() > 0){
+            Movie movie;
+            Color colorMiddle;
 
-            int i = 2;
-            for(Movie movie : movies){
+            for(int i = 0; i < movies.size(); i++){
+                movie = movies.get(i);
 
-                String colorMiddle = "";
-                String colorSouth = "";
-                String colorMain = "";
-                String colorPoster = "";
-                String colorTitle = "";
-
-                if (i % 2 == 0){
-                     colorMiddle = "#F8F8F8";
-                     colorSouth = colorMiddle;
-                     colorPoster = colorMiddle;
-                    colorTitle = "#ffffff";
-                }
-                else {
-                     colorMiddle = "#F8F8F8";
-                     colorSouth = colorMiddle;
-                    colorPoster = colorMiddle;
-                    colorTitle = "#ffffff";
-
-
-                }
-                i++;
+                if (i % 2 == 0)
+                    colorMiddle = new Color(colorCard1);
+                else
+                    colorMiddle = new Color(colorCard2);
 
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
-                String[] rating= {"No rating","★","★★","★★★","★★★★","★★★★★"};
+                String[] rating = {"No rating","★","★★","★★★","★★★★","★★★★★"};
                 JComboBox cb = new JComboBox(rating);
 
                 if(movie.getPersonalRating() != null)
@@ -85,25 +74,20 @@ public class MovieList extends JPanel {
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 cb.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                JPanel pnlMiddle = new JPanel(new FlowLayout());
                 JLabel label = new JLabel("Card Label");
-                label.setForeground(Color.decode(colorTitle));
-                label.setForeground(Color.decode("#6A86AA"));
-
+                label.setForeground(new Color(colorTitle));
                 label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(movie.getTitle());
+
+                JPanel pnlMiddle = new JPanel(new FlowLayout());
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode(colorMiddle));
+                pnlMiddle.setBackground(colorMiddle);
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
+                pnlSouth.setBackground(colorMiddle);
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-
-                pnlSouth.setBackground(Color.decode(colorSouth));
-
                 pnlSouth.add(cb);
-                pnlSouth.setBackground(Color.decode("#F8F8F8"));
-
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
                 pnlMain.setPreferredSize(new Dimension(800, 162));
@@ -111,10 +95,10 @@ public class MovieList extends JPanel {
                 pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
-                pnlMain.setBackground(Color.decode("#6A86AA"));
+                pnlMain.setBackground(new Color(colorBackground));
 
                 //Poster container
-                Border posterBorder = BorderFactory.createLineBorder(Color.decode(colorPoster), 10, false);
+                Border posterBorder = BorderFactory.createLineBorder(colorMiddle, 10, false);
                 JLabel lblImage = new JLabel();
                 lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
@@ -132,16 +116,16 @@ public class MovieList extends JPanel {
                     System.err.println("Poster Exception in class MovieList, row 89");
                 }
 
-               btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null, "<html><body>" +
-                       "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" + "Imdb Rating: " + movie.getImdbRating() + "</p><br>" + "Released: "
-                       + movie.getYear() + "</p><br>" + "Actors: " + movie.getActors() + "</body></html>", "Movie Info", JOptionPane.PLAIN_MESSAGE));
+                final Movie tmpMovie = movie;
+                btnInfo.addActionListener(e -> showMovieInfo(tmpMovie));
+
                 cb.addActionListener(e ->{
                     String personalRating = (String) cb.getSelectedItem();
-                    clientController.generatePersonalRating(movie, personalRating);
+                    clientController.generatePersonalRating(tmpMovie, personalRating);
                     cb.setSelectedItem(personalRating);
                 });
                 btnRemove.addActionListener(e -> {
-                    clientController.getUser().removeMovie(movie);
+                    clientController.getUser().removeMovie(tmpMovie);
                     draw();
                 });
 
@@ -154,7 +138,8 @@ public class MovieList extends JPanel {
             gbc.anchor = GridBagConstraints.NORTHWEST;
             gbc.weighty = 1;
             pnlMovieList.add(new JPanel(), gbc);
-        }else{
+        }
+        else {
             pnlMovieList.add(new JLabel("   Nothing in your list of movies at the moment!"));
             pnlMovieList.add(new JLabel("             "));
             ImageIcon imi = new ImageIcon("images/Showtrack.png");
@@ -162,9 +147,19 @@ public class MovieList extends JPanel {
             JLabel lblLogo = new JLabel(new ImageIcon(image));
             pnlMovieList.add(lblLogo);
         }
+
         scrollPane.setViewportView(pnlMovieList);
         scrollPane.setLayout(new ScrollPaneLayout());
         pnlMovieList.revalidate();
+    }
+
+    private void showMovieInfo(Movie movie) {
+        JOptionPane.showMessageDialog(null, "<html><body>" +
+                "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" +
+                "Imdb Rating: " + movie.getImdbRating() + "</p><br>" +
+                "Released: " + movie.getYear() + "</p><br>" +
+                "Actors: " + movie.getActors() + "</body></html>",
+                "Movie Info", JOptionPane.PLAIN_MESSAGE);
     }
 
     //Inner class for searching movies when a user writes in the search list

@@ -26,10 +26,15 @@ import java.util.ArrayList;
  */
 
 class ShowList extends JPanel {
+
+    private static final int colorCard1      = 0xF8F8F8;
+    private static final int colorCard2      = 0xF2F2EF;
+    private static final int colorBackground = 0xDCDBD8;
+    private static final int colorTitle      = 0x6A86AA;
+
     private ClientController clientController;
     private JPanel pnlShowList = new JPanel();
     private JScrollPane scrollPane = new JScrollPane();
-
 
     /**
      * Constructor that takes a ClientController instance
@@ -38,7 +43,7 @@ class ShowList extends JPanel {
      */
     ShowList(ClientController clientController) {
         this.clientController = clientController;
-        pnlShowList.setBackground(Color.decode("#6A86AA"));
+        pnlShowList.setBackground(new Color(colorBackground));
         MyDocumentListener myDocumentListener = new MyDocumentListener();
         setLayout(new BorderLayout());
         add(myDocumentListener, BorderLayout.NORTH);
@@ -63,12 +68,21 @@ class ShowList extends JPanel {
         shows.sort(new Helper.NameComparator());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlShowList.setLayout(new GridBagLayout());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        pnlShowList.setBackground(Color.decode("#6A86AA"));
+        pnlShowList.setBackground(new Color(colorBackground));
 
         pnlShowList.removeAll();
         if (shows.size() > 0) {
-            for (Show show : shows) {
+            Show show;
+            Color colorMiddle;
+
+            for(int i = 0; i < shows.size(); i++){
+                show = shows.get(i);
+
+                if (i % 2 == 0)
+                    colorMiddle = new Color(colorCard1);
+                else
+                    colorMiddle = new Color(colorCard2);
+
                 JButton btnInfo = new JButton("Info");
                 JButton btnRemove = new JButton("Remove");
 
@@ -76,27 +90,32 @@ class ShowList extends JPanel {
                 btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
                 JPanel pnlMiddle = new JPanel(new FlowLayout());
+
                 JLabel label = new JLabel("Card Label");
+                label.setForeground(new Color(colorTitle));
                 label.setFont(new Font("Roboto", Font.BOLD, 18));
                 label.setText(show.getName());
+
                 pnlMiddle.add(label);
-                pnlMiddle.setBackground(Color.decode("#58a0bc")); //PANEL BACKGROUND
+                pnlMiddle.setBackground(colorMiddle);
 
                 JPanel pnlSouth = new JPanel(new FlowLayout());
+                pnlSouth.setBackground(colorMiddle);
                 pnlSouth.add(btnInfo);
                 pnlSouth.add(btnRemove);
-                pnlSouth.setBackground(Color.decode("#58a0bc")); //BUTTON PANEL / RIGHT SIDE
 
                 JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setPreferredSize(new Dimension(800, 80));
-                Border cardBorder = BorderFactory.createRaisedBevelBorder();
-                pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
+                pnlMain.setPreferredSize(new Dimension(800, 162));
+                Border cardBorder = BorderFactory.createLineBorder(Color.decode("#E3E2DD"));
+                pnlMain.setBorder(cardBorder);
                 pnlMain.add(pnlMiddle, BorderLayout.CENTER);
                 pnlMain.add(pnlSouth, BorderLayout.EAST);
-                pnlMain.setBackground(Color.decode("#ffcc66")); //LINES BETWEEN/AROUND PANELS
+                pnlMain.setBackground(Color.decode("#6A86AA"));
 
                 //Poster container
+                Border posterBorder = BorderFactory.createLineBorder(colorMiddle, 10, false);
                 JLabel lblImage = new JLabel();
+                lblImage.setBorder(posterBorder);
                 JPanel pnlPoster = new JPanel(new BorderLayout());
 
                 //Poster
@@ -104,7 +123,7 @@ class ShowList extends JPanel {
                 try {
                     URL url = new URL(show.getPoster());
                     image = ImageIO.read(url);
-                    Image dImg = image.getScaledInstance(50,80, Image.SCALE_AREA_AVERAGING);
+                    Image dImg = image.getScaledInstance(96, 142, Image.SCALE_AREA_AVERAGING);
                     ImageIcon imageIcon = new ImageIcon(dImg);
                     lblImage.setIcon(imageIcon);
                     pnlPoster.add(lblImage, BorderLayout.WEST);
@@ -112,9 +131,13 @@ class ShowList extends JPanel {
                     System.err.println("Poster exception in class Showlist");
                 }
 
-                btnInfo.addActionListener(e -> clientController.setPanel("Info", show));
+                final Show tmpShow = show;
+                btnInfo.addActionListener(e -> {
+                    clientController.setPanel("Info", tmpShow);
+                });
+
                 btnRemove.addActionListener(e -> {
-                    clientController.getUser().removeShow(show);
+                    clientController.getUser().removeShow(tmpShow);
                     draw();
                 });
 
@@ -129,16 +152,16 @@ class ShowList extends JPanel {
             gbc.weighty = 1;
             pnlShowList.add(new JPanel(), gbc);
 
-        } else {
+        }
+        else {
             pnlShowList.add(new JLabel("   Nothing in your list at the moment!"));
             pnlShowList.add(new JLabel("          "));
             ImageIcon imi = new ImageIcon("images/Showtrack.png");
             Image image = imi.getImage().getScaledInstance(150, 150, Image.SCALE_AREA_AVERAGING);
             JLabel lbLogo = new JLabel(new ImageIcon(image));
             pnlShowList.add(lbLogo);
-
-
         }
+
         scrollPane.setViewportView(pnlShowList);
         scrollPane.setLayout(new ScrollPaneLayout());
         pnlShowList.revalidate();
