@@ -65,7 +65,8 @@ class ShowList extends JPanel {
      * Refereshes the view with a selected amount of shows, from the search list
      *
      * @param shows The shows to show
-     * @author Paul Moustakas, Andreas Von Uthmann:  Updated GUI components, size, max, min, fonts etc. Removed HTLM and replaced with pure Java for Labels.
+     * @author Paul Moustakas, Andreas Von Uthmann:
+     * Updated GUI components, size, max, min, fonts etc. Removed HTLML and replaced with pure Java for Labels.
      */
     private void draw(ArrayList<Show> shows) {
         shows.sort(new Helper.NameComparator());

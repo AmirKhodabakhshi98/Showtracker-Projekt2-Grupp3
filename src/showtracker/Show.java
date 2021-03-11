@@ -18,11 +18,19 @@ public class Show implements Serializable {
     private String actors;
     private String year;
     private int personalRating;
+    private boolean custom;
 
     public Show(String strName) {
         this.strName = strName;
+        custom = false;
         setLastWatched();
     }
+    public Show(String strName, boolean customFlag) {
+        this.strName = strName;
+        custom = customFlag;
+        setLastWatched();
+    }
+
 
     /**
      * Copy constructor
@@ -47,6 +55,8 @@ public class Show implements Serializable {
     public String getActors(){
         return actors;
     }
+
+    public boolean isCustom()  {return custom; }
 
     public void setYear(String year){
         this.year = year;
@@ -139,6 +149,11 @@ public class Show implements Serializable {
 
     public String getDescription() {
         return strDescription;
+    }
+
+    public void setCustom(boolean value)
+    {
+        custom = value;
     }
 
     /**

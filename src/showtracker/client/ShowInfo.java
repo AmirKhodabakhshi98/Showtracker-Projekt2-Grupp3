@@ -132,7 +132,16 @@ class ShowInfo extends JPanel {
                             Border Border = BorderFactory.createRaisedBevelBorder();
                             episodePanel.setBorder(Border); // new LineBorder(Color.DARK_GRAY)
                             episodePanel.setBackground(Color.decode("#6A86AA"));
-                            JButton infoButton = new JButton("Info - Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
+                            JButton infoButton;
+                            if (show.isCustom())
+                            {
+                               infoButton = new JButton("Episode " + Helper.df.format(episode.getEpisodeNumber()));
+                            }
+                            else
+                            {
+                                infoButton = new JButton("Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
+                            }
+
                             infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             infoButton.addActionListener(e -> {
                                 JOptionPane.showMessageDialog(null,
