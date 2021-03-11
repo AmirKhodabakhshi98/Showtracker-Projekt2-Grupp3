@@ -143,6 +143,7 @@ class ShowInfo extends JPanel {
                             }
 
                             infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                            // episode info
                             infoButton.addActionListener(e -> {
                                 JOptionPane.showMessageDialog(null,
                                         "<html><body><p style=\"width: 200px;\">" +
