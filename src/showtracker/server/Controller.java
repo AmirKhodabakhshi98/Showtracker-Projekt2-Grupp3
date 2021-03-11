@@ -71,9 +71,9 @@ public class Controller {
 
 			case "getDetail":
 				String id  =  (String)envInput.getContent();
-				String[] info = dbr.getDetail(id);
+				String[] detail = dbr.getDetail(id);
 
-				returnEnvelope = new Envelope(info,"detail");
+				returnEnvelope = new Envelope(detail,"detail");
 				break;
 
 			case "signUp":
@@ -121,11 +121,9 @@ public class Controller {
 				else
 					movie = dbr.generateMovie(info);
 
-				Movie movie = dbr.generateMovie(info);
 				System.out.println("returning movie");
 
 				String[] infoMovie = (String[]) envInput.getContent();
-				Movie movie;
 				if (infoMovie == null)
 					movie = new Movie((String)null);
 				else

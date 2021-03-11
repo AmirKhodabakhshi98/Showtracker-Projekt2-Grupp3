@@ -8,14 +8,11 @@ import java.lang.reflect.Array;
 
 import javax.swing.*;
 
-<<<<<<< Updated upstream
 import showtracker.Movie;
 import showtracker.Rating;
 import showtracker.Show;
 import showtracker.User;
-=======
 import showtracker.*;
->>>>>>> Stashed changes
 import showtracker.client.View.FontsAndColors;
 import showtracker.client.View.Home;
 
