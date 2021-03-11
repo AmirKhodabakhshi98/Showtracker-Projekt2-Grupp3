@@ -428,11 +428,21 @@ public class ControllerTest {
 	void getShowInfo_createdShow(){
 		User usr = new User("TestUser", "user@test.com", null);
 
-		Movie movie = new Movie("Test Movie");
-		movie.setPlot("Film om Paul");
-		usr.addMovie(movie);
+		Show show = new Show("Test Show");
+		show.setDescription("Serie om Paul");
+		usr.addShow(show);
 
-		assertEquals("Film om Paul", movie.getPlot());
+		assertEquals("Serie om Paul", show.getDescription());
+	}
+
+	@Test
+	void getShowInfo_createdShowNull(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Show show = new Show("Test Show");
+		usr.addShow(show);
+
+		assertEquals(null, show.getDescription());
 	}
 
 
@@ -470,6 +480,8 @@ public class ControllerTest {
 
 		assertEquals("Film om Paul", movie.getPlot());
 	}
+
+
 
 	////////////////////////////////////////////////////////////////////////////
 

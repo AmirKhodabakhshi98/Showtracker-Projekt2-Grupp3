@@ -349,5 +349,30 @@ public class UserTest {
 
 	}
 
+	//------------------------------------------------------------------------//
+	// These tests test part of CLFN21 (specification v3.8)
+	//------------------------------------------------------------------------//
+
+	@Test
+	void createMovie(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Movie movie = new Movie("Test Movie");
+		movie.setPlot("Film om Paul");
+		movie.setYear("2021");
+		movie.setActors("Brad Pitt");
+		movie.setImdbId("tt990021002");
+		movie.setImdbRating("9.6");
+		movie.setPoster("https://www.bclulea.se/countdown-7/");
+		usr.addMovie(movie);
+
+		assertEquals("Film om Paul", movie.getPlot());
+		assertEquals("2021", movie.getYear());
+		assertEquals("Brad Pitt", movie.getActors());
+		assertEquals("tt990021002", movie.getImdbId());
+		assertEquals("9.6", movie.getImdbRating());
+		assertEquals("https://www.bclulea.se/countdown-7/", movie.getPoster());
+	}
+
 
 }
