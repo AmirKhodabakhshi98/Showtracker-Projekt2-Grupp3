@@ -55,6 +55,17 @@ public class Controller {
 				Show show = dbr.generateShow(strArrEpisodeQuery);
 				returnEnvelope = new Envelope(show, "show");
 				break;
+<<<<<<< Updated upstream
+=======
+
+			case "getDetail":
+				String id  =  (String)envInput.getContent();
+				String[] info = dbr.getDetail(id);
+
+				returnEnvelope = new Envelope(info,"detail");
+				break;
+
+>>>>>>> Stashed changes
 			case "signUp":
 				String[] strArrSignup = (String[]) envInput.getContent();
 				returnEnvelope = signUp(strArrSignup);
@@ -76,9 +87,19 @@ public class Controller {
 				returnEnvelope = updatePass(strArrPassword);
 				break;
 			case "getMovie":
+<<<<<<< Updated upstream
 				String[] info = (String[]) envInput.getContent();
 				Movie movie = dbr.generateMovie(info);
 				System.out.println("returning movie");
+=======
+				String[] infoMovie = (String[]) envInput.getContent();
+				Movie movie;
+				if (infoMovie == null)
+					movie = new Movie((String)null);
+				else
+					movie = dbr.generateMovie(infoMovie);
+
+>>>>>>> Stashed changes
 				returnEnvelope = new Envelope(movie, "movie");
 		}
 		return returnEnvelope;

@@ -76,6 +76,7 @@ class DatabaseReader implements IDatabaseReader {
     }
 
 
+
     /**
      * Gets the episodes of a show
      * @param id The show's ID
@@ -93,6 +94,26 @@ class DatabaseReader implements IDatabaseReader {
             System.err.println(strError);
             return null;
         }
+    }
+
+    /**
+     * searches with imdb id to find more info
+     * info about runtime, plot and poster.
+     * @param id the id of the show/episode/movie
+     * @return an array of more info
+     */
+    public String[] getDetail(String id)
+    {
+        JSONObject jsoEpisode = searchOmdbShow(id);
+        String runtime = (String) jsoEpisode.get("Runtime");
+        String plot = (String) jsoEpisode.get("Plot");
+        String poster = (String) jsoEpisode.get("Poster");
+        String[] returnValues = new String[3];
+        returnValues[0] = runtime;
+        returnValues[1] = plot;
+        returnValues[2] = poster;
+
+        return returnValues;
     }
 
 
@@ -134,12 +155,13 @@ class DatabaseReader implements IDatabaseReader {
                     int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
                     String strName = (String) jso.get("Title");
                     String strIMDBid = (String.valueOf(jso.get("imdbID")));
-                    String strDescription = ((String) jso.get("Plot"));
+                    //String strDescription = ((String) jso.get("Plot"));
 
                     Episode episode = new Episode(show, intEpisode, intSeason);
                     episode.setIMDBid(strIMDBid);
                     episode.setName(strName);
-                    episode.setDescription(strDescription);
+                    System.out.println(strName);
+                    //episode.setDescription(strDescription);
                     show.addEpisode(episode);
                 }
             }

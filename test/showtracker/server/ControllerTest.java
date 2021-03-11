@@ -4,10 +4,7 @@ import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
-import showtracker.Envelope;
-import showtracker.Movie;
-import showtracker.Show;
-import showtracker.User;
+import showtracker.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -271,6 +268,11 @@ public class ControllerTest {
 		@Override
 		public Show updateShow(Show show) {
 			return null;
+		}
+
+		@Override
+		public String[] getDetail(String id) {
+			return new String[0];
 		}
 
 		@Override
