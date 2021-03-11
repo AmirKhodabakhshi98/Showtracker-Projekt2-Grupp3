@@ -8,10 +8,14 @@ import java.lang.reflect.Array;
 
 import javax.swing.*;
 
+<<<<<<< Updated upstream
 import showtracker.Movie;
 import showtracker.Rating;
 import showtracker.Show;
 import showtracker.User;
+=======
+import showtracker.*;
+>>>>>>> Stashed changes
 import showtracker.client.View.FontsAndColors;
 import showtracker.client.View.Home;
 
@@ -158,7 +162,7 @@ public class ClientController {
                     returnValue = "Logout";
                     break;
                 case "Info":
-                    pnlCenter.add(new ShowInfo(show), "Info");
+                    pnlCenter.add(new ShowInfo(show, this), "Info");
                     returnValue = "Info";
                     break;
                 default:
@@ -277,6 +281,13 @@ public class ClientController {
 
         user.addShow(show);
         updateUser(user);
+    }
+
+    void getDetailEpisode(Episode episode) {
+        String[] values = (String[]) connection.packEnvelope(episode.getImdbId(), "getDetail");
+        episode.setPoster(values[2]);
+        episode.setPlot(values[1]);
+        episode.setRuntime(values[0]);
     }
 
     //generates a movie

@@ -15,11 +15,42 @@ public class Episode implements Comparable<Episode>, Serializable {
     private String description;
     private boolean isWatched = false;
     private Show show;
+    private String plot;
+    private String poster;
+    private String runtime;
 
     public Episode(Show show, int episodeNumber, int seasonNumber) {
         this.show = show;
         this.episodeNumber = episodeNumber;
         this.seasonNumber = seasonNumber;
+    }
+
+    public Episode() {
+
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
     }
 
     public void setTvdbId(String id) {
@@ -66,6 +97,7 @@ public class Episode implements Comparable<Episode>, Serializable {
         return isWatched;
     }
 
+
     public void setWatched(boolean isWatched) {
         this.isWatched = isWatched;
         show.setLastWatched();
@@ -73,6 +105,7 @@ public class Episode implements Comparable<Episode>, Serializable {
 
     /**
      * Compares this episode to an Object to see if they are the same
+     *
      * @param obj
      * @return
      */
@@ -90,6 +123,7 @@ public class Episode implements Comparable<Episode>, Serializable {
 
     /**
      * Compares this episode to another to see which comes first
+     *
      * @param episode
      * @return
      */
@@ -106,4 +140,5 @@ public class Episode implements Comparable<Episode>, Serializable {
         else
             return 0;
     }
+
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * @author Adam Joulak
- * Changes made by Filip
+ * Changes made by Filip, Albin Ahlbeck
  * <p>
  * Show info panel
  */
@@ -23,9 +23,11 @@ class ShowInfo extends JPanel {
     private JPanel pnlShowInfo = new JPanel();
     private ArrayList<SeasonListener> listeners = new ArrayList<>();
     private Show show;
+    private ClientController clientController;
 
-    ShowInfo(Show show) {
+    ShowInfo(Show show, ClientController clientController) {
         this.show = show;
+        this.clientController = clientController;
         for (double d : show.getSeasons())
             listeners.add(new SeasonListener(d));
 
@@ -144,11 +146,21 @@ class ShowInfo extends JPanel {
 
                             infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             infoButton.addActionListener(e -> {
-                                JOptionPane.showMessageDialog(null,
-                                        "<html><body><p style=\"width: 200px;\">" +
-                                                show.getEpisode(episode.getSeasonNumber(),
-                                                        episode.getEpisodeNumber()).getDescription() +
-                                                "</p></body></html>", episode.getName(), JOptionPane.INFORMATION_MESSAGE);
+                                clientController.getDetailEpisode(episode);
+                                if (episode.getPoster() != null) {
+                                    JOptionPane.showMessageDialog(null,
+                                            "<html><body><p style=\"width: 200px;\">" +
+                                                    episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>" +
+                                                    "<img src =" + episode.getPoster(), episode.getName(),
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(null,
+                                            "<html><body><p style=\"width: 200px;\">" +
+                                                    episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>", episode.getName(),
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                }
                             });
                             episodePanel.add(infoButton, BorderLayout.CENTER);
                             JCheckBox checkBox = new JCheckBox();
