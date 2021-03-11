@@ -4,17 +4,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.apache.http.HttpResponse;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import showtracker.Episode;
 import showtracker.Movie;
 import showtracker.Show;
 
-import javax.swing.*;
 import java.io.*;
-import java.net.URL;
 
 /**
  * Modification GRP 3
@@ -25,12 +22,16 @@ import java.net.URL;
 class DatabaseReader implements IDatabaseReader {
     private String apicode = "a203d499";
 
-
     /**
      * Searches OMdb for shows
      * @param strSearchTerms String with search terms
-     * @return A String matrix with name and ID from the shows found
-     */ // TODO: 2021-02-09 Could, if time left, improve the search function with separators for better search hits Paul M.
+     * @return A 2D String array with the following fields
+     * [0] Title
+     * [1] imdbID
+     * [2] Poster (may be null)
+     * [3] Year
+     * [4] Type (series/movie)
+     */
     @Override
     public String[][] searchOMDBdbShows(String strSearchTerms) {
 
@@ -46,18 +47,27 @@ class DatabaseReader implements IDatabaseReader {
         for (int i = 1; i < strArrSearchTerms.length; i++)
             stbSearchTerms.append("+").append(strArrSearchTerms[i]);
 
-        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=" + apicode + "&t=" + stbSearchTerms);
+        HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey="+apicode+
+                "&v=1&page=1&s=" + stbSearchTerms);
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
+        JSONArray jsonArray = jsoResponse.getJSONArray("Search");
+        if (jsonArray == null)
+            return null;
 
-        String [][] show = new String[1][5];
+        JSONObject obj;
+        String[][] list = new String[jsonArray.length()][];
+        for (int i = 0; i < jsonArray.length(); i++) {
+            obj = jsonArray.getJSONObject(i);
 
-        show [0][0] = (String) jsoResponse.get("Title");
-        show [0][1] = (String) jsoResponse.get("imdbID");
-        show [0][2] = (String) jsoResponse.get("Poster");
-        show [0][3] = (String) jsoResponse.get("imdbRating");
-        show [0][4] = (String) jsoResponse.get("Type");
-        
-        return show;
+            list[i] = new String[5];
+            list[i][0] = obj.optString("Title");
+            list[i][1] = obj.optString("imdbID");
+            list[i][2] = obj.optString("Poster");
+            list[i][3] = obj.optString("Year");
+            list[i][4] = obj.optString("Type");
+        }
+
+        return list;
     }
 
     /**
@@ -70,7 +80,7 @@ class DatabaseReader implements IDatabaseReader {
         System.out.println("Search Query OMDB: " + id);
 
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id);
-        JSONObject jsoResponse = (JSONObject) getJSONFromRequest(httpGet);
+        JSONObject jsoResponse = getJSONFromRequest(httpGet);
 
         return jsoResponse;
     }
@@ -215,14 +225,13 @@ class DatabaseReader implements IDatabaseReader {
 
         JSONObject jsoResponse = null;
         HttpClient httpClient = HttpClientBuilder.create().build();
-        JSONParser parser = new JSONParser();
 
         try {
             HttpResponse response = httpClient.execute(request);
             InputStreamReader isr = new InputStreamReader(response.getEntity().getContent());
             BufferedReader bfr = new BufferedReader(isr);
             String strLine = bfr.readLine();
-            jsoResponse = (JSONObject) parser.parse(strLine);
+            jsoResponse = new JSONObject(strLine);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,9 +7,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.text.NumberFormat;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 
 import showtracker.Movie;
 import showtracker.Show;
@@ -65,7 +67,7 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setBackground(FontsAndColors.getProjectBlue());
 		add(pnlSearchBar, BorderLayout.NORTH);
 		add(spnSearchResult, BorderLayout.CENTER);
-
+		spnSearchResult.setViewportView(pnlSearchResult);
 
 		txfSearchBar.setPreferredSize(new Dimension(200,60));
 		txfSearchBar.setFont(FontsAndColors.getFontBold(16));
@@ -112,36 +114,9 @@ class SearchShows extends JPanel {
 	private void drawSearchResultPanel(String strSearchRequest) {
 		pnlSearchResult.removeAll();
 		String[][] arrStrSearchResults = clientController.searchShows(strSearchRequest);
-		if (arrStrSearchResults != null) {
-			pnlSearchResult.setLayout(new GridLayout(arrStrSearchResults.length, 2));
-			System.out.println("Show found");
-			updateSearchResults(arrStrSearchResults);
 
-		} else {
-			pnlSearchResult.setLayout(new BorderLayout());
-			System.out.println("Show not found");
-			strSearchRequest = "<html>" + "Your Search '" + strSearchRequest + "' was not found <br>" + "tips:<br>"
-					+ "- Make sure all word are spelled correctly<br>" + "- Try different keywords<br>"
-					+ "- or click the button below to create your own tracker =)" + "</html>";
-
-			JLabel label = new JLabel("<html><font size = '3', padding-left: 50px>" + strSearchRequest + "</font></html>");
-
-			label.setPreferredSize(new Dimension(pnlSearchResult.getWidth() - 5, pnlSearchResult.getHeight() / 2));
-
-			ImageIcon imiAdd = new ImageIcon("images/notes-add.png");
-			Image imgAdd = imiAdd.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			imiAdd = new ImageIcon(imgAdd);
-
-			JButton btnCreateOwnShow = new JButton(imiAdd);
-
-			btnCreateOwnShow.addActionListener(e -> drawNoSearchResultPanel());
-			pnlSearchResult.add(label, BorderLayout.CENTER);
-			pnlSearchResult.add(btnCreateOwnShow, BorderLayout.SOUTH);
-
-		}
-
-		spnSearchResult.setViewportView(pnlSearchResult);
-		pnlSearchResult.revalidate();
+		pnlSearchResult.setLayout(new GridLayout(arrStrSearchResults.length, 2));
+		updateSearchResults(arrStrSearchResults);
 	}
 
 	/**
@@ -156,71 +131,72 @@ class SearchShows extends JPanel {
 		pnlSearchResult.setLayout(new GridBagLayout());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		for (String[] arrStr : arrStrSearchResults) {
-			if (arrStr[0] == null) { drawNoSearchResultPanel(); }
+		// No results found
+		if (arrStrSearchResults[0] == null ||
+			arrStrSearchResults[0][0] == null
+		) {
+			JOptionPane.showMessageDialog(this,
+					"No results found. "+
+					"You may create it yourself if you wish.",
+					"Not found", JOptionPane.PLAIN_MESSAGE);
+		}
+		else { // Results found
+			for (String[] arrStr : arrStrSearchResults) {
+				JPanel pnlMainCard = new JPanel();
 
-			JPanel pnlMainCard = new JPanel();
+				pnlMainCard.setPreferredSize(new Dimension(800, 80));
+				pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
+				pnlMainCard.setLayout(new BorderLayout());
 
-			pnlMainCard.setPreferredSize(new Dimension(800, 80));
-			pnlMainCard.setBorder(BorderFactory.createRaisedBevelBorder());
-			pnlMainCard.setLayout(new BorderLayout());
-			pnlMainCard.setBackground(FontsAndColors.getProjectBlue());
+				//Poster container
+				JPanel pnlPoster = new JPanel(new BorderLayout());
+				JLabel lblImage = new JLabel();
 
-			//Poster container
-			JPanel pnlPoster = new JPanel(new BorderLayout());
-			JLabel lblImage = new JLabel();
+				//Poster
+				BufferedImage image;
+				try {
+					URL url = new URL(arrStr[2]);
+					image = ImageIO.read(url);
+					Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
+					ImageIcon imageIcon = new ImageIcon(dImg);
+					lblImage.setIcon(imageIcon);
+					pnlPoster.add(lblImage, BorderLayout.CENTER);
+				} catch (Exception e) {
+					System.err.println("SearchShow | Poster Exception ");
+				}
 
-			//Poster
-			BufferedImage image;
-			try {
-				URL url = new URL(arrStr[2]);
-				image = ImageIO.read(url);
-				Image dImg = image.getScaledInstance(50, 80, Image.SCALE_AREA_AVERAGING);
-				ImageIcon imageIcon = new ImageIcon(dImg);
-				lblImage.setIcon(imageIcon);
-				pnlPoster.add(lblImage, BorderLayout.CENTER);
-			} catch (Exception e){
-				System.err.println("SearchShow | Row 166 | Poster Exception ");
+				// Add button
+				ImageIcon icon = new ImageIcon("images/plus-2.png");
+				Image imageAdd = icon.getImage();
+				Image newAddImage = imageAdd.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+				icon = new ImageIcon(newAddImage);
+				JButton btnAdd = new JButton(icon);
+				btnAdd.setBorderPainted(false);
+				btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], arrStrSearchResults[0][4], btnAdd));
+				btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+				//Result Label
+				JLabel lblSearchResult = new JLabel("\t" + arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
+				lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
+
+				pnlMainCard.add(pnlPoster, BorderLayout.WEST);
+				pnlMainCard.add(btnAdd, BorderLayout.EAST);
+				pnlMainCard.add(lblSearchResult, BorderLayout.CENTER);
+
+				gbc.gridx = 0;
+				gbc.weightx = 1;
+
+				pnlSearchResult.add(pnlMainCard, gbc);
 			}
-
-			// Add button
-			ImageIcon icon = new ImageIcon("images/plus-2.png");
-			Image imageAdd = icon.getImage();
-			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
-			icon = new ImageIcon(newAddImage);
-			JButton btnAdd = new JButton(icon);
-			btnAdd.setBorderPainted(false);
-			btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], arrStrSearchResults[0][4], btnAdd));
-			btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-			//Result Label
-			JLabel lblSearchResult = new JLabel("\t" + arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
-			lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
-
-			pnlMainCard.add(pnlPoster, BorderLayout.WEST);
-			pnlMainCard.add(btnAdd, BorderLayout.EAST);
-			pnlMainCard.add(lblSearchResult, BorderLayout.CENTER);
-
-			gbc.gridx = 0;
-			gbc.weightx = 1;
-
-			pnlSearchResult.add(pnlMainCard, gbc);
-			pnlSearchResult.setBackground(FontsAndColors.getProjectBlue());
-
 		}
 
 		JPanel panel = new JPanel();
-		panel.setBackground(FontsAndColors.getProjectBlue());
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.weighty = 1;
 		pnlSearchResult.add(panel, gbc);
-
+		pnlSearchResult.revalidate();
 	}
 
-
-
-
-	// TODO: 2021-02-12 Denna metod kanske ska fixa om vi har tid, känns klumpig att visa om man inte hittar i OMDB  - PM
 	/**
 	 * Draws a panel for creating a show when no results are found
 	 */
@@ -233,9 +209,16 @@ class SearchShows extends JPanel {
 
 		JButton btnSubmit = new JButton("Submit");
 
-		JTextField txfNbrOfSeasons = new JTextField();
+		NumberFormatter formatter =
+				new NumberFormatter(NumberFormat.getInstance());
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(1);
+		formatter.setMaximum(Integer.MAX_VALUE);
+		formatter.setAllowsInvalid(true);
 
-
+		// Make sure it only accepts a certain range of integers.
+		JFormattedTextField txfNbrOfSeasons = new JFormattedTextField(formatter);
+		txfNbrOfSeasons.setValue(1);
 
 		pnlMyOwnShowPanel.add(new JLabel("Title: "));
 		pnlMyOwnShowPanel.add(txfShowName);
@@ -249,8 +232,6 @@ class SearchShows extends JPanel {
 		pnlMyOwnShowPanel.add(txfShowPlot);
 		pnlMyOwnShowPanel.add(new JLabel("Poster (web url): "));
 		pnlMyOwnShowPanel.add(txfShowPoster);
-
-
 
 		pnlMyOwnShowPanel.add(new JLabel("Number of Seasons"));
 		pnlMyOwnShowPanel.add(txfNbrOfSeasons);

@@ -8,11 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="commons-logging-1.2" level="project" />
     <orderEntry type="library" name="httpclient-4.5.8" level="project" />
     <orderEntry type="library" name="httpcore-4.4.11" level="project" />
-    <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="JUnit 5.4.2" level="project" />
+    <orderEntry type="library" name="json-20210307" level="project" />
   </component>
 </module>

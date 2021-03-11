@@ -1,6 +1,6 @@
 package showtracker.server;
 
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 import showtracker.Episode;
 import showtracker.Helper;
 import showtracker.Show;
