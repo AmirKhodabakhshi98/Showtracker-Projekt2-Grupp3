@@ -392,6 +392,93 @@ public class ControllerTest {
 
 		assertNull(movie.getTitle());
 	}
+	//------------------------------------------------------------------------//
+	// These tests test part of GSFN02A (specification v3.8)
+	//------------------------------------------------------------------------//
+
+	@Test
+	void getShowInfo_valid(){
+		User usr = new User("TestUser", "user@test.com", null);
+		String[] arrStr = {"Friends", "tt0108778"};
+		Envelope in = new Envelope(arrStr, "getShow");
+		Envelope result = controller.receiveEnvelope(in);
+		Show show = (Show) result.getContent();
+
+		usr.addShow(show);
+
+		System.out.println("Här är vår show " + show);
+
+		assertEquals("Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.", show.getDescription());
+	}
+
+	@Test
+	void getShowInfo_null(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Show show = new Show("Test Show");
+		usr.addShow(show);
+
+		assertEquals(null, show.getDescription());
+	}
+
+	@Test
+	void getShowInfo_createdShow(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Show show = new Show("Test Show");
+		show.setDescription("Serie om Paul");
+		usr.addShow(show);
+
+		assertEquals("Serie om Paul", show.getDescription());
+	}
+
+	@Test
+	void getShowInfo_createdShowNull(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Show show = new Show("Test Show");
+		usr.addShow(show);
+
+		assertEquals(null, show.getDescription());
+	}
+
+
+	//------------------------------------------------------------------------//
+	// These tests test part of GSFN02B (specification v3.8)
+	//------------------------------------------------------------------------//
+
+
+	@Test
+	void getMovieInfo_valid(){
+		String[] arrStr = {"Inception", "tt1375666"};
+		Envelope in = new Envelope(arrStr, "getMovie");
+		Envelope result = controller.receiveEnvelope(in);
+		Movie movie = (Movie) result.getContent();
+		assertEquals("A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.", movie.getPlot());
+	}
+
+	@Test
+	void getMovieInfo_null(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Movie movie = new Movie("Test Movie");
+		usr.addMovie(movie);
+
+		assertEquals(null, movie.getPlot());
+	}
+
+	@Test
+	void getMovieInfo_createdMovie(){
+		User usr = new User("TestUser", "user@test.com", null);
+
+		Movie movie = new Movie("Test Movie");
+		movie.setPlot("Film om Paul");
+		usr.addMovie(movie);
+
+		assertEquals("Film om Paul", movie.getPlot());
+	}
+
+
 
 	////////////////////////////////////////////////////////////////////////////
 
