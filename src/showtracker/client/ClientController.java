@@ -123,12 +123,16 @@ public class ClientController {
     String setPanel(String strPanel, Show show) {
         CardLayout cardLayout = (CardLayout) (pnlCenter.getLayout());
         String returnValue = "Error";
-
         if (strPanel != null) {
             switch (strPanel) {
                 case "Home":
                     pnlHome.draw();
                     returnValue = "Home";
+                    break;
+                case "SearchShows":
+                    pnlSearchShows.draw();
+                    returnValue = "SearchShows";
+                    System.out.println("search");
                     break;
                 case "ShowList":
                     pnlShowList.draw();
