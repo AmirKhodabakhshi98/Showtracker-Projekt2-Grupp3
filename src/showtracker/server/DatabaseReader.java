@@ -20,7 +20,8 @@ import java.io.*;
  */
 
 class DatabaseReader implements IDatabaseReader {
-    private String apicode = "a203d499";
+
+    private static final String apicode = "a203d499";
 
     /**
      * Searches OMdb for shows
@@ -50,21 +51,23 @@ class DatabaseReader implements IDatabaseReader {
         HttpGet httpGet = createGet("http://www.omdbapi.com/?apikey="+apicode+
                 "&v=1&page=1&s=" + stbSearchTerms);
         JSONObject jsoResponse = getJSONFromRequest(httpGet);
-        JSONArray jsonArray = jsoResponse.getJSONArray("Search");
+        JSONArray jsonArray = jsoResponse.optJSONArray("Search");
         if (jsonArray == null)
             return null;
 
         JSONObject obj;
         String[][] list = new String[jsonArray.length()][];
         for (int i = 0; i < jsonArray.length(); i++) {
-            obj = jsonArray.getJSONObject(i);
+            obj = jsonArray.optJSONObject(i);
+            if (obj == null)
+                break;
 
             list[i] = new String[5];
-            list[i][0] = obj.optString("Title");
-            list[i][1] = obj.optString("imdbID");
-            list[i][2] = obj.optString("Poster");
-            list[i][3] = obj.optString("Year");
-            list[i][4] = obj.optString("Type");
+            list[i][0] = obj.optString("Title", null);
+            list[i][1] = obj.optString("imdbID", null);
+            list[i][2] = obj.optString("Poster", null);
+            list[i][3] = obj.optString("Year", null);
+            list[i][4] = obj.optString("Type", null);
         }
 
         return list;
@@ -85,8 +88,6 @@ class DatabaseReader implements IDatabaseReader {
         return jsoResponse;
     }
 
-
-
     /**
      * Gets the episodes of a show
      * @param id The show's ID
@@ -94,12 +95,11 @@ class DatabaseReader implements IDatabaseReader {
      * @return A JSON array with the episodes
      */
     private JSONArray getEpisodesOfSeason(String id, int season) {
-
         HttpGet request  = createGet("http://www.omdbapi.com/?apikey=a203d499&i=" + id +"&season=" + season);
         JSONObject joResponse = getJSONFromRequest(request);
-        String strError = (String) joResponse.get("Error");
+        String strError = joResponse.optString("Error", null);
         if (strError == null) {
-            return (JSONArray) joResponse.get("Episodes");
+            return joResponse.optJSONArray("Episodes");
         } else {
             System.err.println(strError);
             return null;
@@ -115,9 +115,9 @@ class DatabaseReader implements IDatabaseReader {
     public String[] getDetail(String id)
     {
         JSONObject jsoEpisode = searchOmdbShow(id);
-        String runtime = (String) jsoEpisode.get("Runtime");
-        String plot = (String) jsoEpisode.get("Plot");
-        String poster = (String) jsoEpisode.get("Poster");
+        String runtime = jsoEpisode.optString("Runtime", null);
+        String plot = jsoEpisode.optString("Plot", null);
+        String poster = jsoEpisode.optString("Poster", null);
         String[] returnValues = new String[3];
         returnValues[0] = runtime;
         returnValues[1] = plot;
@@ -138,41 +138,43 @@ class DatabaseReader implements IDatabaseReader {
         System.out.println("DatabaseReader: Generating show \"" + arShow[0] + "\"...");
 
         JSONObject jsoShow = searchOmdbShow(arShow[1]);
-        System.out.println("Title: "+  jsoShow.get("Title"));
+        System.out.println("Title: "+  jsoShow.opt("Title"));
 
-        Show show = new Show((String) jsoShow.get("Title"));
-        show.setDescription((String) jsoShow.get("Plot"));
-        show.setImdbId((String) jsoShow.get("imdbID"));
-        show.setImdbRating((String) jsoShow.get("imdbRating"));
-        show.setPoster((String) jsoShow.get("Poster"));
-        show.setActors((String) jsoShow.get("Actors"));
-        show.setYear((String) jsoShow.get("Year"));
-        System.out.println(jsoShow.get("Poster")); // planned to be removed // TEMP REMOVED
+        Show show = new Show(jsoShow.optString("Title", null));
+        show.setDescription(jsoShow.optString("Plot", null));
+        show.setImdbId(jsoShow.optString("imdbID", null));
+        show.setImdbRating(jsoShow.optString("imdbRating", null));
+        show.setPoster(jsoShow.optString("Poster", null));
+        show.setActors(jsoShow.optString("Actors", null));
+        show.setYear(jsoShow.optString("Year", null));
 
         try {
 
-            int seasons = Integer.parseInt(String.valueOf(jsoShow.get("totalSeasons")));
+            int seasons = Integer.parseInt(String.valueOf(
+                    jsoShow.optString("totalSeasons", "0")));
             System.out.println("Total seasons: " + seasons);
             JSONArray jsaEpisodes;
             for (int i = 1; i < seasons + 1; i++) {
 
                 jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
+                if (jsaEpisodes != null) {
+                    for (Object obj : jsaEpisodes) {
+                        JSONObject jso = (JSONObject) obj;
 
-                for (Object obj : jsaEpisodes) {
-                    JSONObject jso = (JSONObject) obj;
+                        int intSeason = Integer.parseInt(String.valueOf(i));
+                        int intEpisode = Integer.parseInt(String.valueOf(
+                                jso.optString("Episode", "1")));
+                        String strName = jso.optString("Title", null);
+                        String strIMDBid = jso.optString("imdbID", null);
+                        //String strDescription = ((String) jso.get("Plot"));
 
-                    int intSeason = Integer.parseInt(String.valueOf(i));
-                    int intEpisode = Integer.parseInt(String.valueOf(jso.get("Episode")));
-                    String strName = (String) jso.get("Title");
-                    String strIMDBid = (String.valueOf(jso.get("imdbID")));
-                    //String strDescription = ((String) jso.get("Plot"));
-
-                    Episode episode = new Episode(show, intEpisode, intSeason);
-                    episode.setIMDBid(strIMDBid);
-                    episode.setName(strName);
-                    System.out.println(strName);
-                    //episode.setDescription(strDescription);
-                    show.addEpisode(episode);
+                        Episode episode = new Episode(show, intEpisode, intSeason);
+                        episode.setIMDBid(strIMDBid);
+                        episode.setName(strName);
+                        System.out.println(strName);
+                        //episode.setDescription(strDescription);
+                        show.addEpisode(episode);
+                    }
                 }
             }
         } catch (Exception e){
@@ -184,43 +186,22 @@ class DatabaseReader implements IDatabaseReader {
 
 
     public Movie generateMovie(String[] input){
-
         System.out.println("db generateMovie");
         JSONObject jsoShow = searchOmdbShow(input[1]);
         System.out.println("jsoShow created");
 
-       // String[] output = new String[9];
-
         return new Movie(
-                (String) jsoShow.get("Title"),
-                (String) jsoShow.get("Year"),
-                (String) jsoShow.get("Released"),
-                (String) jsoShow.get("Plot"),
-                (String) jsoShow.get("Poster"),
-                (String) jsoShow.get("imdbID"),
-                (String) jsoShow.get("imdbRating"),
-                (String) jsoShow.get("BoxOffice"),
-                (String) jsoShow.get("Metascore"), (String) jsoShow.get("Actors")
+                jsoShow.optString("Title", null),
+                jsoShow.optString("Year", null),
+                jsoShow.optString("Released", null),
+                jsoShow.optString("Plot", null),
+                jsoShow.optString("Poster", null),
+                jsoShow.optString("imdbID", null),
+                jsoShow.optString("imdbRating", null),
+                jsoShow.optString("BoxOffice", null),
+                jsoShow.optString("Metascore", null),
+                jsoShow.optString("Actors", null)
         );
-/*
-        output[0] = (String) jsoShow.get("Title");
-        output[1] = (String) jsoShow.get("Year");
-        output[2] = (String) jsoShow.get("Released");
-        output[3] = (String) jsoShow.get("Plot");
-        output[4] = (String) jsoShow.get("Poster");
-        output[5] = (String) jsoShow.get("imdbID");
-        output[6] = (String) jsoShow.get("imdbRating");
-        output[7] = (String) jsoShow.get("BoxOffice");
-        output[8] = (String) jsoShow.get("Metascore");
-
-        System.out.println("collected movie info");
-
-        return output;
-
-
- */
-
-
     }
 
 

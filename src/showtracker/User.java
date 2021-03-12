@@ -122,15 +122,11 @@ public class User implements Serializable {
      * @param show
      */
     public void removeShow(Show show) {
-        if (shows.contains(show)) {
-            shows.remove(show);
-        }
+        shows.remove(show);
     }
 
     public void removeMovie(Movie movie){
-        if (movies.contains(movie)){
-            movies.remove(movie);
-        }
+        movies.remove(movie);
     }
 
     public ArrayList<Show> getShows() {

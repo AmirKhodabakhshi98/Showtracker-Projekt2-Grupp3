@@ -116,13 +116,11 @@ public class Show implements Serializable {
      */
     public static boolean isValid(Show show) {
         if (show.strName == null ||
-            show.year == null ||
-            show.episodes == null)
+            show.year == null)
             return false;
 
         if (show.strName.isEmpty() ||
-            show.year.isEmpty() ||
-            show.episodes.isEmpty())
+            show.year.isEmpty())
             return false;
 
         return true;

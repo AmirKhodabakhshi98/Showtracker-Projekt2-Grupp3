@@ -177,17 +177,35 @@ class SearchShows extends JPanel {
 				}
 
 				// Add button
-				ImageIcon icon = new ImageIcon("images/plus-2.png");
-				Image imageAdd = icon.getImage();
+				boolean showExists;
+				if (arrStr[4].equals("series"))
+					showExists = clientController.getUser()
+							.containsShow(new Show(arrStr[0]));
+				else
+					showExists = clientController.getUser()
+							.containsMovie(new Movie(arrStr[0]));
+
+				Image imageAdd;
+				if (showExists)
+					imageAdd = new ImageIcon("images/error.png").getImage();
+				else
+					imageAdd = new ImageIcon("images/plus-2.png").getImage();
+
 				Image newAddImage = imageAdd.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-				icon = new ImageIcon(newAddImage);
+				ImageIcon icon = new ImageIcon(newAddImage);
 				JButton btnAdd = new JButton(icon);
-				btnAdd.setBorderPainted(false);
-				btnAdd.addActionListener(new AddListener(arrStr[0], arrStr[1], arrStrSearchResults[0][4], btnAdd));
+				btnAdd.setBorderPainted(true);
+				btnAdd.addActionListener(new AddListener(
+						arrStr[0], arrStr[1], arrStr[4], btnAdd, !showExists));
+
 				btnAdd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 				//Result Label
-				JLabel lblSearchResult = new JLabel("\t" + arrStr[0] + "\t" + "    IMDB Rating: " + arrStr[3]);
+				String showLabel = "\t" + arrStr[0];
+				if (arrStr[3] != null)
+					showLabel += " ("+arrStr[3]+")";
+
+				JLabel lblSearchResult = new JLabel(showLabel);
 				lblSearchResult.setFont(FontsAndColors.getFontTitle(16));
 
 				pnlMainCard.add(pnlPoster, BorderLayout.WEST);
@@ -341,23 +359,26 @@ class SearchShows extends JPanel {
 	 * @param btnAdd The tracked button
 	 * @param blnAdd Is show watched or not
 	 */
-	private void addRemoveShow(String strShowName, JButton btnAdd, boolean blnAdd) {
+	private void addRemoveShow(String strShowName, String type,
+							   JButton btnAdd, boolean blnAdd) {
 		if (!blnAdd) {
-
 			ImageIcon icon = new ImageIcon("images/error.png");
 			Image imageAdd = icon.getImage();
 			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
 			icon = new ImageIcon(newAddImage);
 			btnAdd.setIcon(icon);
-		} else {
-
+		}
+		else {
 			ImageIcon icon = new ImageIcon("images/plus-2.png");
 			Image imageAdd = icon.getImage();
 			Image newAddImage = imageAdd.getScaledInstance(40,40, Image.SCALE_SMOOTH);
 			icon = new ImageIcon(newAddImage);
 			btnAdd.setIcon(icon);
 
-			clientController.getUser().removeShow(new Show(strShowName));
+			if (type.equals("series"))
+				clientController.getUser().removeShow(new Show(strShowName));
+			else
+				clientController.getUser().removeMovie(new Movie(strShowName));
 		}
 	}
 
@@ -452,17 +473,19 @@ class SearchShows extends JPanel {
 	 * An inner class for toggling a to add or remove a show.
 	 */
 	private class AddListener implements ActionListener {
-		private boolean blnAdd = true;
-		private String strShowName;
-		private String strShowId;
-		private JButton btnAdd;
-		private String type;
+		private boolean blnAdd;
+		private final String strShowName;
+		private final String strShowId;
+		private final JButton btnAdd;
+		private final String type;
 
-		AddListener(String strShowName, String strShowId, String type, JButton btnAdd) {
+		AddListener(String strShowName, String strShowId, String type,
+					JButton btnAdd, boolean add) {
 			this.strShowName = strShowName;
 			this.strShowId = strShowId;
 			this.btnAdd = btnAdd;
 			this.type = type;
+			blnAdd = add;
 		}
 
 		@Override
@@ -476,9 +499,12 @@ class SearchShows extends JPanel {
 				else if (type.equals("movie")){
 					clientController.generateMovie(strShowName, strShowId);
 				}
-			} else
+			}
+			else {
 				blnAdd = true;
-			addRemoveShow(strShowName, btnAdd, blnAdd);
+			}
+
+			addRemoveShow(strShowName, type, btnAdd, blnAdd);
 		}
 	}
 
