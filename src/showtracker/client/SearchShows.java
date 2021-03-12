@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 
+import showtracker.Episode;
 import showtracker.Movie;
 import showtracker.Show;
 import showtracker.client.View.FontsAndColors;
@@ -101,6 +102,10 @@ class SearchShows extends JPanel {
 	 */
 	void draw() {
 		pnlSearchResult.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyShow.removeAll();
+		txfSearchBar.setText("");
 		TextPrompt textPrompt = new TextPrompt("Search for a show here!", txfSearchBar);
 		textPrompt.setFont(FontsAndColors.getFontItalic(16));
 		textPrompt.changeAlpha(0.5f);
@@ -113,6 +118,9 @@ class SearchShows extends JPanel {
 	 */
 	private void drawSearchResultPanel(String strSearchRequest) {
 		pnlSearchResult.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyShow.removeAll();
 		String[][] arrStrSearchResults = clientController.searchShows(strSearchRequest);
 
 		pnlSearchResult.setLayout(new GridLayout(arrStrSearchResults.length, 2));
@@ -126,7 +134,10 @@ class SearchShows extends JPanel {
 	 * @version 1.0.3
 	 */
 	private void updateSearchResults(String[][] arrStrSearchResults) {
-
+		pnlSearchResult.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyOwnMoviePanel.removeAll();
+		pnlMyShow.removeAll();
 		GridBagConstraints gbc = new GridBagConstraints();
 		pnlSearchResult.setLayout(new GridBagLayout());
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -410,7 +421,7 @@ class SearchShows extends JPanel {
 			JOptionPane.showMessageDialog(null, strSeasons + " is not valid, please enter a number.");
 		}
 		if (blnParseIntSuccess) {
-			Show show = new Show(txfShowName.getText());
+			Show show = new Show(txfShowName.getText(), true);
 			show.setYear(txfShowYear.getText());
 			show.setImdbRating(txfShowIMDBRating.getText());
 			show.setActors(txfShowActors.getText());
@@ -426,7 +437,7 @@ class SearchShows extends JPanel {
 
 			for (int s = 0; s < arrTxfSeasons.length; s++)
 				for (int e = 0; e < arrIntEpisodes[s]; e++)
-	//				show.addEpisode(new Episode(show, e + 1, s + 1));
+					show.addEpisode(new Episode(show, e + 1, s + 1));
 
 			show.sortEpisodes();
 			clientController.getUser().addShow(show);

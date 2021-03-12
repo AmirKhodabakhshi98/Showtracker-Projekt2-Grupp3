@@ -69,6 +69,13 @@ public class Controller {
 				returnEnvelope = new Envelope(show, "show");
 				break;
 
+			case "getDetail":
+				String id  =  (String)envInput.getContent();
+				String[] detail = dbr.getDetail(id);
+
+				returnEnvelope = new Envelope(detail,"detail");
+				break;
+
 			case "signUp":
 				String[] strArrSignup = (String[]) envInput.getContent();
 				returnEnvelope = signUp(strArrSignup);
@@ -113,6 +120,15 @@ public class Controller {
 					movie = new Movie((String)null);
 				else
 					movie = dbr.generateMovie(info);
+
+				System.out.println("returning movie");
+
+				String[] infoMovie = (String[]) envInput.getContent();
+				if (infoMovie == null)
+					movie = new Movie((String)null);
+				else
+					movie = dbr.generateMovie(infoMovie);
+
 
 				returnEnvelope = new Envelope(movie, "movie");
 				break;

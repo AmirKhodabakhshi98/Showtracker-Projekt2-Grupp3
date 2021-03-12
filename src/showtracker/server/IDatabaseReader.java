@@ -13,5 +13,7 @@ interface IDatabaseReader {
 
 	Show updateShow(Show show);
 
+	String[] getDetail(String id);
+
 	Movie generateMovie(String[] input);
 }
