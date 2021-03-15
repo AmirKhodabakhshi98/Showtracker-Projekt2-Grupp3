@@ -149,14 +149,25 @@ public class ClientController {
                     returnValue = "Profile";
                     break;
                 case "Logout":
-                    setButtonsEnabled(false);
-                    pnlLogin.draw();
-                    pnlLogin.revalidate();
-                    pnlLogin.setBackground(Color.getColor("6C709D"));
-                    pnlSearchShows.draw();
-                    if (user != null)
-                        new Thread(() -> updateUser(user)).run();
-                    returnValue = "Logout";
+                        if (user != null)
+                            if(JOptionPane.showInternalConfirmDialog(null, "Are you sure you want to log out?") == 0)
+                            {
+                                setButtonsEnabled(false);
+                                pnlLogin.draw();
+                                pnlLogin.revalidate();
+                                pnlLogin.setBackground(Color.getColor("6C709D"));
+                                pnlSearchShows.draw();
+                                new Thread(() -> updateUser(user)).run();
+                                returnValue = "Logout";
+                                break;
+                            }
+                            else
+                            {
+                                pnlHome.draw();
+                                cardLayout.show(pnlCenter, "Home");
+                                return "Home";
+                            }
+
                     break;
                 case "Info":
                     pnlCenter.add(new ShowInfo(show, this), "Info");
