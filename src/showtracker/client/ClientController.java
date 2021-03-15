@@ -74,7 +74,6 @@ public class ClientController {
         setButtonsEnabled(false);
 
         frame.add(pnlBottom, BorderLayout.SOUTH);
-
         setPanel("Logout", null);
     }
 
@@ -149,9 +148,8 @@ public class ClientController {
                     returnValue = "Profile";
                     break;
                 case "Logout":
-                        if (user != null)
-                            if(JOptionPane.showInternalConfirmDialog(null, "Are you sure you want to log out?") == 0)
-                            {
+                        if (user != null) {
+                            if (JOptionPane.showInternalConfirmDialog(null, "Are you sure you want to log out?") == 0) {
                                 setButtonsEnabled(false);
                                 pnlLogin.draw();
                                 pnlLogin.revalidate();
@@ -160,13 +158,21 @@ public class ClientController {
                                 new Thread(() -> updateUser(user)).run();
                                 returnValue = "Logout";
                                 break;
-                            }
-                            else
-                            {
+                            } else {
                                 pnlHome.draw();
                                 cardLayout.show(pnlCenter, "Home");
                                 return "Home";
                             }
+                        }
+                        else
+                        {
+                            setButtonsEnabled(false);
+                            pnlLogin.draw();
+                            pnlLogin.revalidate();
+                            pnlLogin.setBackground(Color.getColor("6C709D"));
+                            pnlSearchShows.draw();
+                            returnValue = "Logout";
+                        }
 
                     break;
                 case "Info":

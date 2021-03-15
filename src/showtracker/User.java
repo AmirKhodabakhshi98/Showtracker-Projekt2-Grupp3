@@ -29,6 +29,30 @@ public class User implements Serializable {
         this.strUserName = strUserName;
     }
 
+    public void setRuntime(Movie movie, int watchedTime)
+    {
+        for (int i = 0; i < movies.size() ; i++)
+        {
+            if (movies.get(i).getTitle().equals(movie.getTitle()))
+            {
+                movies.get(i).setMinutesWatched(watchedTime);
+            }
+        }
+        movie.setMinutesWatched(watchedTime);
+    }
+
+    public String getMinutesWatched(Movie movie)
+    {
+        for (int i = 0; i < movies.size() ; i++)
+        {
+            if (movies.get(i).getTitle().equals(movie.getTitle()))
+            {
+               return movies.get(i).getMinutesWatched() + " min";
+            }
+        }
+        return "";
+    }
+
     public String getUserName() {
         return strUserName;
     }

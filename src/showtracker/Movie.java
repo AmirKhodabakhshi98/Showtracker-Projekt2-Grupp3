@@ -21,10 +21,13 @@ public class Movie implements Serializable {
     private String actors;
     private int personalRating;
     private boolean isWatched;
+    private String runtime;
+    private int minutesWatched;
 
     public Movie(String title){
         this.title = title;
     }
+
 
     public Movie(String title,
                  String year,
@@ -35,7 +38,7 @@ public class Movie implements Serializable {
                  String imdbRating,
                  String boxOffice,
                  String metascore,
-                 String actors) {
+                 String actors, String runtime) {
 
         this.title = title;
         this.year = year;
@@ -48,6 +51,8 @@ public class Movie implements Serializable {
         this.metascore = metascore;
         this.actors = actors;
         this.personalRating = Rating.NO_RATING.getIntValue();
+        this.runtime = runtime;
+        minutesWatched = 0;
     }
 
     /**
@@ -66,8 +71,18 @@ public class Movie implements Serializable {
         actors          = movie.actors;
         personalRating  = movie.personalRating;
         isWatched       = movie.isWatched;
+        runtime         = movie.runtime;
     }
 
+    public void setMinutesWatched(int minutesWatched) {
+        this.minutesWatched = minutesWatched;
+    }
+
+
+    public int getMinutesWatched()
+    {
+        return minutesWatched;
+    }
     public void setActors(String actors) {
         this.actors = actors;
     }
@@ -117,6 +132,14 @@ public class Movie implements Serializable {
 
     public String getYear() {
         return year;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
     }
 
     public void setYear(String year) {

@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -15,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MovieList extends JPanel {
 
@@ -134,6 +137,36 @@ public class MovieList extends JPanel {
                     clientController.getUser().removeMovie(tmpMovie);
                     draw();
                 });
+                String runtime = movie.getRuntime();
+                int runtimeInt = Integer.parseInt(runtime.split(" ", 2)[0]);
+                JLabel lblValue = new JLabel(clientController.getUser().getMinutesWatched(movie) + "/ " + runtime);
+                JSlider sliderRuntime = new JSlider();
+                sliderRuntime.setMaximum(runtimeInt);
+                sliderRuntime.setMinimum(0);
+                int minutesWatchedInt = Integer.parseInt(clientController.getUser().
+                        getMinutesWatched(movie).split(" ", 2)[0]);
+                sliderRuntime.setValue(minutesWatchedInt);
+
+                pnlMiddle.add(sliderRuntime);
+                pnlMiddle.add(lblValue);
+
+                sliderRuntime.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent event) {
+                        int value = sliderRuntime.getValue();
+                        lblValue.setText(value + "/ " + runtime);
+                        if (sliderRuntime.getValue() == runtimeInt && !sliderRuntime.getValueIsAdjusting())
+                        {
+                            if(JOptionPane.showConfirmDialog(null, "Do you wish to remove this movie?") == 0)
+                            {
+                                clientController.getUser().removeMovie(tmpMovie);
+                                draw();
+                            }
+                        }
+                        if (sliderRuntime.getValueIsAdjusting()) {
+                            clientController.getUser().setRuntime(tmpMovie, value);
+                        }
+                    }
+                });
 
                 gbc.gridx = 0;
                 gbc.weightx= 1;
@@ -141,6 +174,7 @@ public class MovieList extends JPanel {
                 pnlMain.add(pnlPoster, BorderLayout.WEST);
                 pnlMovieList.add(pnlMain, gbc);
             }
+
             gbc.anchor = GridBagConstraints.NORTHWEST;
             gbc.weighty = 1;
             pnlMovieList.add(new JPanel(), gbc);
@@ -164,9 +198,11 @@ public class MovieList extends JPanel {
                 "<p style = \"width: 300px;\">" + movie.getPlot() + "</p><br>" +
                 "Imdb Rating: " + movie.getImdbRating() + "</p><br>" +
                 "Released: " + movie.getYear() + "</p><br>" +
+                        "Runtime: " + movie.getRuntime() + "</p><br>" +
                 "Actors: " + movie.getActors() + "</body></html>",
                 "Movie Info", JOptionPane.PLAIN_MESSAGE);
     }
+
 
     //Inner class for searching movies when a user writes in the search list
     private class MyDocumentListener extends JTextField implements DocumentListener{

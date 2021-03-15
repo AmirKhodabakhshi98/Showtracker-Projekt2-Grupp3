@@ -578,11 +578,13 @@ public class ControllerTest {
 							"8.8",
 							"$292,576,195",
 							"74",
-							"Actor A, Actor B");
+							"Actor A, Actor B",
+							"2 hours");
 				break;
 
 				default:
 					result = new Movie(
+							null,
 							null,
 							null,
 							null,

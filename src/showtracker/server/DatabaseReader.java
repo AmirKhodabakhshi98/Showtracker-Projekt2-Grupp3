@@ -200,8 +200,9 @@ class DatabaseReader implements IDatabaseReader {
                 jsoShow.optString("imdbRating", null),
                 jsoShow.optString("BoxOffice", null),
                 jsoShow.optString("Metascore", null),
-                jsoShow.optString("Actors", null)
-        );
+                jsoShow.optString("Actors", null),
+                jsoShow.optString("Runtime", "not found"));
+
     }
 
 
