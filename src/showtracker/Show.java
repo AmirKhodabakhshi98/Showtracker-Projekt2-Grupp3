@@ -13,7 +13,7 @@ public class Show implements Serializable {
     private String imdbRating;
     private String strName;
     private String strDescription;
-    private LinkedList<Episode> episodes = new LinkedList<>();
+    private ArrayList<ArrayList<Episode>> episodes; // [season][episode]
     private Date dteLastWatched;
     private String actors;
     private String year;
@@ -25,12 +25,12 @@ public class Show implements Serializable {
         custom = false;
         setLastWatched();
     }
+
     public Show(String strName, boolean customFlag) {
         this.strName = strName;
         custom = customFlag;
         setLastWatched();
     }
-
 
     /**
      * Copy constructor
@@ -41,11 +41,24 @@ public class Show implements Serializable {
         imdbRating      = other.imdbRating;
         strName         = other.strName;
         strDescription  = other.strDescription;
-        episodes        = (LinkedList<Episode>)other.episodes.clone();
         dteLastWatched  = other.dteLastWatched;
         actors          = other.actors;
         year            = other.year;
         personalRating  = other.personalRating;
+
+        if (other.episodes != null) {
+            episodes = new ArrayList<>(other.getSeasons());
+            for (int s = 0; s < other.getSeasons(); s++) {
+                ArrayList<Episode> eps = new ArrayList<>(
+                        other.episodes.get(s).size());
+
+                for (int e = 0; e < other.episodes.get(s).size(); e++) {
+                    eps.add(e, other.episodes.get(s).get(e));
+                }
+
+                episodes.add(eps);
+            }
+        }
     }
 
     public void setActors(String actors){
@@ -126,19 +139,22 @@ public class Show implements Serializable {
         return true;
     }
 
-    public void addEpisode(Episode episode) {
-        episodes.add(episode);
+    public void addEpisode(Episode episode, int seasonNbr, int episodeNbr) {
+        if (episodes == null) {
+            episodes = new ArrayList<>(seasonNbr);
+            episodes.add(new ArrayList<Episode>(episodeNbr));
+        }
+
+        if (seasonNbr > getSeasons())
+            for (int i = getSeasons(); i < seasonNbr; i++) {
+                episodes.add(new ArrayList<Episode>());
+            }
+
+        episodes.get(seasonNbr-1).add(episodeNbr-1, episode);
     }
 
-    public LinkedList<Episode> getEpisodes() {
+    public ArrayList<ArrayList<Episode>> getEpisodes() {
         return episodes;
-    }
-
-    /**
-     * Sort episodes by season and episode number
-     */
-    public void sortEpisodes() {
-        Collections.sort(episodes);
     }
 
     public void setDescription(String strDescription) {
@@ -166,43 +182,31 @@ public class Show implements Serializable {
     }
 
     /**
-     * Returns a list of doubles with the amount of seasons the Show has
+     * Returns the number of seasons
      * @return
      */
-    public LinkedList<Double> getSeasons() {
-        LinkedList<Double> seasons = new LinkedList<>();
-        for (Episode episode : episodes)
-            if (!seasons.contains(episode.getSeasonNumber()))
-                seasons.add(episode.getSeasonNumber());
-        Collections.sort(seasons);
-        return seasons;
-    }
+    public int getSeasons() {
+        if (episodes == null)
+            return 0;
 
-    /**
-     * Return the episodes of a single season
-     * @param
-     * @return
-     */
-    public LinkedList<Episode> getSeason(double dbl) {
-        LinkedList<Episode> season = new LinkedList<>();
-        for (Episode episode : episodes)
-            if (episode.getSeasonNumber() == dbl)
-                season.add(episode);
-        Collections.sort(season);
-        return season;
+        return episodes.size();
     }
 
     /**
      * Get an episode with its season and episode number
-     * @param dblSeason
-     * @param dblEpisode
+     * @param season
+     * @param episode
      * @return
      */
-    public Episode getEpisode(double dblSeason, double dblEpisode) {
-        for (Episode episode : episodes)
-            if (episode.getSeasonNumber() == dblSeason && episode.getEpisodeNumber() == dblEpisode)
-                return episode;
-        return null;
+    public Episode getEpisode(int season, int episode) {
+        int seasons = getSeasons();
+        if (season <= 0 || season > seasons)
+            return null;
+
+        if (episode <= 0 || episode > episodes.get(season).size())
+            return null;
+
+        return episodes.get(season-1).get(episode-1);
     }
 
     /**
@@ -210,9 +214,19 @@ public class Show implements Serializable {
      * @return
      */
     public Episode getFirstUnwatched() {
-        for (Episode episode : episodes)
-            if (!episode.isWatched() && episode.getSeasonNumber() != 0)
-                return episode;
+        int seasonLen;
+        Episode ep;
+        for (int i = 0; i < getSeasons(); i++) {
+            seasonLen = episodes.get(i).size();
+
+            for (int j = 0; j < seasonLen; j++) {
+                ep = episodes.get(i).get(j);
+
+                if (!ep.isWatched())
+                    return ep;
+            }
+        }
+
         return null;
     }
 
@@ -235,11 +249,24 @@ public class Show implements Serializable {
 
     /**
      * Checks in an episode is present by its ID
-     * @param episode
+     * @param id the IMDB id
      * @return
      */
-    public boolean containsById(Episode episode) {
-        return episodes.stream().anyMatch(listItem -> (new IdComparator()).compare(listItem, episode) == 0);
+    public boolean containsById(String id) {
+        int seasonLen;
+        Episode ep;
+        for (int i = 0; i < getSeasons(); i++) {
+            seasonLen = episodes.get(i).size();
+
+            for (int j = 0; j < seasonLen; j++) {
+                ep = episodes.get(i).get(j);
+
+                if (ep.getImdbId().equals(id))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /**

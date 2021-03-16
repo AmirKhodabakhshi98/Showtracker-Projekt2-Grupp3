@@ -36,7 +36,6 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -48,7 +47,6 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		usr.addShow(null);
@@ -61,7 +59,6 @@ public class UserTest {
 		User usr = new User("TestUser", "user@test.com", null);
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		usr.addShow(show);
@@ -90,7 +87,6 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -105,7 +101,6 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 
@@ -120,7 +115,6 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		int size = usr.getShows().size();
@@ -136,7 +130,6 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		usr.addShow(show);
 		int size = usr.getShows().size();
@@ -156,10 +149,8 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		Episode episode = new Episode(show, 1, 1);
-		show.addEpisode(episode);
 
 		usr.addShow(show);
 
@@ -176,11 +167,9 @@ public class UserTest {
 
 		Show show = new Show("Test Show");
 		show.setYear("2000");
-		show.addEpisode(new Episode(show, 1, 1));
 
 		Episode episode = new Episode(show, 1, 1);
 		episode.setWatched(true);
-		show.addEpisode(episode);
 
 		usr.addShow(show);
 

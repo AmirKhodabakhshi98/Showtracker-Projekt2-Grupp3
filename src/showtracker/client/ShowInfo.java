@@ -7,6 +7,7 @@ import showtracker.client.View.FontsAndColors;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,11 +26,20 @@ class ShowInfo extends JPanel {
     private Show show;
     private ClientController clientController;
 
+    private Image imgListOpen;
+    private Image imgListClosed;
+
     ShowInfo(Show show, ClientController clientController) {
         this.show = show;
         this.clientController = clientController;
-        for (double d : show.getSeasons())
-            listeners.add(new SeasonListener(d));
+
+        for (int i = 0; i < show.getSeasons(); i++)
+            listeners.add(new SeasonListener(i+1));
+
+        imgListOpen = new ImageIcon("images/list-open.png").getImage()
+                .getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        imgListClosed = new ImageIcon("images/list-closed.png").getImage()
+                .getScaledInstance(32, 32, Image.SCALE_SMOOTH);
 
         initiatePanels();
         draw();
@@ -50,13 +60,15 @@ class ShowInfo extends JPanel {
         pnlShowInfo.add(Box.createHorizontalGlue());
 
         JLabel lblHeader = new JLabel(show.getName());
+        lblHeader.setBorder(new EmptyBorder(5, 15, 5, 5));
+        lblHeader.setFont(new Font("Roboto", Font.BOLD, 20));
 
         ImageIcon imiInfo = new ImageIcon("images/info.png");
         Image imgInfo = imiInfo.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         imiInfo = new ImageIcon(imgInfo);
 
         JButton btnInfo = new JButton(imiInfo);
-        btnInfo.setPreferredSize(new Dimension(30, 50));
+        btnInfo.setPreferredSize(new Dimension(50, 40));
         btnInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         btnInfo.addActionListener(e -> JOptionPane.showMessageDialog(null,
@@ -70,9 +82,7 @@ class ShowInfo extends JPanel {
         pnlHeader.setBounds(0, 0, 500, 50);
         pnlHeader.setLayout(new BorderLayout());
         pnlHeader.setPreferredSize(new Dimension(500, 50));
-        pnlHeader.setBackground(Color.decode("#6A86AA"));
-        pnlHeader.add(lblHeader);
-        lblHeader.setFont(new Font("Monospaced", Font.BOLD, 20));
+        pnlHeader.add(lblHeader, BorderLayout.WEST);
         pnlHeader.add(btnInfo, BorderLayout.EAST);
         pnlHeader.setBorder(new LineBorder(Color.DARK_GRAY));
 
@@ -89,110 +99,161 @@ class ShowInfo extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         pnlShowInfo.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
-            for (SeasonListener listener : listeners) {
 
-                JButton btnSeason = new JButton("Show Season");
+        for (SeasonListener listener : listeners) {
 
-                JPanel panel = new JPanel(new FlowLayout());
-                panel.setBackground(FontsAndColors.getProjectBlue());
-			    panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+            JToggleButton btnSeason = new JToggleButton();
+            if (listener.blnOpen)
+                btnSeason.setIcon(new ImageIcon(imgListClosed));
+            else
+                btnSeason.setIcon(new ImageIcon(imgListOpen));
 
-                JButton button;
-                JLabel seasonlbl;
+            btnSeason.setSize(0, 80);
+            btnSeason.setBorderPainted(false);
+            btnSeason.setBackground(FontsAndColors.getProjectBlue());
+
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.setBackground(FontsAndColors.getProjectBlue());
+
+            JLabel seasonlbl;
+
+            JPanel pnlCompleted = new JPanel(new BorderLayout(5, 0));
+            JLabel lblCompleted = new JLabel("Completed: ");
+            JCheckBox cbxCompleted = new JCheckBox();
+            pnlCompleted.setBorder(new EmptyBorder(10, 10, 10, 10));
+            pnlCompleted.add(lblCompleted, BorderLayout.LINE_START);
+            pnlCompleted.add(cbxCompleted, BorderLayout.CENTER);
 
 
-                JPanel pnlMain = new JPanel(new BorderLayout());
-                pnlMain.setPreferredSize(new Dimension(800,80));
-                pnlMain.setBackground(FontsAndColors.getProjectBlue());
-                Border cardBorder = BorderFactory.createRaisedBevelBorder();
-                pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
 
-                pnlMain.setBackground(FontsAndColors.getProjectBlue());
-                if (listener.getSeason() == 0) {
-                    button = new JButton("Specials");
-                }
-                else {
-                    seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
+            cbxCompleted.addActionListener(e ->
+                setSeasonCompleted((int)listener.getSeason(), cbxCompleted.isSelected()));
 
-                    seasonlbl.setMinimumSize(new Dimension(100, 30));
-                    seasonlbl.setMaximumSize(new Dimension(100, 30));
-                    seasonlbl.setFont(new Font("Monospaced", Font.PLAIN, 17));
-                    btnSeason.addActionListener(listener);
-                    btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                    panel.add(seasonlbl, BorderLayout.CENTER);
-                    panel.add(btnSeason, BorderLayout.CENTER);
-                    pnlMain.add(panel, BorderLayout.CENTER);
-                    gbc.gridx = 0;
-                    gbc.weightx = 1;
-                    pnlShowInfo.add(pnlMain, gbc);
-                }
+            JPanel pnlMain = new JPanel(new BorderLayout());
+            pnlMain.setPreferredSize(new Dimension(800,80));
+            pnlMain.setBackground(FontsAndColors.getProjectBlue());
+            Border cardBorder = BorderFactory.createRaisedBevelBorder();
+            pnlMain.setBorder(cardBorder); // new LineBorder(Color.DARK_GRAY)
 
-                if (listener.getOpen())
-                    for (Episode episode : show.getEpisodes())
-                        if (episode.getSeasonNumber() == listener.getSeason()) {
-                            JPanel episodePanel = new JPanel(new BorderLayout());
-                            Border Border = BorderFactory.createRaisedBevelBorder();
-                            episodePanel.setBorder(Border); // new LineBorder(Color.DARK_GRAY)
-                            episodePanel.setBackground(Color.decode("#6A86AA"));
-                            JButton infoButton;
-                            if (show.isCustom())
-                            {
-                               infoButton = new JButton("Episode " + Helper.df.format(episode.getEpisodeNumber()));
-                            }
-                            else
-                            {
-                                infoButton = new JButton("Episode " + Helper.df.format(episode.getEpisodeNumber()) + " - " + episode.getName());
-                            }
+            pnlMain.setBackground(FontsAndColors.getProjectBlue());
+            seasonlbl = new JLabel("Season " + Helper.df.format(listener.getSeason()));
+            seasonlbl.setSize(new Dimension(100, 80));
+            seasonlbl.setFont(new Font("Roboto", Font.PLAIN, 17));
+            btnSeason.addActionListener(listener);
+            btnSeason.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                            infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                            infoButton.addActionListener(e -> {
-                                clientController.getDetailEpisode(episode);
-                                if (episode.getPoster() != null) {
-                                    JOptionPane.showMessageDialog(null,
-                                            "<html><body><p style=\"width: 200px;\">" +
-                                                    episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>" +
-                                                    "<img src =" + episode.getPoster(), episode.getName(),
-                                            JOptionPane.INFORMATION_MESSAGE);
-                                }
-                                else
-                                {
-                                    JOptionPane.showMessageDialog(null,
-                                            "<html><body><p style=\"width: 200px;\">" +
-                                                    episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>", episode.getName(),
-                                            JOptionPane.INFORMATION_MESSAGE);
-                                }
-                            });
-                            episodePanel.add(infoButton, BorderLayout.CENTER);
-                            JCheckBox checkBox = new JCheckBox();
-                            checkBox.setSelected(episode.isWatched());
-                            checkBox.addActionListener(new EpisodeListener(episode));
-                            episodePanel.add(checkBox, BorderLayout.EAST);
-                            episodePanel.setBackground(FontsAndColors.getProjectBlue());
-                            pnlShowInfo.add(episodePanel,gbc);
+            JPanel pnlWest = new JPanel(new BorderLayout());
+            pnlWest.setBackground(FontsAndColors.getProjectBlue());
+            pnlWest.add(btnSeason, BorderLayout.WEST);
+            pnlWest.add(seasonlbl, BorderLayout.CENTER);
+
+            panel.add(pnlWest, BorderLayout.WEST);
+            panel.add(pnlCompleted, BorderLayout.EAST);
+
+            pnlMain.add(panel, BorderLayout.CENTER);
+
+            gbc.gridx = 0;
+            gbc.weightx = 1;
+            pnlShowInfo.add(pnlMain, gbc);
+
+            int watchedCnt = 0;
+            ArrayList<Episode> seasonEpisodes = show.getEpisodes()
+                    .get(listener.getSeason()-1);
+
+            if (listener.getOpen()) {
+                for (Episode episode : seasonEpisodes) {
+                    JPanel episodePanel = new JPanel(new BorderLayout());
+                    Border Border = BorderFactory.createRaisedBevelBorder();
+                    episodePanel.setBorder(Border); // new LineBorder(Color.DARK_GRAY)
+                    episodePanel.setBackground(Color.decode("#6A86AA"));
+                    JToggleButton infoButton;
+                    if (show.isCustom()) {
+                        infoButton = new JToggleButton("Episode " +
+                                Helper.df.format(episode.getEpisodeNumber()));
+                    } else {
+                        infoButton = new JToggleButton("Episode " +
+                                Helper.df.format(episode.getEpisodeNumber()) +
+                                " - " + episode.getName());
+                    }
+
+                    infoButton.setBackground(new Color(238, 238, 238));
+                    infoButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                    infoButton.addActionListener(e -> {
+                        clientController.getDetailEpisode(episode);
+                        if (episode.getPoster() != null) {
+                            JOptionPane.showMessageDialog(null,
+                                    "<html><body><p style=\"width: 200px;\">" +
+                                            episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>" +
+                                            "<img src =" + episode.getPoster(), episode.getName(),
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "<html><body><p style=\"width: 200px;\">" +
+                                            episode.getPlot() + "<p>" + "<br>" + episode.getRuntime() + "</p>", episode.getName(),
+                                    JOptionPane.INFORMATION_MESSAGE);
                         }
+                    });
+
+                    episodePanel.add(infoButton, BorderLayout.CENTER);
+                    JCheckBox checkBox = new JCheckBox();
+                    checkBox.setSelected(episode.isWatched());
+                    checkBox.addActionListener(new EpisodeListener(episode));
+                    episodePanel.add(checkBox, BorderLayout.EAST);
+                    episodePanel.setBackground(FontsAndColors.getProjectBlue());
+                    pnlShowInfo.add(episodePanel, gbc);
+
+                    if (episode.isWatched())
+                        watchedCnt++;
+                }
+
                 gbc.anchor = GridBagConstraints.NORTHWEST;
                 gbc.weighty = 1;
                 pnlShowInfo.add(new JPanel(), gbc);
                 pnlShowInfo.setBackground(FontsAndColors.getProjectBlue());
             }
+            else {
+
+                for (Episode episode : seasonEpisodes)
+                    if (episode.isWatched())
+                        watchedCnt++;
+            }
+
+            if (watchedCnt == seasonEpisodes.size())
+                cbxCompleted.setSelected(true);
+
+        }
 
         revalidate();
         repaint();
+    }
+
+    private void setSeasonCompleted(int season, boolean completed) {
+        int seasons = show.getEpisodes().size();
+        if (season <= 0 || season > seasons)
+            return;
+
+        ArrayList<Episode> eps = show.getEpisodes().get(season-1);
+        for (int i = 0; i < eps.size(); i++) {
+            eps.get(i).setWatched(completed);
+        }
+
+        clientController.getUser().updateShow(show);
+        draw();
     }
 
     /**
      * Inner class for handling the opening and closing of each season
      */
     private class SeasonListener implements ActionListener {
-        private double dblSeason;
+        private int season;
         private boolean blnOpen = false;
 
-        SeasonListener(double dblSeason) {
-            this.dblSeason = dblSeason;
+        SeasonListener(int season) {
+            this.season = season;
         }
 
-        double getSeason() {
-            return dblSeason;
+        int getSeason() {
+            return season;
         }
 
         boolean getOpen() {
@@ -220,6 +281,7 @@ class ShowInfo extends JPanel {
         public void actionPerformed(ActionEvent e) {
             boolean isWatched = ((JCheckBox) e.getSource()).isSelected();
             episode.setWatched(isWatched);
+            draw();
         }
     }
 }

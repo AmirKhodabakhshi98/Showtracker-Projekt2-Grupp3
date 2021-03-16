@@ -338,6 +338,8 @@ public class ClientController {
      * @param args
      */
     public static void main(String[] args) {
-        ClientController clientController = new ClientController();
+        SwingUtilities.invokeLater(() -> {
+           ClientController clientController = new ClientController();
+        });
     }
 }
