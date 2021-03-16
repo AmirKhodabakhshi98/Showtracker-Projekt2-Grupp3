@@ -154,7 +154,7 @@ class DatabaseReader implements IDatabaseReader {
                     jsoShow.optString("totalSeasons", "0")));
             System.out.println("Total seasons: " + seasons);
             JSONArray jsaEpisodes;
-            for (int i = 1; i < seasons + 1; i++) {
+            for (int i = 1; i <= seasons; i++) {
 
                 jsaEpisodes = getEpisodesOfSeason(arShow[1], i);
                 if (jsaEpisodes != null) {
@@ -173,7 +173,7 @@ class DatabaseReader implements IDatabaseReader {
                         episode.setName(strName);
                         System.out.println(strName);
                         //episode.setDescription(strDescription);
-                        show.addEpisode(episode);
+                        show.addEpisode(episode, intSeason, intEpisode);
                     }
                 }
             }

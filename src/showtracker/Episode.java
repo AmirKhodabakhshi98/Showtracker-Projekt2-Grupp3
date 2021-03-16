@@ -10,8 +10,8 @@ public class Episode implements Comparable<Episode>, Serializable {
     private String tvdbId;
     private String imdbId;
     private String name;
-    private double episodeNumber;
-    private double seasonNumber;
+    private final int episodeNumber;
+    private final int seasonNumber;
     private String description;
     private boolean isWatched = false;
     private Show show;
@@ -26,7 +26,8 @@ public class Episode implements Comparable<Episode>, Serializable {
     }
 
     public Episode() {
-
+        this.episodeNumber = 1;
+        this.seasonNumber = 1;
     }
 
     public String getPlot() {
@@ -73,7 +74,7 @@ public class Episode implements Comparable<Episode>, Serializable {
         return name;
     }
 
-    public double getEpisodeNumber() {
+    public int getEpisodeNumber() {
         return episodeNumber;
     }
 
@@ -89,7 +90,7 @@ public class Episode implements Comparable<Episode>, Serializable {
         return description;
     }
 
-    public Double getSeasonNumber() {
+    public int getSeasonNumber() {
         return seasonNumber;
     }
 

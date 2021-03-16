@@ -107,15 +107,13 @@ public class User implements Serializable {
      * @param show
      */
     public void updateShow(Show show) {
-        for (Show s : shows) {
-            if (show.equals(s))
-                for (Episode e : show.getEpisodes())
-                    if (!s.containsById(e))
-                        s.addEpisode(e);
-            s.sortEpisodes();
+        for (int i = 0; i < shows.size(); i++) {
+            if (shows.get(i).equals(show)) {
+                shows.set(i, new Show(show));
+                break;
+            }
         }
     }
-
 
     /**
      * Removes a Show from the User's library
