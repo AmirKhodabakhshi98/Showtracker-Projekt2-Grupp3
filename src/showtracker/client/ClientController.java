@@ -60,8 +60,6 @@ public class ClientController {
 
         pnlBottom = new JPanel();
         pnlBottom.setLayout(new GridLayout(1, 5, 1, 1));
-//        pnlBottom.setBackground(Color.decode("#4E4E4E"));
-
 
         generateNavigationButton("profile", "Profile", pnlProfile);
         generateNavigationButton("list", "ShowList", pnlShowList);
@@ -69,7 +67,6 @@ public class ClientController {
         generateNavigationButton("home", "Home", pnlHome);
         generateNavigationButton("search", "SearchShows", pnlSearchShows);
         generateNavigationButton("exit", "Logout", pnlLogin);
-
 
         setButtonsEnabled(false);
 
@@ -92,6 +89,13 @@ public class ClientController {
         button.addActionListener(e -> setPanel(strText, null));
         pnlBottom.add(button);
         pnlCenter.add(panel, strText);
+
+        switch (strText) {
+            case "ShowList":    button.setToolTipText("Show List"); break;
+            case "MovieList":   button.setToolTipText("Movie List"); break;
+            case "SearchShows": button.setToolTipText("Search Shows"); break;
+            default: button.setToolTipText(strText);break;
+        }
     }
 
     /**
