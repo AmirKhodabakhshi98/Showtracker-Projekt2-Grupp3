@@ -3,6 +3,7 @@ package showtracker.client;
 import showtracker.Helper;
 import showtracker.Movie;
 import showtracker.Rating;
+import showtracker.client.View.FontsAndColors;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class MovieList extends JPanel {
         movies.sort(new Helper.NameComparatorMovie());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlMovieList.setLayout(new GridBagLayout());
-        pnlMovieList.setBackground(Color.decode("#DCDBD8"));
+        pnlMovieList.setBackground(FontsAndColors.getProjectBlue());
         pnlMovieList.removeAll();
 
         if(movies.size() > 0){

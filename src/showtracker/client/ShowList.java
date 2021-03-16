@@ -3,6 +3,7 @@ package showtracker.client;
 import showtracker.Helper;
 import showtracker.Rating;
 import showtracker.Show;
+import showtracker.client.View.FontsAndColors;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -72,7 +73,7 @@ class ShowList extends JPanel {
         shows.sort(new Helper.NameComparator());
         GridBagConstraints gbc = new GridBagConstraints();
         pnlShowList.setLayout(new GridBagLayout());
-        pnlShowList.setBackground(new Color(colorBackground));
+        pnlShowList.setBackground(FontsAndColors.getProjectBlue());
 
         pnlShowList.removeAll();
         if (shows.size() > 0) {
