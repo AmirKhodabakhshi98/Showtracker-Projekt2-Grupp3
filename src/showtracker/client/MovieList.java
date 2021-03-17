@@ -178,7 +178,9 @@ public class MovieList extends JPanel {
 
             gbc.anchor = GridBagConstraints.NORTHWEST;
             gbc.weighty = 1;
-            pnlMovieList.add(new JPanel(), gbc);
+            JPanel square = new JPanel();
+            square.setBackground(FontsAndColors.getProjectBlue());
+            pnlMovieList.add(square, gbc);
         }
         else {
             pnlMovieList.add(new JLabel("   Nothing in your list of movies at the moment!"));

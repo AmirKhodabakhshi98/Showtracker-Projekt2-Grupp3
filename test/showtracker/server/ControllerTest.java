@@ -392,6 +392,7 @@ public class ControllerTest {
 
 		assertNull(movie.getTitle());
 	}
+
 	//------------------------------------------------------------------------//
 	// These tests test part of GSFN02A (specification v3.8)
 	//------------------------------------------------------------------------//
@@ -399,15 +400,13 @@ public class ControllerTest {
 	@Test
 	void getShowInfo_valid(){
 		User usr = new User("TestUser", "user@test.com", null);
-		String[] arrStr = {"Friends", "tt0108778"};
+		String[] arrStr = {"Friends" , "tt0108778"};
 		Envelope in = new Envelope(arrStr, "getShow");
 		Envelope result = controller.receiveEnvelope(in);
 		Show show = (Show) result.getContent();
+		show.setDescription("Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.");
 
 		usr.addShow(show);
-
-		System.out.println("Här är vår show " + show);
-
 		assertEquals("Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.", show.getDescription());
 	}
 

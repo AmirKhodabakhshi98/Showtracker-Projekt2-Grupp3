@@ -173,7 +173,9 @@ class ShowList extends JPanel {
 
             gbc.anchor = GridBagConstraints.NORTHWEST;
             gbc.weighty = 1;
-            pnlShowList.add(new JPanel(), gbc);
+            JPanel square = new JPanel();
+            square.setBackground(FontsAndColors.getProjectBlue());
+            pnlShowList.add(square, gbc);
         }
         else {
             pnlShowList.add(new JLabel("   Nothing in your list at the moment!"));
