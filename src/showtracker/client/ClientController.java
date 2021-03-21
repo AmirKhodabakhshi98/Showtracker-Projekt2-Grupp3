@@ -58,6 +58,7 @@ public class ClientController {
         pnlCenter.setLayout(new CardLayout());
         pnlCenter.setBackground(FontsAndColors.getLoginGray());
 
+
         pnlBottom = new JPanel();
         pnlBottom.setLayout(new GridLayout(1, 5, 1, 1));
 
@@ -153,7 +154,7 @@ public class ClientController {
                     break;
                 case "Logout":
                         if (user != null) {
-                            if (JOptionPane.showInternalConfirmDialog(null, "Are you sure you want to log out?") == 0) {
+                            if (JOptionPane.showInternalConfirmDialog(null, "Are you sure you want to log out?", "ShowTracker", JOptionPane.YES_NO_OPTION) == 0) {
                                 setButtonsEnabled(false);
                                 pnlLogin.draw();
                                 pnlLogin.revalidate();
